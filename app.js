@@ -74,39 +74,24 @@ app.listen(PORT, () => {
 /*
 await locations.create({
   locationId: "village",
-  locationData: {
+  data: {
     gather: [
       {
         name: "Apple Tree Grove",
-        time: 5,
-        chance: 0.6,
+        max: 320,
         drop: "Apple",
       },
+    ],
+    hunt: [
       {
-        name: "Chicken Coop",
-        time: 20,
-        chance: 0.6,
-        drop: "Egg",
-      },
-      {
-        name: "Abondoned Fishing Hut",
-        time: 8,
-        chance: 0.6,
-        drop: "Cod",
-      },
-      {
-        name: "Iron Mine",
-        time: 30,
-        chance: 0.4,
-        drop: "Iron",
-      },
-      {
-        name: "Wheat Field",
-        time: 10,
-        chance: 0.8,
-        drop: "Wheat",
+        id: "goblin",
+        name: "Goblin",
+        health: 25,
+        attack: 10,
+        defense: 5,
       },
     ],
+ 
     explore: [
       {
         CASE_NAME: "AAA",
@@ -115,6 +100,7 @@ await locations.create({
         ],
       },
     ],
+
   },
 });
 */

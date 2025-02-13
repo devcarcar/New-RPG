@@ -6,6 +6,7 @@ import { select_action } from "./components/select_action.js";
 import { choose_mob } from "./components/choose_mob.js";
 import { gather_start } from "./components/gather_start.js";
 import { hunt_start } from "./components/hunt_start.js";
+import { movement_bar } from "./components/movement_bar.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -16,10 +17,17 @@ export async function componentHandler(req, user, userData) {
   if (data.component_type === MessageComponentTypes.STRING_SELECT) {
     switch (formatted.value[0]) {
       case "hunt":
-        await choose_mob(req, {
-          user: user,
-          formatted: formatted,
-        });
+        if (formatted.custom_id === "movement_bar") {
+          await movement_bar(req, {
+            user: user,
+            formatted: formatted,
+          });
+        } else {
+          await choose_mob(req, {
+            user: user,
+            formatted: formatted,
+          });
+        }
         break;
       default:
         throw new Error("Unknown custom id " + formatted[0]);
