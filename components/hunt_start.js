@@ -15,25 +15,35 @@ export async function hunt_start(req, options) {
       sessionId: formatted[2],
     },
     {
-      data: {
-        log: [],
-        user1: {
-          type: "player",
-          id: user.id,
-          x: 1,
-          y: 1,
-          health: 25,
-          attack: 10,
-          defense: 5,
-        },
-        user2: {
-          type: "mob",
-          id: formatted[1],
-          x: 5,
-          y: 5,
-          health: 25,
-          attack: 10,
-          defense: 5,
+      $set: {
+        data: {
+          log: [
+            {
+              turn: 1,
+              user1: {
+                movement: null,
+                action: null,
+              },
+            },
+          ],
+          user1: {
+            type: "player",
+            id: user.id,
+            x: 1,
+            y: 1,
+            health: 25,
+            attack: 10,
+            defense: 5,
+          },
+          user2: {
+            type: "mob",
+            id: formatted[1],
+            x: 5,
+            y: 5,
+            health: 25,
+            attack: 10,
+            defense: 5,
+          },
         },
       },
     }
