@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { DiscordRequest } from "../utils.js";
-import { MessageComponentTypes } from "discord-interactions";
+import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 
@@ -40,6 +40,17 @@ export async function select_action(req, options) {
                   description: "Move up",
                 },
               ],
+            },
+          ],
+        },
+        {
+          type: MessageComponentTypes.ACTION_ROW,
+          components: [
+            {
+              type: MessageComponentTypes.BUTTON,
+              custom_id: `hunt_confirm_${formatted[2]}`,
+              label: "Confirm",
+              style: ButtonStyleTypes.SECONDARY,
             },
           ],
         },

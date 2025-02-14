@@ -16,6 +16,7 @@ export async function hunt_start(req, options) {
     },
     {
       data: {
+        log: [],
         user1: {
           type: "player",
           id: user.id,

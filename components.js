@@ -7,6 +7,7 @@ import { choose_mob } from "./components/choose_mob.js";
 import { gather_start } from "./components/gather_start.js";
 import { hunt_start } from "./components/hunt_start.js";
 import { movement_bar } from "./components/movement_bar.js";
+import { hunt_confirm } from "./components/hunt_confirm.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -45,6 +46,8 @@ export async function componentHandler(req, user, userData) {
             user: user,
             formatted: formatted,
           });
+        } else if (formatted[1] === "confirm") {
+          await hunt_confirm(req, { user: user, formatted: formatted });
         }
         break;
       case "gather":

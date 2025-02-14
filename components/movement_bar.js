@@ -15,6 +15,21 @@ export async function movement_bar(req, options) {
   )
     return console.log(options.sessionId, session.sessionId);
   const movement = formatted.value[1];
+  const last = session.data.log[session.data.log.length - 1];
+  const turn = last.turn;
+  last.player1.movement = movement;
+  const log = session.data.log;
+  log[session.data.length - 1] = last;
+  const data = session.data;
+  data.log = log;
+  await sessions.findOneAndUpdate(
+    { sessionId: session.sessionId },
+    {
+      $set: {
+        data: data,
+      },
+    }
+  );
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
