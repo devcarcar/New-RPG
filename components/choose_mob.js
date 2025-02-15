@@ -8,6 +8,11 @@ import { sessions } from "../schemas/session.js";
 
 export async function choose_mob(req, options) {
   const { user, formatted } = options;
+  if (
+    options.formatted.value[2] != session.sessionId ||
+    new Date(session.expireAt).getTime() < Date.now()
+  )
+    return;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
 

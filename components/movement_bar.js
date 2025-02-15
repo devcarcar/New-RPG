@@ -13,7 +13,8 @@ export async function movement_bar(req, options) {
     options.formatted.value[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
-    return console.log(options.sessionId, session.sessionId);
+    return;
+
   const movement = formatted.value[1];
   const last = session.data.log[session.data.log.length - 1];
   last.user1.movement = movement;

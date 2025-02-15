@@ -13,7 +13,7 @@ export async function select_action(req, options) {
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
-  return DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
+  await DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
     method: "POST",
     body: {
       flags: 64,
