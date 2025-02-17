@@ -9,11 +9,19 @@ export async function hunt_confirm(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
+  const turn = session.data.log.length - 1;
   switch (session.data.log[session.data.log.length - 1].user1.movement) {
     case "up":
       session.data.user1.y++;
       break;
   }
+  session.data.log.push({
+    turn: turn,
+    user1: {
+      movement: null,
+      action: null,
+    },
+  });
   await sessions.findOneAndUpdate(
     { sessionId: userData.session },
     {

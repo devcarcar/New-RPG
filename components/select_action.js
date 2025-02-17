@@ -51,6 +51,7 @@ export async function select_action(req, options) {
               custom_id: `hunt_confirm_${formatted[2]}`,
               label: "Confirm",
               style: ButtonStyleTypes.SECONDARY,
+              disabled: true,
             },
           ],
         },
