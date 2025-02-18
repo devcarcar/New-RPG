@@ -24,7 +24,7 @@ export async function hunt(req, user, options) {
             components: [
               {
                 type: MessageComponentTypes.STRING_SELECT,
-                custom_id: `hunt_default_${sessionId}`,
+                custom_id: "choose_mob",
                 min_values: 1,
                 max_values: 1,
                 options: [

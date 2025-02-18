@@ -3,7 +3,7 @@ import { DiscordRequest } from "./utils.js";
 import "dotenv/config";
 ("./locations.js");
 import { select_action } from "./components/select_action.js";
-import { choose_mob } from "./components/choose_mob.js";
+import { choose_mob } from "./components/hunt_choose.js";
 import { gather_start } from "./components/gather_start.js";
 import { hunt_start } from "./components/hunt_start.js";
 import { movement_bar } from "./components/movement_bar.js";
