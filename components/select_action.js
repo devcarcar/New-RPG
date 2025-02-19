@@ -39,6 +39,21 @@ export async function select_action(req, options) {
                   value: `hunt_up_${options.formatted[2]}`,
                   description: "Move up",
                 },
+                {
+                  label: "Down",
+                  value: `hunt_down_${options.formatted[2]}`,
+                  description: "Move down",
+                },
+                {
+                  label: "Left",
+                  value: `hunt_left_${options.formatted[2]}`,
+                  description: "Move left",
+                },
+                {
+                  label: "Right",
+                  value: `hunt_right_${options.formatted[2]}`,
+                  description: "Move right",
+                },
               ],
             },
           ],

@@ -14,6 +14,15 @@ export async function hunt_confirm(req, options) {
     case "up":
       session.data.user1.y++;
       break;
+    case "down":
+      session.data.user1.y--;
+      break;
+    case "left":
+      session.data.user1.x--;
+      break;
+    case "right":
+      session.data.user1.x++;
+      break;
   }
   session.data.log.push({
     turn: turn,

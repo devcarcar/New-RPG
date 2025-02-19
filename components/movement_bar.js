@@ -41,6 +41,54 @@ export async function movement_bar(req, options) {
             description: `Your movement: ${movement}`,
           },
         ],
+        components: [
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
+                type: MessageComponentTypes.STRING_SELECT,
+                custom_id: "movement_bar",
+                placeholder: "Select a movement",
+                min_value: 1,
+                max_value: 1,
+                options: [
+                  {
+                    label: "Up",
+                    value: `hunt_up_${options.formatted.value[2]}`,
+                    description: "Move up",
+                  },
+                  {
+                    label: "Down",
+                    value: `hunt_down_${options.formatted.value[2]}`,
+                    description: "Move down",
+                  },
+                  {
+                    label: "Left",
+                    value: `hunt_left_${options.formatted.value[2]}`,
+                    description: "Move left",
+                  },
+                  {
+                    label: "Right",
+                    value: `hunt_right_${options.formatted.value[2]}`,
+                    description: "Move right",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
+                type: MessageComponentTypes.BUTTON,
+                custom_id: `hunt_confirm_${formatted.value[2]}`,
+                label: "Confirm",
+                style: ButtonStyleTypes.SECONDARY,
+                disabled: false,
+              },
+            ],
+          },
+        ],
       },
     }
   );
