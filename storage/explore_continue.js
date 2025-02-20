@@ -1,8 +1,6 @@
 import "dotenv/config";
 import { DiscordRequest } from "../utils.js";
 import { MessageComponentTypes } from "discord-interactions";
-const locations = "a";
-("../locations.js");
 import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 
