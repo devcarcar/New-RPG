@@ -7,10 +7,8 @@ import "dotenv/config";
 import express from "express";
 import { commandHandler } from "./command.js";
 import mongoose from "mongoose";
-import { DiscordRequest } from "./utils.js";
 import { users } from "./schemas/user.js";
 import { componentHandler } from "./components.js";
-import { guilds } from "./storage/guild.schema.js";
 import { sessions } from "./schemas/session.js";
 import { locations } from "./schemas/location.js";
 
@@ -58,6 +56,7 @@ app.post(
           type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE,
         });
         await componentHandler(req, user, userData);
+        break;
       default:
         break;
     }
