@@ -1,13 +1,12 @@
 import { MessageComponentTypes } from "discord-interactions";
 import { DiscordRequest } from "./utils.js";
 import "dotenv/config";
-("./locations.js");
-import { select_action } from "./components/select_action.js";
+import { select_action } from "./components/buttons/hunt/hunt_select.js";
 import { choose_mob } from "./components/hunt_choose.js";
-import { gather_start } from "./components/gather_start.js";
-import { hunt_start } from "./components/hunt_start.js";
+import { gather_start } from "./storage/gather_start.js";
+import { hunt_start } from "./components/buttons/hunt/hunt_start.js";
 import { movement_bar } from "./components/movement_bar.js";
-import { hunt_confirm } from "./components/hunt_confirm.js";
+import { hunt_confirm } from "./components/buttons/hunt/hunt_confirm.js";
 import { action_bar } from "./components/action_bar.js";
 
 export async function componentHandler(req, user, userData) {

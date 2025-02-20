@@ -1,12 +1,12 @@
 import "dotenv/config";
-import { DiscordRequest } from "../utils.js";
+import { DiscordRequest } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { users } from "../schemas/user.js";
-import { sessions } from "../schemas/session.js";
+import { users } from "../../../schemas/user.js";
+import { sessions } from "../../../schemas/session.js";
 
 export async function select_action(req, options) {
   const { user, formatted } = options;
-  const userData = await users.findOne({ userId: options.user.id });
+  const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
     formatted[2] != userData.session ||

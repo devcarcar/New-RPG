@@ -7,7 +7,7 @@ import { locations } from "../schemas/location.js";
 
 export async function movement_bar(req, options) {
   const { user, formatted } = options;
-  const userData = await users.findOne({ userId: options.user.id });
+  const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
     formatted.value[2] != session.sessionId ||
