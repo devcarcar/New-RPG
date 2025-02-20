@@ -10,7 +10,7 @@ export async function movement_bar(req, options) {
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
-    options.formatted.value[2] != session.sessionId ||
+    formatted.value[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
@@ -60,22 +60,22 @@ export async function movement_bar(req, options) {
                 options: [
                   {
                     label: "Up",
-                    value: `hunt_up_${options.formatted.value[2]}`,
+                    value: `hunt_up_${formatted.value[2]}`,
                     description: "Move up",
                   },
                   {
                     label: "Down",
-                    value: `hunt_down_${options.formatted.value[2]}`,
+                    value: `hunt_down_${formatted.value[2]}`,
                     description: "Move down",
                   },
                   {
                     label: "Left",
-                    value: `hunt_left_${options.formatted.value[2]}`,
+                    value: `hunt_left_${formatted.value[2]}`,
                     description: "Move left",
                   },
                   {
                     label: "Right",
-                    value: `hunt_right_${options.formatted.value[2]}`,
+                    value: `hunt_right_${formatted.value[2]}`,
                     description: "Move right",
                   },
                 ],
@@ -94,7 +94,7 @@ export async function movement_bar(req, options) {
                 options: [
                   {
                     label: "Attack",
-                    value: `hunt_attack_${options.formatted.value[2]}`,
+                    value: `hunt_attack_${formatted.value[2]}`,
                     description: "Attack!",
                   },
                 ],

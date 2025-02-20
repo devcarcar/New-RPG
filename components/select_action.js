@@ -9,7 +9,7 @@ export async function select_action(req, options) {
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
-    options.formatted[2] != userData.session ||
+    formatted[2] != userData.session ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
@@ -36,22 +36,22 @@ export async function select_action(req, options) {
               options: [
                 {
                   label: "Up",
-                  value: `hunt_up_${options.formatted[2]}`,
+                  value: `hunt_up_${formatted[2]}`,
                   description: "Move up",
                 },
                 {
                   label: "Down",
-                  value: `hunt_down_${options.formatted[2]}`,
+                  value: `hunt_down_${formatted[2]}`,
                   description: "Move down",
                 },
                 {
                   label: "Left",
-                  value: `hunt_left_${options.formatted[2]}`,
+                  value: `hunt_left_${formatted[2]}`,
                   description: "Move left",
                 },
                 {
                   label: "Right",
-                  value: `hunt_right_${options.formatted[2]}`,
+                  value: `hunt_right_${formatted[2]}`,
                   description: "Move right",
                 },
               ],
@@ -70,7 +70,7 @@ export async function select_action(req, options) {
               options: [
                 {
                   label: "Attack",
-                  value: `hunt_attack_${options.formatted[2]}`,
+                  value: `hunt_attack_${formatted[2]}`,
                   description: "Attack!",
                 },
               ],

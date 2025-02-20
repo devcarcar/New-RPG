@@ -1,8 +1,6 @@
 import "dotenv/config";
 import { DiscordRequest } from "../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-const locations = "a";
-("../locations.js");
 import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 
@@ -11,7 +9,7 @@ export async function hunt_start(req, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
-    options.formatted[2] != session.sessionId ||
+    formatted[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;

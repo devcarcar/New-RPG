@@ -13,7 +13,7 @@ export async function harvest(req, options) {
     options.sessionId != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
-    return console.log(options.sessionId, session.sessionId);
+    return options.sessionId, session.sessionId;
 
   const { fish } = locations[0].data.drops;
   await sessions.findOneAndUpdate(

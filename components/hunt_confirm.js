@@ -9,6 +9,11 @@ export async function hunt_confirm(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
+  if (
+    formatted[2] != session.sessionId ||
+    new Date(session.expireAt).getTime() < Date.now()
+  )
+    return;
   const turn = session.data.log.length - 1;
   switch (session.data.log[session.data.log.length - 1].user1.movement) {
     case "up":
@@ -57,11 +62,6 @@ export async function hunt_confirm(req, options) {
     }
     str += "\n";
   }
-  if (
-    options.formatted[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return console.log(options.sessionId, session.sessionId);
 
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,

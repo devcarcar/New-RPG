@@ -11,7 +11,7 @@ export async function choose_mob(req, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
-    options.formatted.value[2] != session.sessionId ||
+    formatted.value[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;

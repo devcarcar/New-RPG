@@ -13,7 +13,7 @@ export async function gather(req, options) {
     options.sessionId != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
-    return console.log(options.sessionId, session.sessionId);
+    return;
 
   const l = await locations.findOne({ locationId: "village" });
   /*  await sessions.findOneAndUpdate(
