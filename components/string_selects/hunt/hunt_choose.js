@@ -1,10 +1,8 @@
 import "dotenv/config";
-import { DiscordRequest } from "../utils.js";
+import { DiscordRequest } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-const locations = "a";
-("../locations.js");
-import { users } from "../schemas/user.js";
-import { sessions } from "../schemas/session.js";
+import { users } from "../../../schemas/user.js";
+import { sessions } from "../../../schemas/session.js";
 
 export async function choose_mob(req, options) {
   const { user, formatted } = options;
