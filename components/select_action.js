@@ -62,6 +62,25 @@ export async function select_action(req, options) {
           type: MessageComponentTypes.ACTION_ROW,
           components: [
             {
+              type: MessageComponentTypes.STRING_SELECT,
+              custom_id: "action_bar",
+              placeholder: "Select an action",
+              min_value: 1,
+              max_value: 1,
+              options: [
+                {
+                  label: "Attack",
+                  value: `hunt_attack_${options.formatted[2]}`,
+                  description: "Attack!",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: MessageComponentTypes.ACTION_ROW,
+          components: [
+            {
               type: MessageComponentTypes.BUTTON,
               custom_id: `hunt_confirm_${formatted[2]}`,
               label: "Confirm",

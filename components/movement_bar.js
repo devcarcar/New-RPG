@@ -30,6 +30,12 @@ export async function movement_bar(req, options) {
       },
     }
   );
+  const news = await sessions.findOne({ sessionId: session.sessionId });
+  const shortcut = news.data.log[news.data.log.length - 1].user1;
+  const action = shortcut.action;
+  const condition =
+    shortcut.movement != null && shortcut.action != null ? false : true;
+
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -38,7 +44,7 @@ export async function movement_bar(req, options) {
         embeds: [
           {
             title: `Select Action`,
-            description: `Your movement: ${movement}`,
+            description: `Your movement: ${movement}\nYour action: ${action}`,
           },
         ],
         components: [
@@ -80,11 +86,30 @@ export async function movement_bar(req, options) {
             type: MessageComponentTypes.ACTION_ROW,
             components: [
               {
+                type: MessageComponentTypes.STRING_SELECT,
+                custom_id: "action_bar",
+                placeholder: "Select an action",
+                min_value: 1,
+                max_value: 1,
+                options: [
+                  {
+                    label: "Attack",
+                    value: `hunt_attack_${options.formatted.value[2]}`,
+                    description: "Attack!",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
                 type: MessageComponentTypes.BUTTON,
                 custom_id: `hunt_confirm_${formatted.value[2]}`,
                 label: "Confirm",
                 style: ButtonStyleTypes.SECONDARY,
-                disabled: false,
+                disabled: condition,
               },
             ],
           },

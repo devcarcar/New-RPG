@@ -24,8 +24,12 @@ export async function hunt_confirm(req, options) {
       session.data.user1.x++;
       break;
   }
+  switch (session.data.log[session.data.log.length - 1].user1.action) {
+    case "attack":
+      break;
+  }
   session.data.log.push({
-    turn: turn,
+    turn: turn + 1,
     user1: {
       movement: null,
       action: null,

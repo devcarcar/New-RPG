@@ -8,6 +8,7 @@ import { gather_start } from "./components/gather_start.js";
 import { hunt_start } from "./components/hunt_start.js";
 import { movement_bar } from "./components/movement_bar.js";
 import { hunt_confirm } from "./components/hunt_confirm.js";
+import { action_bar } from "./components/action_bar.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -20,6 +21,11 @@ export async function componentHandler(req, user, userData) {
       case "hunt":
         if (formatted.custom_id === "movement_bar") {
           await movement_bar(req, {
+            user: user,
+            formatted: formatted,
+          });
+        } else if (formatted.custom_id === "action_bar") {
+          await action_bar(req, {
             user: user,
             formatted: formatted,
           });
