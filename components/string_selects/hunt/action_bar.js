@@ -32,7 +32,10 @@ export async function action_bar(req, options) {
   );
   const news = await sessions.findOne({ sessionId: session.sessionId });
   const shortcut = news.data.log[news.data.log.length - 1].user1;
-  const movement = shortcut.movement;
+  const movement =
+    shortcut.movement != null
+      ? "Your movement is " + shortcut.movement
+      : "You haven't selected your movement yet";
   const condition =
     shortcut.movement != null && shortcut.action != null ? false : true;
 
@@ -44,7 +47,7 @@ export async function action_bar(req, options) {
         embeds: [
           {
             title: `Select Action`,
-            description: `Your movement: ${movement}\n Your action: ${action}`,
+            description: `${movement}\n Your action is ${action}`,
           },
         ],
         components: [

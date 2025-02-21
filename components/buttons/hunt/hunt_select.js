@@ -13,6 +13,16 @@ export async function select_action(req, options) {
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
+  const last = session.data.log[session.data.log.length - 1].user1;
+  const action =
+    last.action != null
+      ? "Your action is " + last.action
+      : "You haven't selected your action yet";
+  const movement =
+    last.movement != null
+      ? "Your movement is " + last.movement
+      : "You haven't selected your movement yet";
+
   await DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
     method: "POST",
     body: {
@@ -20,7 +30,10 @@ export async function select_action(req, options) {
       embeds: [
         {
           title: "Select Action",
-          description: "Select an action to perform",
+          description:
+            last.action == null && last.movement == null
+              ? "Select an action to perform"
+              : `${movement}\n${action}`,
         },
       ],
       components: [
@@ -85,7 +98,8 @@ export async function select_action(req, options) {
               custom_id: `hunt_confirm_${formatted[2]}`,
               label: "Confirm",
               style: ButtonStyleTypes.SECONDARY,
-              disabled: true,
+              disabled:
+                last.action == null && last.movement == null ? true : false,
             },
           ],
         },

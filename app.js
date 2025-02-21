@@ -10,7 +10,6 @@ import mongoose from "mongoose";
 import { users } from "./schemas/user.js";
 import { componentHandler } from "./components.js";
 import { sessions } from "./schemas/session.js";
-import { locations } from "./schemas/location.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
