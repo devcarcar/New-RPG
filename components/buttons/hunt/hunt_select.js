@@ -22,7 +22,33 @@ export async function select_action(req, options) {
     last.movement != null
       ? "Your movement is " + last.movement
       : "You haven't selected your movement yet";
-
+  let opt = [];
+  let x = session.data.user1.x;
+  let y = session.data.user1.y;
+  if (x > 1)
+    opt.push({
+      label: "Left",
+      value: `hunt_left_${formatted[2]}`,
+      description: "Move left",
+    });
+  if (x < 5)
+    opt.push({
+      label: "Right",
+      value: `hunt_right_${formatted[2]}`,
+      description: "Move right",
+    });
+  if (y > 1)
+    opt.push({
+      label: "Down",
+      value: `hunt_down_${formatted[2]}`,
+      description: "Move down",
+    });
+  if (y < 5)
+    opt.push({
+      label: "Up",
+      value: `hunt_up_${formatted[2]}`,
+      description: "Move up",
+    });
   await DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
     method: "POST",
     body: {
@@ -46,28 +72,7 @@ export async function select_action(req, options) {
               placeholder: "Select a movement",
               min_value: 1,
               max_value: 1,
-              options: [
-                {
-                  label: "Up",
-                  value: `hunt_up_${formatted[2]}`,
-                  description: "Move up",
-                },
-                {
-                  label: "Down",
-                  value: `hunt_down_${formatted[2]}`,
-                  description: "Move down",
-                },
-                {
-                  label: "Left",
-                  value: `hunt_left_${formatted[2]}`,
-                  description: "Move left",
-                },
-                {
-                  label: "Right",
-                  value: `hunt_right_${formatted[2]}`,
-                  description: "Move right",
-                },
-              ],
+              options: opt,
             },
           ],
         },

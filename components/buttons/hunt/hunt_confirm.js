@@ -15,6 +15,7 @@ export async function hunt_confirm(req, options) {
   )
     return;
   const turn = session.data.log.length - 1;
+
   switch (session.data.log[session.data.log.length - 1].user1.movement) {
     case "up":
       session.data.user1.y++;
@@ -40,6 +41,10 @@ export async function hunt_confirm(req, options) {
     user1: {
       movement: null,
       action: null,
+    },
+    user2: {
+      movement: "down",
+      action: "attack",
     },
   });
   await sessions.findOneAndUpdate(

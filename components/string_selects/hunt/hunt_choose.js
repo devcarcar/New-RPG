@@ -14,6 +14,8 @@ export async function choose_mob(req, options) {
   )
     return;
 
+  const mobList = [{ id: "goblin", name: "Goblin", description: "Goblin aa" }];
+  const found = mobList.find((mob) => mob.id === formatted.value[1]);
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -21,8 +23,8 @@ export async function choose_mob(req, options) {
       body: {
         embeds: [
           {
-            title: formatted.value[1],
-            description: formatted.value[1],
+            title: found.name,
+            description: found.description,
           },
         ],
         components: [

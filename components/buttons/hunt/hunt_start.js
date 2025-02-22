@@ -27,6 +27,10 @@ export async function hunt_start(req, options) {
                 movement: null,
                 action: null,
               },
+              user2: {
+                movement: "down",
+                action: "attack",
+              },
             },
           ],
           user1: {
