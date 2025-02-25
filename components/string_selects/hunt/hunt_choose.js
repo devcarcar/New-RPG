@@ -32,6 +32,24 @@ export async function choose_mob(req, options) {
             type: MessageComponentTypes.ACTION_ROW,
             components: [
               {
+                type: MessageComponentTypes.STRING_SELECT,
+                custom_id: "choose_mob",
+                min_values: 1,
+                max_values: 1,
+                options: [
+                  {
+                    value: `hunt_goblin_${formatted.value[2]}`,
+                    label: "Goblin",
+                    description: "Goblin",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
                 type: MessageComponentTypes.BUTTON,
                 custom_id: `hunt_start_${formatted.value[2]}`,
                 label: "Start",

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest } from "../../../utils.js";
+import { DiscordRequest, move } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -14,20 +14,20 @@ export async function hunt_confirm(req, options) {
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
-  const turn = session.data.log.length - 1;
-
+  const turn = session.data.log.length;
+  const { user1, user2 } = session.data;
   switch (session.data.log[session.data.log.length - 1].user1.movement) {
     case "up":
-      session.data.user1.y++;
+      if (user1.y + 1 != user2.y || user1.x != user2.x) user1.y++;
       break;
     case "down":
-      session.data.user1.y--;
+      if (user1.y - 1 != user2.y || user1.x != user2.x) user1.y--;
       break;
     case "left":
-      session.data.user1.x--;
+      if (user1.x - 1 != user2.x || user1.y != user2.y) user1.x--;
       break;
     case "right":
-      session.data.user1.x++;
+      if (user1.x + 1 != user2.x || user1.y != user2.y) user1.x++;
       break;
     default:
       break;
@@ -36,6 +36,23 @@ export async function hunt_confirm(req, options) {
     case "attack":
       break;
   }
+  switch (session.data.log[session.data.log.length - 1].user2.movement) {
+    case "up":
+      if (user1.y != user2.y + 1 || user1.x != user2.x) user2.y++;
+      break;
+    case "down":
+      if (user1.y != user2.y - 1 || user1.x != user2.x) user2.y--;
+      break;
+    case "left":
+      if (user1.x != user2.x - 1 || user1.y != user2.y) user2.x--;
+      break;
+    case "right":
+      if (user1.x != user2.x + 1 || user1.y != user2.y) user2.x++;
+      break;
+    default:
+      break;
+  }
+
   session.data.log.push({
     turn: turn + 1,
     user1: {
@@ -43,10 +60,12 @@ export async function hunt_confirm(req, options) {
       action: null,
     },
     user2: {
-      movement: "down",
+      movement: move(user1.x, user1.y, user2.x, user2.y),
       action: "attack",
     },
   });
+  session.data.user1 = user1;
+  session.data.user2 = user2;
   await sessions.findOneAndUpdate(
     { sessionId: userData.session },
     {

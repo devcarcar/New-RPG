@@ -3,6 +3,7 @@ import { DiscordRequest } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
+import { move } from "../../../utils.js";
 
 export async function hunt_start(req, options) {
   const { user, formatted } = options;
@@ -28,7 +29,7 @@ export async function hunt_start(req, options) {
                 action: null,
               },
               user2: {
-                movement: "down",
+                movement: move(1, 1, 5, 5),
                 action: "attack",
               },
             },
