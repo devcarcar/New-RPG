@@ -91,3 +91,16 @@ export function movementHandler(movement1, movement2, user1, user2) {
     user2,
   };
 }
+
+export function parseMovement(movement) {
+  switch (movement) {
+    case Direction.DOWN:
+      return "down";
+    case Direction.UP:
+      return "up";
+    case Direction.LEFT:
+      return "left";
+    case Direction.RIGHT:
+      return "right";
+  }
+}
