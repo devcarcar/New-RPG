@@ -39,15 +39,55 @@ export function move(x1, y1, x2, y2) {
   let newY = y2;
   if (Math.abs(distanceX) >= Math.abs(distanceY)) {
     if (distanceX > 0) {
-      return "left";
+      return Direction.LEFT;
     } else if (distanceX < 0) {
-      return "right";
+      return Direction.RIGHT;
     }
   } else {
     if (distanceY > 0) {
-      return "down";
+      return Direction.DOWN;
     } else if (distanceY < 0) {
-      return "up";
+      return Direction.UP;
     }
   }
+}
+
+export function movementHandler(movement1, movement2, user1, user2) {
+  switch (movement1) {
+    case Direction.UP:
+      if (user1.y + 1 != user2.y || user1.x != user2.x) user1.y++;
+      break;
+    case Direction.DOWN:
+      if (user1.y - 1 != user2.y || user1.x != user2.x) user1.y--;
+      break;
+    case Direction.LEFT:
+      if (user1.x - 1 != user2.x || user1.y != user2.y) user1.x--;
+      break;
+    case Direction.RIGHT:
+      if (user1.x + 1 != user2.x || user1.y != user2.y) user1.x++;
+      break;
+    default:
+      break;
+  }
+
+  switch (movement2) {
+    case Direction.UP:
+      if (user1.y != user2.y + 1 || user1.x != user2.x) user2.y++;
+      break;
+    case Direction.DOWN:
+      if (user1.y != user2.y - 1 || user1.x != user2.x) user2.y--;
+      break;
+    case Direction.LEFT:
+      if (user1.x != user2.x - 1 || user1.y != user2.y) user2.x--;
+      break;
+    case Direction.RIGHT:
+      if (user1.x != user2.x + 1 || user1.y != user2.y) user2.x++;
+      break;
+    default:
+      break;
+  }
+  return {
+    user1,
+    user2,
+  };
 }

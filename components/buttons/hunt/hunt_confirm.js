@@ -1,5 +1,10 @@
 import "dotenv/config";
-import { DiscordRequest, move } from "../../../utils.js";
+import {
+  DiscordRequest,
+  move,
+  movementHandler,
+  Direction,
+} from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -15,44 +20,12 @@ export async function hunt_confirm(req, options) {
   )
     return;
   const turn = session.data.log.length;
-  const { user1, user2 } = session.data;
-  switch (session.data.log[session.data.log.length - 1].user1.movement) {
-    case "up":
-      if (user1.y + 1 != user2.y || user1.x != user2.x) user1.y++;
-      break;
-    case "down":
-      if (user1.y - 1 != user2.y || user1.x != user2.x) user1.y--;
-      break;
-    case "left":
-      if (user1.x - 1 != user2.x || user1.y != user2.y) user1.x--;
-      break;
-    case "right":
-      if (user1.x + 1 != user2.x || user1.y != user2.y) user1.x++;
-      break;
-    default:
-      break;
-  }
-  switch (session.data.log[session.data.log.length - 1].user1.action) {
-    case "attack":
-      break;
-  }
-  switch (session.data.log[session.data.log.length - 1].user2.movement) {
-    case "up":
-      if (user1.y != user2.y + 1 || user1.x != user2.x) user2.y++;
-      break;
-    case "down":
-      if (user1.y != user2.y - 1 || user1.x != user2.x) user2.y--;
-      break;
-    case "left":
-      if (user1.x != user2.x - 1 || user1.y != user2.y) user2.x--;
-      break;
-    case "right":
-      if (user1.x != user2.x + 1 || user1.y != user2.y) user2.x++;
-      break;
-    default:
-      break;
-  }
-
+  const { user1, user2 } = movementHandler(
+    session.data.log[session.data.log.length - 1].user1.movement,
+    session.data.log[session.data.log.length - 1].user2.movement,
+    session.data.user1,
+    session.data.user2
+  );
   session.data.log.push({
     turn: turn + 1,
     user1: {

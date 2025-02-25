@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest } from "../../../utils.js";
+import { Direction, DiscordRequest } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -63,22 +63,22 @@ export async function action_bar(req, options) {
                 options: [
                   {
                     label: "Up",
-                    value: `hunt_up_${formatted.value[2]}`,
+                    value: `hunt_${Direction.UP}_${formatted.value[2]}`,
                     description: "Move up",
                   },
                   {
                     label: "Down",
-                    value: `hunt_down_${formatted.value[2]}`,
+                    value: `hunt_${Direction.DOWN}_${formatted.value[2]}`,
                     description: "Move down",
                   },
                   {
                     label: "Left",
-                    value: `hunt_left_${formatted.value[2]}`,
+                    value: `hunt_${Direction.LEFT}_${formatted.value[2]}`,
                     description: "Move left",
                   },
                   {
                     label: "Right",
-                    value: `hunt_right_${formatted.value[2]}`,
+                    value: `hunt_${Direction.RIGHT}_${formatted.value[2]}`,
                     description: "Move right",
                   },
                 ],

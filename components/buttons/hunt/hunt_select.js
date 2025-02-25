@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest } from "../../../utils.js";
+import { DiscordRequest, Direction } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -28,25 +28,25 @@ export async function select_action(req, options) {
   if (x > 1)
     opt.push({
       label: "Left",
-      value: `hunt_left_${formatted[2]}`,
+      value: `hunt_${Direction.LEFT}_${formatted[2]}`,
       description: "Move left",
     });
   if (x < 5)
     opt.push({
       label: "Right",
-      value: `hunt_right_${formatted[2]}`,
+      value: `hunt_${Direction.RIGHT}_${formatted[2]}`,
       description: "Move right",
     });
   if (y > 1)
     opt.push({
       label: "Down",
-      value: `hunt_down_${formatted[2]}`,
+      value: `hunt_${Direction.DOWN}_${formatted[2]}`,
       description: "Move down",
     });
   if (y < 5)
     opt.push({
       label: "Up",
-      value: `hunt_up_${formatted[2]}`,
+      value: `hunt_${Direction.UP}_${formatted[2]}`,
       description: "Move up",
     });
   await DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
@@ -104,7 +104,7 @@ export async function select_action(req, options) {
               label: "Confirm",
               style: ButtonStyleTypes.SECONDARY,
               disabled:
-                last.action == null && last.movement == null ? true : false,
+                last.action == null || last.movement == null ? true : false,
             },
           ],
         },
