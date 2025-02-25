@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest, Direction } from "../../../utils.js";
+import { DiscordRequest, Direction, parseMovement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -15,9 +15,9 @@ export async function movement_bar(req, options) {
   )
     return;
 
-  const movement = formatted.value[1];
+  const movement = parseInt(formatted.value[1]);
   const last = session.data.log[session.data.log.length - 1];
-  last.user1.movement = parseInt(movement);
+  last.user1.movement = movement;
   const log = session.data.log;
   log[session.data.length - 1] = last;
   const data = session.data;
@@ -47,7 +47,9 @@ export async function movement_bar(req, options) {
         embeds: [
           {
             title: `Select Action`,
-            description: `Your movement is ${movement}\n${action}`,
+            description: `Your movement is ${parseMovement(
+              movement
+            )}\n${action}`,
           },
         ],
         components: [

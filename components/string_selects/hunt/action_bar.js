@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Direction, DiscordRequest } from "../../../utils.js";
+import { Direction, DiscordRequest, parseMovement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -34,7 +34,7 @@ export async function action_bar(req, options) {
   const shortcut = news.data.log[news.data.log.length - 1].user1;
   const movement =
     shortcut.movement != null
-      ? "Your movement is " + shortcut.movement
+      ? "Your movement is " + parseMovement(parseInt(shortcut.movement))
       : "You haven't selected your movement yet";
   const condition =
     shortcut.movement != null && shortcut.action != null ? false : true;
