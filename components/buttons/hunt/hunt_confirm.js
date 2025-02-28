@@ -4,6 +4,8 @@ import {
   move,
   movementHandler,
   Direction,
+  actionHandler,
+  getGrid,
 } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
@@ -20,9 +22,21 @@ export async function hunt_confirm(req, options) {
   )
     return;
   const turn = session.data.log.length;
-  const { user1, user2 } = movementHandler(
+  let { user1, user2 } = movementHandler(
     session.data.log[session.data.log.length - 1].user1.movement,
     session.data.log[session.data.log.length - 1].user2.movement,
+    session.data.user1,
+    session.data.user2
+  );
+  user1 = actionHandler(
+    session.data.log[session.data.log.length - 1].user1.action,
+    session.data.log[session.data.log.length - 1].user2.action,
+    session.data.user1,
+    session.data.user2
+  );
+  user2 = actionHandler(
+    session.data.log[session.data.log.length - 1].user1.action,
+    session.data.log[session.data.log.length - 1].user2.action,
     session.data.user1,
     session.data.user2
   );
@@ -48,19 +62,7 @@ export async function hunt_confirm(req, options) {
     }
   );
   const updated = await sessions.findOne({ sessionId: userData.session });
-  let str = `You moved\n`;
-  for (let y = 5; y >= 1; y--) {
-    for (let x = 1; x <= 5; x++) {
-      if (x == updated.data.user1.x && y == updated.data.user1.y) {
-        str += ":man:";
-      } else if (x == updated.data.user2.x && y == updated.data.user2.y) {
-        str += ":skull:";
-      } else {
-        str += ":black_large_square:";
-      }
-    }
-    str += "\n";
-  }
+  const data = updated.data;
 
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
@@ -76,7 +78,9 @@ export async function hunt_confirm(req, options) {
         embeds: [
           {
             title: "You are in a battle!",
-            description: str,
+            description:
+              "You moved\n" +
+              getGrid(data.user1.x, data.user1.y, data.user2.x, data.user2.y),
           },
         ],
       },

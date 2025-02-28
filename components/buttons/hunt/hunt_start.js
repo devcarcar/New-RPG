@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest } from "../../../utils.js";
+import { DiscordRequest, getGrid } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -57,19 +57,7 @@ export async function hunt_start(req, options) {
     }
   );
   const updated = await sessions.findOne({ sessionId: formatted[2] });
-  let str = "";
-  for (let y = 5; y >= 1; y--) {
-    for (let x = 1; x <= 5; x++) {
-      if (x == updated.data.user1.x && y == updated.data.user1.y) {
-        str += ":man:";
-      } else if (x == updated.data.user2.x && y == updated.data.user2.y) {
-        str += ":skull:";
-      } else {
-        str += ":black_large_square:";
-      }
-    }
-    str += "\n";
-  }
+  const data = updated.data;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -78,7 +66,12 @@ export async function hunt_start(req, options) {
         embeds: [
           {
             title: "You are in a battle",
-            description: str,
+            description: getGrid(
+              data.user1.x,
+              data.user1.y,
+              data.user2.x,
+              data.user2.y
+            ),
           },
         ],
         components: [

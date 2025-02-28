@@ -69,7 +69,6 @@ export function movementHandler(movement1, movement2, user1, user2) {
     default:
       break;
   }
-
   switch (movement2) {
     case Direction.UP:
       if (user1.y != user2.y + 1 || user1.x != user2.x) user2.y++;
@@ -91,6 +90,18 @@ export function movementHandler(movement1, movement2, user1, user2) {
     user2,
   };
 }
+export function actionHandler(action1, action2, user1, user2) {
+  switch (action1) {
+    case "attack":
+      user2.health -= user1.attack;
+      break;
+  }
+
+  return {
+    user1,
+    user2,
+  };
+}
 
 export function parseMovement(movement) {
   switch (movement) {
@@ -105,9 +116,9 @@ export function parseMovement(movement) {
   }
 }
 
-export function sort(input) {
+export function sort(input, amount) {
   let final = [];
-  for (let i = 0; i < input.length; i++) {
+  for (let i = 0; i < amount; i++) {
     let random = Math.floor(Math.random() * input.length);
     while (final.includes(input[random])) {
       random = Math.floor(Math.random() * input.length);
@@ -116,3 +127,25 @@ export function sort(input) {
   }
   return final;
 }
+
+export function getGrid(x1, y1, x2, y2) {
+  let str = "";
+  for (let y = 5; y >= 1; y--) {
+    for (let x = 1; x <= 5; x++) {
+      if (x == x1 && y == y1) {
+        str += ":man:";
+      } else if (x == x2 && y == y2) {
+        str += ":skull:";
+      } else {
+        str += ":black_large_square:";
+      }
+    }
+    str += "\n";
+  }
+  return str;
+}
+
+export const CaseType = {
+  OPTION,
+  COMBAT,
+};
