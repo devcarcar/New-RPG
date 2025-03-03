@@ -146,6 +146,6 @@ export function getGrid(x1, y1, x2, y2) {
 }
 
 export const CaseType = {
-  OPTION,
-  COMBAT,
+  OPTION: 0,
+  COMBAT: 1,
 };

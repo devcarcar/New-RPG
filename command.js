@@ -13,6 +13,9 @@ export async function commandHandler(req, user, userData, sessionId) {
     case "hunt":
       await hunt(req, user, { sessionId: sessionId, userData: userData });
       break;
+    case "explore":
+      await explore(req, user, { sessionId: sessionId, userData: userData });
+      break;
     default:
       throw new Error("Unknown command " + req.body.data.name);
   }

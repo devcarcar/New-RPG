@@ -6,13 +6,6 @@ try {
     method: "PUT",
     body: [
       {
-        name: "quest",
-        description: "Wu",
-        type: 1,
-        integration_types: [0, 1],
-        contexts: [0, 1, 2],
-      },
-      {
         name: "explore",
         description: "Explore",
         type: 1,
@@ -29,20 +22,6 @@ try {
       {
         name: "hunt",
         description: "Try your luck at fishing and see if you have any catch!",
-        type: 1,
-        integration_types: [0, 1],
-        contexts: [0, 1, 2],
-      },
-      {
-        name: "guild",
-        description: "Try your luck at fishing and see if you have any catch!",
-        type: 1,
-        integration_types: [0, 1],
-        contexts: [0, 1, 2],
-      },
-      {
-        name: "inventory",
-        description: "aa",
         type: 1,
         integration_types: [0, 1],
         contexts: [0, 1, 2],
