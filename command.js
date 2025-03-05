@@ -4,6 +4,7 @@ import { hunt } from "./commands/hunt.js";
 import { inventory } from "./storage/inventory.js";
 import { DiscordRequest } from "./utils.js";
 import "dotenv/config";
+import { guild } from "./commands/guild.js";
 
 export async function commandHandler(req, user, userData, sessionId) {
   switch (req.body.data.name) {
@@ -15,6 +16,9 @@ export async function commandHandler(req, user, userData, sessionId) {
       break;
     case "explore":
       await explore(req, user, { sessionId: sessionId, userData: userData });
+      break;
+    case "guild":
+      await guild(req, user, { sessionId: sessionId });
       break;
     default:
       throw new Error("Unknown command " + req.body.data.name);

@@ -68,37 +68,3 @@ mongoose
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
 });
-
-/*
-await locations.create({
-  locationId: "village",
-  data: {
-    gather: [
-      {
-        name: "Apple Tree Grove",
-        max: 320,
-        drop: "Apple",
-      },
-    ],
-    hunt: [
-      {
-        id: "goblin",
-        name: "Goblin",
-        health: 25,
-        attack: 10,
-        defense: 5,
-      },
-    ],
- 
-    explore: [
-      {
-        CASE_NAME: "AAA",
-        OPTIONS: [
-          { OPTION_ID: "A", OPTION_DESCRIPTION: "AAAAA", OPTION_NAME: "AI" },
-        ],
-      },
-    ],
-
-  },
-});
-*/
