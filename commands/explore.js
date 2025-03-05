@@ -32,6 +32,17 @@ export async function explore(req, user, options) {
                   },
                 ],
               },
+              {
+                type: CaseType.OPTION,
+                name: "Nothing",
+                options: [
+                  {
+                    name: "Do nothing, at all",
+                    description: "Get",
+                    outcome: [],
+                  },
+                ],
+              },
             ],
             3
           ),

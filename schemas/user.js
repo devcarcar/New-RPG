@@ -5,7 +5,7 @@ const user = new Schema({
   //
   log: { type: Array, default: [], required: true },
   //
-  createdAt: { type: Date, default: Date.now, required: true },
+  createdAt: { type: Date, default: () => Date.now(), required: true },
   commandsUsed: { type: Number, default: 0, required: true },
   //
   gold: { type: Number, required: true, default: 500 },
