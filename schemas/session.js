@@ -12,7 +12,7 @@ const session = new Schema({
   command: { type: String, required: true },
   createdAt: { type: Date, required: true },
   expireAt: { type: Date, required: true },
-  data: { type: Object },
+  data: { type: Object, required: true },
 });
 
 export const sessions = model("session", session);

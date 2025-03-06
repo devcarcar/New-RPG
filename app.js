@@ -39,6 +39,7 @@ app.post(
           token: req.body.token,
           createdAt: Date.now(),
           expireAt: Date.now() + 15 * 60 * 1000,
+          data: {},
         });
         await users.findOneAndUpdate(
           { userId: user.id },

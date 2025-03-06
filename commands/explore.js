@@ -7,49 +7,47 @@ import { users } from "../schemas/user.js";
 export async function explore(req, user, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
+  const cases = sort(
+    [
+      {
+        type: CaseType.OPTION,
+        name: "Wild Mushrooms",
+        options: [
+          {
+            name: "Fetch",
+            description: "Get",
+            outcome: [],
+          },
+        ],
+      },
+      {
+        type: CaseType.OPTION,
+        name: "Nothing",
+        options: [
+          {
+            name: "Do nothing, at all",
+            description: "Get",
+            outcome: [],
+          },
+        ],
+      },
+    ],
+    2
+  );
+
   await sessions.findOneAndUpdate(
     {
-      sessionId: session.id,
+      sessionId: session.sessionId,
     },
     {
       $set: {
         data: {
-          cases: sort(
-            [
-              {
-                type: CaseType.OPTION,
-                name: "Wild Mushrooms",
-                options: [
-                  {
-                    name: "Fetch",
-                    description: "Get",
-                    outcome: [],
-                  },
-                ],
-              },
-              {
-                type: CaseType.OPTION,
-                name: "Nothing",
-                options: [
-                  {
-                    name: "Do nothing, at all",
-                    description: "Get",
-                    outcome: [],
-                  },
-                ],
-              },
-            ],
-            3
-          ),
+          cases: cases,
         },
       },
     }
   );
+
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

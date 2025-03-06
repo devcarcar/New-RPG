@@ -1,10 +1,10 @@
-import { explore } from "./storage/explore.js";
 import { gather } from "./commands/gather.js";
 import { hunt } from "./commands/hunt.js";
 import { inventory } from "./storage/inventory.js";
 import { DiscordRequest } from "./utils.js";
 import "dotenv/config";
 import { guild } from "./commands/guild.js";
+import { explore } from "./commands/explore.js";
 
 export async function commandHandler(req, user, userData, sessionId) {
   switch (req.body.data.name) {
@@ -15,7 +15,7 @@ export async function commandHandler(req, user, userData, sessionId) {
       await hunt(req, user, { sessionId: sessionId, userData: userData });
       break;
     case "explore":
-      await explore(req, user, { sessionId: sessionId, userData: userData });
+      await explore(req, user, { sessionId: sessionId });
       break;
     case "guild":
       await guild(req, user, { sessionId: sessionId });

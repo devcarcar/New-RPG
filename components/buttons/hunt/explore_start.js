@@ -1,27 +1,27 @@
 import "dotenv/config";
-import { DiscordRequest } from "../utils.js";
 import { MessageComponentTypes } from "discord-interactions";
-import { users } from "../schemas/user.js";
-import { sessions } from "../schemas/session.js";
-import { locations } from "../schemas/location.js";
+import { sessions } from "../../../schemas/session.js";
+import { users } from "../../../schemas/user.js";
+import { DiscordRequest } from "../../../utils.js";
 
 export async function explore_start(req, options) {
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   if (
-    options.sessionId != session.sessionId ||
+    options.formatted[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
-    return;
+    return console.log(options.formatted[2], session.sessionId);
 
   let arr = [];
-  explore[random].OPTIONS.forEach((option) => {
+  const currentCase = session.data.cases[0];
+  currentCase.options.forEach((option) =>
     arr.push({
-      label: option.OPTION_NAME,
-      value: `explore_${option.OPTION_ID}_${options.sessionId}`,
-      description: option.OPTION_DESCRIPTION,
-    });
-  });
+      label: option.name,
+      value: `explore_${option.name}_${options.formatted[2]}`,
+      description: option.description,
+    })
+  );
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -29,8 +29,8 @@ export async function explore_start(req, options) {
       body: {
         embeds: [
           {
-            title: explore[random].CASE_NAME,
-            description: "desc",
+            title: currentCase.name,
+            description: currentCase.description,
           },
         ],
         components: [
@@ -39,8 +39,8 @@ export async function explore_start(req, options) {
             components: [
               {
                 type: MessageComponentTypes.STRING_SELECT,
-                custom_id: "explore",
-                placeholder: "Select a place",
+                custom_id: "option_pick",
+                placeholder: "Select an option",
                 min_value: 1,
                 max_value: 1,
                 options: arr,

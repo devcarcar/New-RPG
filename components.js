@@ -8,6 +8,7 @@ import { hunt_start } from "./components/buttons/hunt/hunt_start.js";
 import { movement_bar } from "./components/string_selects/hunt/movement_bar.js";
 import { hunt_confirm } from "./components/buttons/hunt/hunt_confirm.js";
 import { action_bar } from "./components/string_selects/hunt/action_bar.js";
+import { explore_start } from "./components/buttons/hunt/explore_start.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -57,6 +58,12 @@ export async function componentHandler(req, user, userData) {
         break;
       case "gather":
         await gather_start(req, {
+          user: user,
+          formatted: formatted,
+        });
+        break;
+      case "explore":
+        await explore_start(req, {
           user: user,
           formatted: formatted,
         });
