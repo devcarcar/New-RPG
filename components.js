@@ -9,6 +9,7 @@ import { movement_bar } from "./components/string_selects/hunt/movement_bar.js";
 import { hunt_confirm } from "./components/buttons/hunt/hunt_confirm.js";
 import { action_bar } from "./components/string_selects/hunt/action_bar.js";
 import { explore_start } from "./components/buttons/explore/explore_start.js";
+import { explore_next } from "./components/buttons/explore/explore_next.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -63,10 +64,17 @@ export async function componentHandler(req, user, userData) {
         });
         break;
       case "explore":
-        await explore_start(req, {
-          user: user,
-          formatted: formatted,
-        });
+        if (formatted[1] === "start") {
+          await explore_start(req, {
+            user: user,
+            formatted: formatted,
+          });
+        } else {
+          await explore_next(req, {
+            user: user,
+            formatted: formatted,
+          });
+        }
         break;
       default:
         throw new Error("Unknown custom id " + formatted[0]);

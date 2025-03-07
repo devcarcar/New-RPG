@@ -4,17 +4,16 @@ import { sessions } from "../../../schemas/session.js";
 import { users } from "../../../schemas/user.js";
 import { DiscordRequest } from "../../../utils.js";
 
-export async function explore_start(req, options) {
+export async function explore_next(req, options) {
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-
   if (
     options.formatted[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return console.log(options.formatted[2], session.sessionId);
   let data = session.data;
-  data.case = 0;
+  data.case += 1;
   await sessions.findOneAndUpdate(
     {
       sessionId: userData.session,
@@ -26,7 +25,7 @@ export async function explore_start(req, options) {
     }
   );
   let arr = [];
-  const currentCase = session.data.cases[0];
+  const currentCase = session.data.cases[data.case];
   currentCase.options.forEach((option) =>
     arr.push({
       label: option.name,
