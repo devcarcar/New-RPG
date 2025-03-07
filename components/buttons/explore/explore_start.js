@@ -18,7 +18,7 @@ export async function explore_start(req, options) {
   currentCase.options.forEach((option) =>
     arr.push({
       label: option.name,
-      value: `explore_${option.name}_${options.formatted[2]}`,
+      value: `explore_${option.id}_${options.formatted[2]}`,
       description: option.description,
     })
   );

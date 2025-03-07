@@ -11,68 +11,49 @@ export async function explore(req, user, options) {
     [
       {
         type: CaseType.OPTION,
+        id: "mbox",
         name: "Mystery Box",
         options: [
           {
+            id: "open",
             name: "Open it",
             description: "Discover what's inside",
-            outcome: [],
-          },
-        ],
-      },
-      {
-        type: CaseType.OPTION,
-        name: "Cave Exploration",
-        options: [
-          {
-            name: "Enter the cave",
-            description: "Explore the dark depths",
-            outcome: [],
-          },
-        ],
-      },
-      {
-        type: CaseType.OPTION,
-        name: "Hidden Path",
-        options: [
-          {
-            name: "Take the hidden path",
-            description: "Follow the winding trail",
             outcome: [
-              "You discover a beautiful waterfall.",
-              "You meet a wise old hermit.",
-              "You trip and fall into a bush.",
+              {
+                type: "REWARD",
+                rewards: [
+                  {
+                    type: "COIN",
+                    amount: 100,
+                  },
+                ],
+              },
             ],
           },
         ],
       },
       {
         type: CaseType.OPTION,
+        id: "hpath",
+        name: "Hidden Path",
+        options: [
+          {
+            id: "take",
+            name: "Take the hidden path",
+            description: "Follow the winding trail",
+            outcome: [],
+          },
+        ],
+      },
+      {
+        type: CaseType.OPTION,
+        id: "aruins",
         name: "Ancient Ruins",
         options: [
           {
             name: "Investigate the ruins",
             description: "Search for artifacts",
-            outcome: [
-              "You find a rare artifact!",
-              "It's just rubble.",
-              "You trigger a hidden trap!",
-            ],
-          },
-        ],
-      },
-      {
-        type: CaseType.OPTION,
-        name: "Enchanted Forest",
-        options: [
-          {
-            name: "Walk through the forest",
-            description: "Feel the magic around you",
-            outcome: [
-              "You encounter a talking animal.",
-              "You get lost and meet a fairy.",
-              "The forest is eerily silent.",
-            ],
+            outcome: [],
           },
         ],
       },
