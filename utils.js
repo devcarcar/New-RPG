@@ -149,3 +149,23 @@ export const CaseType = {
   OPTION: 0,
   COMBAT: 1,
 };
+
+export async function DefaultCommandResponse(token, embed, components) {
+  await DiscordRequest(
+    `/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+    {
+      method: "PATCH",
+      body: {
+        embed,
+        components,
+      },
+    }
+  );
+}
+
+export async function DefaultEmbed(title, description) {
+  return {
+    title: title,
+    description: description,
+  };
+}

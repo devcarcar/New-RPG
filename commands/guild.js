@@ -3,7 +3,7 @@ import { DiscordRequest } from "../utils.js";
 import { MessageComponentTypes } from "discord-interactions";
 import { users } from "../schemas/user.js";
 
-export async function guild(req, options) {
+export async function guild(req, user, options) {
   const { sessionId } = options;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,

@@ -1,6 +1,5 @@
-import { MessageComponentTypes } from "discord-interactions";
-import { DiscordRequest } from "./utils.js";
 import "dotenv/config";
+import { MessageComponentTypes } from "discord-interactions";
 import { select_action } from "./components/buttons/hunt/hunt_select.js";
 import { choose_mob } from "./components/string_selects/hunt/hunt_choose.js";
 import { gather_start } from "./storage/gather_start.js";
@@ -10,6 +9,7 @@ import { hunt_confirm } from "./components/buttons/hunt/hunt_confirm.js";
 import { action_bar } from "./components/string_selects/hunt/action_bar.js";
 import { explore_start } from "./components/buttons/explore/explore_start.js";
 import { explore_next } from "./components/buttons/explore/explore_next.js";
+import { explore_option } from "./components/string_selects/explore/explore_option.js";
 
 export async function componentHandler(req, user, userData) {
   const { data } = req.body;
@@ -37,6 +37,11 @@ export async function componentHandler(req, user, userData) {
           });
         }
         break;
+      case "explore":
+        await explore_option(req, {
+          user: user,
+          formatted: formatted,
+        });
       default:
         throw new Error("Unknown custom id " + formatted[0]);
     }
