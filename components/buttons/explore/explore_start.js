@@ -27,13 +27,13 @@ export async function explore_start(req, options) {
   );
   let arr = [];
   const currentCase = session.data.cases[0];
-  currentCase.options.forEach((option) =>
+  currentCase.options.forEach((option) => {
     arr.push({
       label: option.name,
       value: `explore_${option.id}_${options.formatted[2]}`,
       description: option.description,
-    })
-  );
+    });
+  });
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

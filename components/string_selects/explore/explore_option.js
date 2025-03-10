@@ -3,6 +3,9 @@ import { DiscordRequest } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
+let CaseType = {
+  OPTION: 0,
+};
 const arr = [
   {
     type: CaseType.OPTION,
@@ -16,7 +19,7 @@ const arr = [
         outcome: [
           {
             type: "REWARD",
-            rewards: [
+            values: [
               {
                 type: "COIN",
                 amount: 100,
@@ -24,31 +27,6 @@ const arr = [
             ],
           },
         ],
-      },
-    ],
-  },
-  {
-    type: CaseType.OPTION,
-    id: "hpath",
-    name: "Hidden Path",
-    options: [
-      {
-        id: "take",
-        name: "Take the hidden path",
-        description: "Follow the winding trail",
-        outcome: [],
-      },
-    ],
-  },
-  {
-    type: CaseType.OPTION,
-    id: "aruins",
-    name: "Ancient Ruins",
-    options: [
-      {
-        name: "Investigate the ruins",
-        description: "Search for artifacts",
-        outcome: [],
       },
     ],
   },
@@ -66,7 +44,7 @@ export async function explore_option(req, options) {
   let found;
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr[i].options.length; j++) {
-      if (arr[i].options[j].id == formatted[1]) found = arr[i].options[j];
+      if (arr[i].options[j].id == formatted.value[1]) found = arr[i].options[j];
     }
   }
   const result =
@@ -80,7 +58,7 @@ export async function explore_option(req, options) {
         embeds: [
           {
             title: `Exploration`,
-            description: result,
+            description: `You have received ${result.values[0].amount}${result.values[0].type}`,
           },
         ],
         components: [
@@ -91,7 +69,7 @@ export async function explore_option(req, options) {
                 type: MessageComponentTypes.BUTTON,
                 style: ButtonStyleTypes.SECONDARY,
                 label: "Next",
-                custom_id: `explore_next_${formatted[2]}`,
+                custom_id: `explore_next_${formatted.value[2]}`,
               },
             ],
           },

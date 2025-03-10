@@ -21,7 +21,7 @@ export async function explore(req, user, options) {
             outcome: [
               {
                 type: "REWARD",
-                rewards: [
+                values: [
                   {
                     type: "COIN",
                     amount: 100,
@@ -32,33 +32,8 @@ export async function explore(req, user, options) {
           },
         ],
       },
-      {
-        type: CaseType.OPTION,
-        id: "hpath",
-        name: "Hidden Path",
-        options: [
-          {
-            id: "take",
-            name: "Take the hidden path",
-            description: "Follow the winding trail",
-            outcome: [],
-          },
-        ],
-      },
-      {
-        type: CaseType.OPTION,
-        id: "aruins",
-        name: "Ancient Ruins",
-        options: [
-          {
-            name: "Investigate the ruins",
-            description: "Search for artifacts",
-            outcome: [],
-          },
-        ],
-      },
     ],
-    3
+    1
   );
 
   await sessions.findOneAndUpdate(
