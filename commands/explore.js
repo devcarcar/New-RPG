@@ -1,5 +1,10 @@
 import "dotenv/config";
-import { CaseType, DiscordRequest, sort } from "../utils.js";
+import {
+  CaseType,
+  DiscordRequest,
+  ExploreOutcomeType,
+  sort,
+} from "../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { sessions } from "../schemas/session.js";
 import { users } from "../schemas/user.js";
@@ -20,7 +25,7 @@ export async function explore(req, user, options) {
             description: "Discover what's inside",
             outcome: [
               {
-                type: "REWARD",
+                type: ExploreOutcomeType.REWARD,
                 values: [
                   {
                     type: "COIN",

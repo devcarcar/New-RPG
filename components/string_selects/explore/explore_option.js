@@ -1,11 +1,13 @@
 import "dotenv/config";
-import { DiscordRequest } from "../../../utils.js";
+import {
+  CaseType,
+  DiscordRequest,
+  ExploreOutcomeType,
+} from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
-let CaseType = {
-  OPTION: 0,
-};
+
 const arr = [
   {
     type: CaseType.OPTION,
@@ -18,7 +20,7 @@ const arr = [
         description: "Discover what's inside",
         outcome: [
           {
-            type: "REWARD",
+            type: ExploreOutcomeType.REWARD,
             values: [
               {
                 type: "COIN",
@@ -50,6 +52,15 @@ export async function explore_option(req, options) {
   const result =
     found.outcome[Math.floor(Math.random() * found.outcome.length)];
 
+  let text;
+  let v = result.values[0];
+  switch (result.type) {
+    case ExploreOutcomeType.REWARD:
+      text = `You have received ${v.amount} ${v.type}`;
+      break;
+    default:
+      break;
+  }
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -58,7 +69,7 @@ export async function explore_option(req, options) {
         embeds: [
           {
             title: `Exploration`,
-            description: `You have received ${result.values[0].amount}${result.values[0].type}`,
+            description: text,
           },
         ],
         components: [

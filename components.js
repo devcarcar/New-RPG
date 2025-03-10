@@ -17,6 +17,7 @@ export async function componentHandler(req, user, userData) {
     data.component_type === MessageComponentTypes.BUTTON
       ? data.custom_id.split("_")
       : { custom_id: data.custom_id, value: data.values[0].split("_") };
+  console.log(formatted);
   if (data.component_type === MessageComponentTypes.STRING_SELECT) {
     switch (formatted.value[0]) {
       case "hunt":
@@ -42,6 +43,7 @@ export async function componentHandler(req, user, userData) {
           user: user,
           formatted: formatted,
         });
+        break;
       default:
         throw new Error("Unknown custom id " + formatted[0]);
     }

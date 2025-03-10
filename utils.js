@@ -169,3 +169,7 @@ export async function DefaultEmbed(title, description) {
     description: description,
   };
 }
+
+export const ExploreOutcomeType = {
+  REWARD: 0,
+};
