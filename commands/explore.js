@@ -3,6 +3,7 @@ import {
   CaseType,
   DiscordRequest,
   ExploreOutcomeType,
+  ExploreTest,
   sort,
 } from "../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
@@ -12,34 +13,7 @@ import { users } from "../schemas/user.js";
 export async function explore(req, user, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  const cases = sort(
-    [
-      {
-        type: CaseType.OPTION,
-        id: "mbox",
-        name: "Mystery Box",
-        options: [
-          {
-            id: "open",
-            name: "Open it",
-            description: "Discover what's inside",
-            outcome: [
-              {
-                type: ExploreOutcomeType.REWARD,
-                values: [
-                  {
-                    type: "COIN",
-                    amount: 100,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    1
-  );
+  const cases = sort(ExploreTest, 3);
 
   await sessions.findOneAndUpdate(
     {

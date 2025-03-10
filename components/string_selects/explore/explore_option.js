@@ -3,36 +3,13 @@ import {
   CaseType,
   DiscordRequest,
   ExploreOutcomeType,
+  ExploreTest,
 } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 
-const arr = [
-  {
-    type: CaseType.OPTION,
-    id: "mbox",
-    name: "Mystery Box",
-    options: [
-      {
-        id: "open",
-        name: "Open it",
-        description: "Discover what's inside",
-        outcome: [
-          {
-            type: ExploreOutcomeType.REWARD,
-            values: [
-              {
-                type: "COIN",
-                amount: 100,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+const arr = ExploreTest;
 
 export async function explore_option(req, options) {
   const { user, formatted } = options;
@@ -43,6 +20,7 @@ export async function explore_option(req, options) {
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
+  const data = session.data;
   let found;
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr[i].options.length; j++) {
@@ -70,6 +48,9 @@ export async function explore_option(req, options) {
           {
             title: `Exploration`,
             description: text,
+            footer: {
+              text: `Step: ${data.case + 1}/3`,
+            },
           },
         ],
         components: [

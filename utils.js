@@ -173,3 +173,78 @@ export async function DefaultEmbed(title, description) {
 export const ExploreOutcomeType = {
   REWARD: 0,
 };
+
+export const ExploreTest = [
+  {
+    type: CaseType.OPTION,
+    id: "mbox",
+    name: "Mystery Box",
+    description: "Whats inside?",
+    options: [
+      {
+        id: "open",
+        name: "Open it",
+        description: "Discover what's inside",
+        outcome: [
+          {
+            type: ExploreOutcomeType.REWARD,
+            values: [
+              {
+                type: "COIN",
+                amount: 100,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: CaseType.OPTION,
+    id: "treasurechest",
+    name: "Treasure Chest",
+    description: "Open it?",
+    options: [
+      {
+        id: "open",
+        name: "Open it",
+        description: "Reveal the hidden treasure",
+        outcome: [
+          {
+            type: ExploreOutcomeType.REWARD,
+            values: [
+              {
+                type: "GEM",
+                amount: 50,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: CaseType.OPTION,
+    id: "magicpotion",
+    name: "Magic Potion",
+    description: "Drink it?",
+    options: [
+      {
+        id: "drink",
+        name: "Drink it",
+        description: "Experience its magical effects",
+        outcome: [
+          {
+            type: ExploreOutcomeType.REWARD,
+            values: [
+              {
+                type: "HEALTH_BOOST",
+                amount: 30,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
