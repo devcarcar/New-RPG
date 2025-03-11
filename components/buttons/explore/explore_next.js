@@ -25,6 +25,9 @@ export async function explore_next(req, options) {
     }
   );
   let arr = [];
+  let aaa = "";
+  console.log(data.rewards);
+  data.rewards.forEach((r) => (aaa += `${r}\n`));
   const currentCase = session.data.cases[data.case];
   if (!currentCase)
     return await DiscordRequest(
@@ -35,7 +38,7 @@ export async function explore_next(req, options) {
           embeds: [
             {
               title: "You have finished the exploration!",
-              description: "Rewards: xxx",
+              description: `Rewards: ${aaa}`,
             },
           ],
           components: [],

@@ -31,14 +31,26 @@ export async function explore_option(req, options) {
     found.outcome[Math.floor(Math.random() * found.outcome.length)];
 
   let text;
+  data.rewards = [];
   let v = result.values[0];
   switch (result.type) {
     case ExploreOutcomeType.REWARD:
       text = `You have received ${v.amount} ${v.type}`;
+      data.rewards.push(`${v.amount} ${v.type}`);
       break;
     default:
       break;
   }
+  await sessions.findOneAndUpdate(
+    {
+      sessionId: session.sessionId,
+    },
+    {
+      $set: {
+        data: data,
+      },
+    }
+  );
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

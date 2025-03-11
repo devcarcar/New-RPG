@@ -27,7 +27,6 @@ export async function explore_start(req, options) {
   );
   let arr = [];
   const currentCase = session.data.cases[0];
-  console.log(currentCase);
   currentCase.options.forEach((option) => {
     arr.push({
       label: option.name,
