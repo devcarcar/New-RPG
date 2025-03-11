@@ -31,7 +31,6 @@ export async function explore_option(req, options) {
     found.outcome[Math.floor(Math.random() * found.outcome.length)];
 
   let text;
-  data.rewards = [];
   let v = result.values[0];
   switch (result.type) {
     case ExploreOutcomeType.REWARD:

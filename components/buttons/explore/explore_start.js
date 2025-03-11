@@ -15,6 +15,7 @@ export async function explore_start(req, options) {
     return console.log(options.formatted[2], session.sessionId);
   let data = session.data;
   data.case = 0;
+  data.rewards = [];
   await sessions.findOneAndUpdate(
     {
       sessionId: userData.session,
