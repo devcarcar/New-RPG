@@ -3,17 +3,18 @@ import {
   CaseType,
   DiscordRequest,
   ExploreOutcomeType,
-  ExploreTest,
   sort,
 } from "../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { sessions } from "../schemas/session.js";
 import { users } from "../schemas/user.js";
+import { locations } from "../schemas/location.js";
 
 export async function explore(req, user, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  const cases = sort(ExploreTest, 3);
+  const currentLocation = await locations.findOne({ locationId: "village" });
+  const cases = sort(currentLocation.data.explore, 1);
 
   await sessions.findOneAndUpdate(
     {

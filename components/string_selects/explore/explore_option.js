@@ -3,28 +3,29 @@ import {
   CaseType,
   DiscordRequest,
   ExploreOutcomeType,
-  ExploreTest,
 } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
-
-const arr = ExploreTest;
+import { locations } from "../../../schemas/location.js";
 
 export async function explore_option(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
+  const currentLocation = await locations.findOne({ locationId: "village" });
   if (
     formatted.value[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return;
   const data = session.data;
+  const explore = currentLocation.data.explore;
   let found;
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].options.length; j++) {
-      if (arr[i].options[j].id == formatted.value[1]) found = arr[i].options[j];
+  for (let i = 0; i < explore.length; i++) {
+    for (let j = 0; j < explore[i].options.length; j++) {
+      if (explore[i].options[j].id == formatted.value[1])
+        found = explore[i].options[j];
     }
   }
   const result =

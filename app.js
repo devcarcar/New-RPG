@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 import { users } from "./schemas/user.js";
 import { componentHandler } from "./components.js";
 import { sessions } from "./schemas/session.js";
+import { locations } from "./schemas/location.js";
+import { CaseType, ExploreOutcomeType } from "./utils.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -69,3 +71,36 @@ mongoose
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
 });
+/*
+await locations.create({
+  locationId: "village",
+  data: {
+    explore: [
+      {
+        type: CaseType.OPTION,
+        id: "mbox",
+        name: "Mystery Box",
+        description: "Whats inside?",
+        options: [
+          {
+            id: "open",
+            name: "Open it",
+            description: "Discover what's inside",
+            outcome: [
+              {
+                type: ExploreOutcomeType.REWARD,
+                values: [
+                  {
+                    type: "COIN",
+                    amount: 100,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+});
+*/

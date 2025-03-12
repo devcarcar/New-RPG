@@ -12,7 +12,7 @@ export async function gather(req, user, options) {
   currentLocation.data.gather.forEach((i) => {
     opt.push({
       label: i.name,
-      value: `gather_${i.name}-d_${sessionId}`,
+      value: `gather_${i.name}_${sessionId}`,
       description: i.drop,
     });
   });
