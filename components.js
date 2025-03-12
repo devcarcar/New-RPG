@@ -1,14 +1,13 @@
 import "dotenv/config";
 import { MessageComponentTypes } from "discord-interactions";
-import { choose_mob } from "./components/string_selects/hunt/hunt_choose.js";
 import { gather_start } from "./storage/gather_start.js";
-import { movement_bar } from "./components/string_selects/hunt/movement_bar.js";
-import { action_bar } from "./components/string_selects/hunt/action_bar.js";
 import { EXPLORE_BUTTONS } from "./components/buttons/explore.js";
 import { EXPLORE_STRING_SELECTS } from "./components/string_selects/explore.js";
 import { HUNT_BUTTONS } from "./components/buttons/hunt.js";
+import { HUNT_STRING_SELECTS } from "./components/string_selects/hunt.js";
 const HUNT_COMPONENTS = {
   ...HUNT_BUTTONS,
+  ...HUNT_STRING_SELECTS,
 };
 const EXPLORE_COMPONENTS = {
   ...EXPLORE_BUTTONS,
@@ -25,17 +24,17 @@ export async function componentHandler(req, user, userData) {
     switch (formatted.value[0]) {
       case "hunt":
         if (formatted.custom_id === "movement_bar") {
-          await movement_bar(req, {
+          await HUNT_COMPONENTS.movement(req, {
             user: user,
             formatted: formatted,
           });
         } else if (formatted.custom_id === "action_bar") {
-          await action_bar(req, {
+          await HUNT_COMPONENTS.action(req, {
             user: user,
             formatted: formatted,
           });
         } else {
-          await choose_mob(req, {
+          await HUNT_COMPONENTS.choose(req, {
             user: user,
             formatted: formatted,
           });

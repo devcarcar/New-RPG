@@ -1,3 +1,9 @@
-import { action_bar } from "./hunt/action_bar";
-import { choose_mob } from "./hunt/hunt_choose";
-import { movement_bar } from "./hunt/movement_bar";
+import { action } from "./hunt/action.js";
+import { choose } from "./hunt/choose.js";
+import { movement } from "./hunt/movement.js";
+
+export const HUNT_STRING_SELECTS = {
+  action,
+  choose,
+  movement,
+};
