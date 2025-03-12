@@ -28,7 +28,6 @@ export async function explore(req, user, options) {
       },
     }
   );
-
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

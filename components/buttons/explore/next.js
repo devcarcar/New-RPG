@@ -4,18 +4,16 @@ import { sessions } from "../../../schemas/session.js";
 import { users } from "../../../schemas/user.js";
 import { DiscordRequest } from "../../../utils.js";
 
-export async function explore_start(req, options) {
+export async function next(req, options) {
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-
   if (
     options.formatted[2] != session.sessionId ||
     new Date(session.expireAt).getTime() < Date.now()
   )
     return console.log(options.formatted[2], session.sessionId);
   let data = session.data;
-  data.case = 0;
-  data.rewards = [];
+  data.case += 1;
   await sessions.findOneAndUpdate(
     {
       sessionId: userData.session,
@@ -27,14 +25,33 @@ export async function explore_start(req, options) {
     }
   );
   let arr = [];
-  const currentCase = session.data.cases[0];
-  currentCase.options.forEach((option) => {
+  let aaa = "";
+  console.log(data.rewards);
+  data.rewards.forEach((r) => (aaa += `${r}\n`));
+  const currentCase = session.data.cases[data.case];
+  if (!currentCase)
+    return await DiscordRequest(
+      `webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+      {
+        method: "PATCH",
+        body: {
+          embeds: [
+            {
+              title: "You have finished the exploration!",
+              description: `Rewards: ${aaa}`,
+            },
+          ],
+          components: [],
+        },
+      }
+    );
+  currentCase.options.forEach((option) =>
     arr.push({
       label: option.name,
       value: `explore_${option.id}_${options.formatted[2]}`,
       description: option.description,
-    });
-  });
+    })
+  );
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -45,7 +62,7 @@ export async function explore_start(req, options) {
             title: currentCase.name,
             description: currentCase.description,
             footer: {
-              text: "Step: 1/3",
+              text: `Step: ${data.case + 1}/3`,
             },
           },
         ],

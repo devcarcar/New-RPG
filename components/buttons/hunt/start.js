@@ -5,7 +5,7 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 import { move } from "../../../utils.js";
 
-export async function hunt_start(req, options) {
+export async function start(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
