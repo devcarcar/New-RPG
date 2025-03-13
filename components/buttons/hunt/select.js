@@ -42,7 +42,7 @@ export async function select(req, user, formatted, options) {
       value: `hunt_${Direction.UP}_${formatted[2]}`,
       description: "Move up",
     });
-  await DiscordRequest(`/webhooks/${process.env.APP_ID}/${req.body.token}`, {
+  await DiscordRequest(`/webhooks/${process.env.APP_ID}/${sessionData.token}`, {
     method: "POST",
     body: {
       flags: 64,

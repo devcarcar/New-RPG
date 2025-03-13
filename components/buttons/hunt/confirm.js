@@ -58,7 +58,7 @@ export async function confirm(req, user, formatted, options) {
   const data = updated.data;
 
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "DELETE",
     }

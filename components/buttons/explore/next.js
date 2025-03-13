@@ -23,7 +23,7 @@ export async function next(req, user, formatted, options) {
   const currentCase = sessionData.data.cases[data.case];
   if (!currentCase)
     return await DiscordRequest(
-      `webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+      `webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
       {
         method: "PATCH",
         body: {
@@ -45,7 +45,7 @@ export async function next(req, user, formatted, options) {
     })
   );
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

@@ -32,7 +32,7 @@ export async function action(req, user, formatted, options) {
     shortcut.movement != null && shortcut.action != null ? false : true;
 
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

@@ -9,7 +9,7 @@ export async function choose(req, user, formatted, options) {
   const mobList = [{ id: "goblin", name: "Goblin", description: "Goblin aa" }];
   const found = mobList.find((mob) => mob.id === formatted.value[1]);
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "PATCH",
       body: {
