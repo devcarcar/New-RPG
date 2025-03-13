@@ -10,6 +10,7 @@ import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
 export async function option(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const data = session.data;
   const explore = currentLocation.data.explore;
   let found;

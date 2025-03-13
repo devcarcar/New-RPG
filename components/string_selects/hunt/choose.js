@@ -5,6 +5,7 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 
 export async function choose(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const mobList = [{ id: "goblin", name: "Goblin", description: "Goblin aa" }];
   const found = mobList.find((mob) => mob.id === formatted.value[1]);
   await DiscordRequest(

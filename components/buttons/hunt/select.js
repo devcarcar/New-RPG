@@ -5,6 +5,7 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 
 export async function select(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const last = session.data.log[session.data.log.length - 1].user1;
   const action =
     last.action != null

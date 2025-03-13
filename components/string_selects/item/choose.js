@@ -6,6 +6,7 @@ import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
 export async function choose(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const category = formatted[1];
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,

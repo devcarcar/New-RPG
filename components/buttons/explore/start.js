@@ -5,6 +5,7 @@ import { users } from "../../../schemas/user.js";
 import { DiscordRequest } from "../../../utils.js";
 
 export async function start(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   let data = session.data;
   data.case = 0;
   data.rewards = [];

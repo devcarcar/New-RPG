@@ -4,6 +4,7 @@ import { users } from "../../../schemas/user";
 import { sessions } from "../../../schemas/session";
 
 export async function gather_start(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const result = ld.data.gather.find((i) => i.name === l);
   const Inventory = userData.inventory;
 

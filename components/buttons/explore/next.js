@@ -4,7 +4,8 @@ import { sessions } from "../../../schemas/session.js";
 import { DiscordRequest } from "../../../utils.js";
 
 export async function next(req, user, formatted, options) {
-  let data = session.data;
+  const { userData, sessionData, locationData } = options;
+  let data = sessionData.data;
   data.case += 1;
   await sessions.findOneAndUpdate(
     {

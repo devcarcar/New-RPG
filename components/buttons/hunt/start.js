@@ -6,6 +6,7 @@ import { sessions } from "../../../schemas/session.js";
 import { move } from "../../../utils.js";
 
 export async function start(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   await sessions.findOneAndUpdate(
     {
       sessionId: formatted[2],

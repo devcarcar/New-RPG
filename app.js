@@ -132,22 +132,18 @@ app.post(
             }
             break;
           case "explore":
-            await COMPONENTS.EXPLORE.option(
-              req,
-              user,
+            await COMPONENTS.EXPLORE.option(req, user, formatted, {
               userData,
-              formatted,
-              session
-            );
+              sessionData,
+              locationData,
+            });
             break;
           case "item":
-            await COMPONENTS.ITEM.choose(
-              req,
-              user,
+            await COMPONENTS.ITEM.choose(req, user, formatted, {
               userData,
-              formatted,
-              session
-            );
+              sessionData,
+              locationData,
+            });
             break;
           default:
             throw new Error("Unknown custom id " + formatted.value[0]);

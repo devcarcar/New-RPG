@@ -13,6 +13,7 @@ import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
 export async function confirm(req, user, formatted, options) {
+  const { userData, sessionData, locationData } = options;
   const turn = session.data.log.length;
   let { user1, user2 } = movementHandler(
     session.data.log[session.data.log.length - 1].user1.movement,
