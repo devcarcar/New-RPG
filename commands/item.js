@@ -5,6 +5,7 @@ import {
   MessageComponentTypes,
 } from "discord-interactions";
 import { users } from "../schemas/user.js";
+import { sessions } from "../schemas/session.js";
 const itemList = [
   {
     id: "apple",
