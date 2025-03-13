@@ -10,11 +10,6 @@ import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
 export async function option(req, user, formatted, options) {
-  const { user, formatted } = options;
-  const userData = await users.findOne({ userId: user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-  const currentLocation = await locations.findOne({ locationId: "village" });
-
   const data = session.data;
   const explore = currentLocation.data.explore;
   let found;

@@ -5,14 +5,6 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 
 export async function select(req, user, formatted, options) {
-  const { user, formatted } = options;
-  const userData = await users.findOne({ userId: user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted[2] != userData.session ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
   const last = session.data.log[session.data.log.length - 1].user1;
   const action =
     last.action != null

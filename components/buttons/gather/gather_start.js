@@ -4,10 +4,6 @@ import { users } from "../../../schemas/user";
 import { sessions } from "../../../schemas/session";
 
 export async function gather_start(req, user, formatted, options) {
-  const { user, formatted } = options;
-  const userData = await users.findOne({ userId: options.user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-  const ld = await locations.findOne({ locationId: "village" });
   const result = ld.data.gather.find((i) => i.name === l);
   const Inventory = userData.inventory;
 

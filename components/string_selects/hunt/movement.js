@@ -6,10 +6,6 @@ import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
 export async function movement(req, user, formatted, options) {
-  const { user, formatted } = options;
-  const userData = await users.findOne({ userId: user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-
   const movement = parseInt(formatted.value[1]);
   const last = session.data.log[session.data.log.length - 1];
   last.user1.movement = movement;
