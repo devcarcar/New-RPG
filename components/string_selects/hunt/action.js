@@ -5,7 +5,7 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
-export async function action(req, options) {
+export async function action(req, user, formatted, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });

@@ -3,7 +3,7 @@ import { DiscordRequest } from "../../../utils";
 import { users } from "../../../schemas/user";
 import { sessions } from "../../../schemas/session";
 
-export async function gather_start(req, options) {
+export async function gather_start(req, user, formatted, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: options.user.id });
   const session = await sessions.findOne({ sessionId: userData.session });

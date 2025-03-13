@@ -33,7 +33,11 @@ app.post(
 
     if (!userData) return console.log("Account information!");
 
-    const session = await sessions.findOne({ sessionId: userData.session });
+    const sessionData = await sessions.findOne({ sessionId: userData.session });
+
+    const locationData = await locations.findOne({
+      locationId: userData.location,
+    });
 
     if (type === InteractionType.APPLICATION_COMMAND) {
       res.send({
@@ -100,7 +104,7 @@ app.post(
       if (
         (formatted?.value[2] != userData.session &&
           formatted[2] != userData.session) ||
-        new Date(session.expireAt).getTime() < Date.now()
+        new Date(sessionData.expireAt).getTime() < Date.now()
       )
         return console.log("Session expired");
 
@@ -108,33 +112,42 @@ app.post(
         switch (formatted.value[0]) {
           case "hunt":
             if (formatted.custom_id === "movement_bar") {
-              await COMPONENTS.HUNT.movement(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.movement(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             } else if (formatted.custom_id === "action_bar") {
-              await COMPONENTS.HUNT.action(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.action(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             } else {
-              await COMPONENTS.HUNT.choose(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.choose(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             }
             break;
           case "explore":
-            await COMPONENTS.EXPLORE.option(req, {
-              user: user,
-              formatted: formatted,
-            });
+            await COMPONENTS.EXPLORE.option(
+              req,
+              user,
+              userData,
+              formatted,
+              session
+            );
             break;
           case "item":
-            await COMPONENTS.ITEM.choose(req, {
-              formatted: formatted,
-              user: user,
-            });
+            await COMPONENTS.ITEM.choose(
+              req,
+              user,
+              userData,
+              formatted,
+              session
+            );
             break;
           default:
             throw new Error("Unknown custom id " + formatted.value[0]);
@@ -143,32 +156,37 @@ app.post(
         switch (formatted[0]) {
           case "hunt":
             if (formatted[1] === "start") {
-              await COMPONENTS.HUNT.start(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.start(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             } else if (formatted[1] === "select") {
-              await COMPONENTS.HUNT.select(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.select(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             } else if (formatted[1] === "confirm") {
-              await COMPONENTS.HUNT.confirm(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.HUNT.confirm(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             }
             break;
           case "explore":
             if (formatted[1] === "start") {
-              await COMPONENTS.EXPLORE.start(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.EXPLORE.start(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             } else {
-              await COMPONENTS.EXPLORE.next(req, {
-                user: user,
-                formatted: formatted,
+              await COMPONENTS.EXPLORE.next(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
               });
             }
             break;

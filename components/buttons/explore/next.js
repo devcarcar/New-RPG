@@ -1,17 +1,9 @@
 import "dotenv/config";
 import { MessageComponentTypes } from "discord-interactions";
 import { sessions } from "../../../schemas/session.js";
-import { users } from "../../../schemas/user.js";
 import { DiscordRequest } from "../../../utils.js";
 
-export async function next(req, options) {
-  const userData = await users.findOne({ userId: options.user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    options.formatted[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return console.log(options.formatted[2], session.sessionId);
+export async function next(req, user, formatted, options) {
   let data = session.data;
   data.case += 1;
   await sessions.findOneAndUpdate(
