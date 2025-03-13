@@ -65,25 +65,39 @@ app.post(
 
       switch (req.body.data.name) {
         case "gather":
-          await COMMANDS.gather(req, user, {
-            sessionId: sessionId,
-            userData: userData,
+          await COMMANDS.gather(req, user, sessionId, {
+            userData,
+            sessionData,
+            locationData,
           });
           break;
         case "hunt":
-          await COMMANDS.hunt(req, user, {
-            sessionId: sessionId,
-            userData: userData,
+          await COMMANDS.hunt(req, user, sessionId, {
+            userData,
+            sessionData,
+            locationData,
           });
           break;
         case "explore":
-          await COMMANDS.explore(req, user, { sessionId: sessionId });
+          await COMMANDS.explore(req, user, sessionId, {
+            userData,
+            sessionData,
+            locationData,
+          });
           break;
         case "guild":
-          await COMMANDS.guild(req, user, { sessionId: sessionId });
+          await COMMANDS.guild(req, user, sessionId, {
+            userData,
+            sessionData,
+            locationData,
+          });
           break;
         case "item":
-          await COMMANDS.item(req, user, { sessionId: sessionId });
+          await COMMANDS.item(req, user, sessionId, {
+            userData,
+            sessionData,
+            locationData,
+          });
           break;
         default:
           throw new Error("Unknown command " + req.body.data.name);

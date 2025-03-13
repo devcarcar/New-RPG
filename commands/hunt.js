@@ -4,7 +4,8 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 
-export async function hunt(req, user, options) {
+export async function hunt(req, user, sessionId, options) {
+  const { userData, sessionData, locationData } = options;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

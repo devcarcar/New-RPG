@@ -14,7 +14,8 @@ const itemList = [
   },
 ];
 
-export async function item(req, user, options) {
+export async function item(req, user, sessionId, options) {
+  const { userData, sessionData, locationData } = options;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

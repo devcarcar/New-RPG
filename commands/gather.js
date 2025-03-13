@@ -3,8 +3,8 @@ import { DiscordRequest } from "../utils.js";
 import { MessageComponentTypes } from "discord-interactions";
 import { locations } from "../schemas/location.js";
 
-export async function gather(req, user, options) {
-  const { sessionId, userData } = options;
+export async function gather(req, user, sessionId, options) {
+  const { userData, sessionData, locationData } = options;
   let opt = [];
   const currentLocation = await locations.findOne({
     locationId: userData.Location,

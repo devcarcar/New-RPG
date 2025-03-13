@@ -5,10 +5,9 @@ import { sessions } from "../schemas/session.js";
 import { users } from "../schemas/user.js";
 import { locations } from "../schemas/location.js";
 
-export async function explore(req, user, options) {
-  const userData = await users.findOne({ userId: user.id });
-  const session = await sessions.findOne({ sessionId: userData.session });
-  const currentLocation = await locations.findOne({ locationId: "village" });
+export async function explore(req, user, sessionId, options) {
+  const { userData, sessionData, locationData } = options;
+
   const cases = sort(currentLocation.data.explore, 1);
 
   await sessions.findOneAndUpdate(
