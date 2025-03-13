@@ -9,11 +9,11 @@ const user = new Schema({
   commandsUsed: { type: Number, default: 0, required: true },
   //
   gold: { type: Number, required: true, default: 500 },
+  location: { type: String, default: "village", required: true },
   inventory: { type: Map, default: {}, required: true },
   session: { type: String, default: "", required: true },
-  level: { type: Number, default: 1, required: true },
   xp: { type: Number, default: 0, required: true },
-  location: { type: String, default: "village", required: true },
+  level: { type: Number, default: 1, required: true },
 });
 
 export const users = model("user", user);
