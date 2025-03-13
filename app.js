@@ -137,7 +137,7 @@ app.post(
             });
             break;
           default:
-            throw new Error("Unknown custom id " + formatted[0]);
+            throw new Error("Unknown custom id " + formatted.value[0]);
         }
       } else if (data.component_type === MessageComponentTypes.BUTTON) {
         switch (formatted[0]) {

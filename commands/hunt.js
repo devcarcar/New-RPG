@@ -5,8 +5,6 @@ import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 
 export async function hunt(req, user, options) {
-  const { sessionId, userData } = options;
-
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
