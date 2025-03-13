@@ -6,7 +6,7 @@ import { DiscordRequest } from "../../../utils.js";
 
 export async function start(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  let data = session.data;
+  let data = sessionData.data;
   data.case = 0;
   data.rewards = [];
   await sessions.findOneAndUpdate(
@@ -20,11 +20,11 @@ export async function start(req, user, formatted, options) {
     }
   );
   let arr = [];
-  const currentCase = session.data.cases[0];
+  const currentCase = sessionData.data.cases[0];
   currentCase.options.forEach((option) => {
     arr.push({
       label: option.name,
-      value: `explore_${option.id}_${options.formatted[2]}`,
+      value: `explore_${option.id}_${formatted[2]}`,
       description: option.description,
     });
   });

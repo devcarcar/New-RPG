@@ -14,26 +14,26 @@ import { locations } from "../../../schemas/location.js";
 
 export async function confirm(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const turn = session.data.log.length;
+  const turn = sessionData.data.log.length;
   let { user1, user2 } = movementHandler(
-    session.data.log[session.data.log.length - 1].user1.movement,
-    session.data.log[session.data.log.length - 1].user2.movement,
-    session.data.user1,
-    session.data.user2
+    sessionData.data.log[sessionData.data.log.length - 1].user1.movement,
+    sessionData.data.log[sessionData.data.log.length - 1].user2.movement,
+    sessionData.data.user1,
+    sessionData.data.user2
   );
   user1 = actionHandler(
-    session.data.log[session.data.log.length - 1].user1.action,
-    session.data.log[session.data.log.length - 1].user2.action,
-    session.data.user1,
-    session.data.user2
+    sessionData.data.log[sessionData.data.log.length - 1].user1.action,
+    sessionData.data.log[sessionData.data.log.length - 1].user2.action,
+    sessionData.data.user1,
+    sessionData.data.user2
   );
   user2 = actionHandler(
-    session.data.log[session.data.log.length - 1].user1.action,
-    session.data.log[session.data.log.length - 1].user2.action,
-    session.data.user1,
-    session.data.user2
+    sessionData.data.log[sessionData.data.log.length - 1].user1.action,
+    sessionData.data.log[sessionData.data.log.length - 1].user2.action,
+    sessionData.data.user1,
+    sessionData.data.user2
   );
-  session.data.log.push({
+  sessionData.data.log.push({
     turn: turn + 1,
     user1: {
       movement: null,
@@ -44,8 +44,8 @@ export async function confirm(req, user, formatted, options) {
       action: "attack",
     },
   });
-  session.data.user1 = user1;
-  session.data.user2 = user2;
+  sessionData.data.user1 = user1;
+  sessionData.data.user2 = user2;
   await sessions.findOneAndUpdate(
     { sessionId: userData.session },
     {
@@ -54,7 +54,7 @@ export async function confirm(req, user, formatted, options) {
       },
     }
   );
-  const updated = await sessions.findOne({ sessionId: userData.session });
+  const updated = await sessions.findOne({ sessionId: userData.sessionData });
   const data = updated.data;
 
   await DiscordRequest(
@@ -64,7 +64,7 @@ export async function confirm(req, user, formatted, options) {
     }
   );
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${session.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

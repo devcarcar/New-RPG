@@ -19,9 +19,8 @@ export async function next(req, user, formatted, options) {
   );
   let arr = [];
   let aaa = "";
-  console.log(data.rewards);
   data.rewards.forEach((r) => (aaa += `${r}\n`));
-  const currentCase = session.data.cases[data.case];
+  const currentCase = sessionData.data.cases[data.case];
   if (!currentCase)
     return await DiscordRequest(
       `webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
@@ -41,7 +40,7 @@ export async function next(req, user, formatted, options) {
   currentCase.options.forEach((option) =>
     arr.push({
       label: option.name,
-      value: `explore_${option.id}_${options.formatted[2]}`,
+      value: `explore_${option.id}_${formatted[2]}`,
       description: option.description,
     })
   );
