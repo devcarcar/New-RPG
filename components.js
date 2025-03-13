@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { MessageComponentTypes } from "discord-interactions";
-import { gather_start } from "./storage/gather_start.js";
 import { EXPLORE_BUTTONS } from "./components/buttons/explore.js";
 import { EXPLORE_STRING_SELECTS } from "./components/string_selects/explore.js";
 import { HUNT_BUTTONS } from "./components/buttons/hunt.js";

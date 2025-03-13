@@ -1,10 +1,5 @@
 import "dotenv/config";
-import {
-  CaseType,
-  DiscordRequest,
-  ExploreOutcomeType,
-  sort,
-} from "../utils.js";
+import { DiscordRequest, sort } from "../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { sessions } from "../schemas/session.js";
 import { users } from "../schemas/user.js";

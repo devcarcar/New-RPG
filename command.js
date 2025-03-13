@@ -1,7 +1,5 @@
 import { gather } from "./commands/gather.js";
 import { hunt } from "./commands/hunt.js";
-import { inventory } from "./storage/inventory.js";
-import { DiscordRequest } from "./utils.js";
 import { guild } from "./commands/guild.js";
 import { explore } from "./commands/explore.js";
 import { item } from "./commands/item.js";
