@@ -1,4 +1,5 @@
 import { EXPLORE_BUTTONS } from "./components/buttons/explore.js";
+import { GATHER_BUTTONS } from "./components/buttons/gather.js";
 import { HUNT_BUTTONS } from "./components/buttons/hunt.js";
 import { EXPLORE_STRING_SELECTS } from "./components/string_selects/explore.js";
 import { HUNT_STRING_SELECTS } from "./components/string_selects/hunt.js";
@@ -18,8 +19,13 @@ const ITEM = {
   ...ITEM_STRING_SELECTS,
 };
 
+const GATHER = {
+  ...GATHER_BUTTONS,
+};
+
 export const COMPONENTS = {
   EXPLORE,
   HUNT,
   ITEM,
+  GATHER,
 };
