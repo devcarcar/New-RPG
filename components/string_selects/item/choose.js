@@ -9,11 +9,7 @@ export async function choose(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted.value[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
+
   const category = formatted[1];
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,

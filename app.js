@@ -22,15 +22,18 @@ app.post(
   verifyKeyMiddleware(process.env.PUBLIC_KEY),
   async function (req, res) {
     const { type, data } = req.body;
+
     if (type === InteractionType.PING) {
       return res.send({ type: InteractionResponseType.PONG });
     }
+
     const context = req.body.context;
     const user = context === 0 ? req.body.member.user : req.body.user;
-    let userData = await users.findOne({ userId: user.id });
-    if (!userData) {
-      userData = await users.create({ userId: user.id, session: "No session" });
-    }
+    const userData = await users.findOne({ userId: user.id });
+
+    if (!userData) return console.log("Account information!");
+
+    const session = await sessions.findOne({ sessionId: userData.session });
 
     if (type === InteractionType.APPLICATION_COMMAND) {
       res.send({
@@ -44,7 +47,9 @@ app.post(
         expireAt: Date.now() + 15 * 60 * 1000,
         data: {},
       });
+
       const { sessionId } = created;
+
       await users.findOneAndUpdate(
         { userId: user.id },
         {
@@ -80,15 +85,24 @@ app.post(
           throw new Error("Unknown command " + req.body.data.name);
       }
     }
+
     if (type === InteractionType.MESSAGE_COMPONENT) {
       res.send({
         type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE,
       });
+
       const { data } = req.body;
       const formatted =
         data.component_type === MessageComponentTypes.BUTTON
           ? data.custom_id.split("_")
           : { custom_id: data.custom_id, value: data.values[0].split("_") };
+
+      if (
+        (formatted?.value[2] != userData.session &&
+          formatted[2] != userData.session) ||
+        new Date(session.expireAt).getTime() < Date.now()
+      )
+        return console.log("Session expired");
 
       if (data.component_type === MessageComponentTypes.STRING_SELECT) {
         switch (formatted.value[0]) {
@@ -117,7 +131,11 @@ app.post(
             });
             break;
           case "item":
-            COMPONENTS.ITEM.choose(req, { formatted: formatted, user: user });
+            await COMPONENTS.ITEM.choose(req, {
+              formatted: formatted,
+              user: user,
+            });
+            break;
           default:
             throw new Error("Unknown custom id " + formatted[0]);
         }
@@ -141,7 +159,6 @@ app.post(
               });
             }
             break;
-
           case "explore":
             if (formatted[1] === "start") {
               await COMPONENTS.EXPLORE.start(req, {
@@ -166,9 +183,11 @@ app.post(
 mongoose
   .connect(process.env.MONGODB_SRV)
   .then(() => console.log("DB Connected"));
+
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
 });
+
 /*
 await locations.create({
   locationId: "village",

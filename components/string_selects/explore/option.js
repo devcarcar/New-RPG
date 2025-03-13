@@ -14,11 +14,7 @@ export async function option(req, options) {
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
   const currentLocation = await locations.findOne({ locationId: "village" });
-  if (
-    formatted.value[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
+
   const data = session.data;
   const explore = currentLocation.data.explore;
   let found;

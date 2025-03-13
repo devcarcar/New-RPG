@@ -9,11 +9,6 @@ export async function action(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted.value[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
 
   const action = formatted.value[1];
   const last = session.data.log[session.data.log.length - 1];

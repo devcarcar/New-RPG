@@ -9,11 +9,7 @@ export async function start(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
+
   await sessions.findOneAndUpdate(
     {
       sessionId: formatted[2],

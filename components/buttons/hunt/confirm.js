@@ -16,11 +16,7 @@ export async function confirm(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
+
   const turn = session.data.log.length;
   let { user1, user2 } = movementHandler(
     session.data.log[session.data.log.length - 1].user1.movement,

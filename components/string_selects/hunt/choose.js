@@ -8,11 +8,6 @@ export async function choose(req, options) {
   const { user, formatted } = options;
   const userData = await users.findOne({ userId: user.id });
   const session = await sessions.findOne({ sessionId: userData.session });
-  if (
-    formatted.value[2] != session.sessionId ||
-    new Date(session.expireAt).getTime() < Date.now()
-  )
-    return;
 
   const mobList = [{ id: "goblin", name: "Goblin", description: "Goblin aa" }];
   const found = mobList.find((mob) => mob.id === formatted.value[1]);
