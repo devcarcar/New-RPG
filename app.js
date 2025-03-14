@@ -49,7 +49,11 @@ app.post(
         token: req.body.token,
         createdAt: Date.now(),
         expireAt: Date.now() + 15 * 60 * 1000,
-        data: {},
+        data: {
+          case: 0,
+          cases: [],
+          rewards: [],
+        },
       });
 
       const { sessionId } = created;
@@ -114,15 +118,12 @@ app.post(
         data.component_type === MessageComponentTypes.BUTTON
           ? data.custom_id.split("_")
           : { custom_id: data.custom_id, value: data.values[0].split("_") };
-
-      if (
-        (formatted?.value[2] != userData.session &&
-          formatted[2] != userData.session) ||
-        new Date(sessionData.expireAt).getTime() < Date.now()
-      )
-        return console.log("Session expired");
-
       if (data.component_type === MessageComponentTypes.STRING_SELECT) {
+        if (
+          formatted.value[2] != userData.session ||
+          new Date(sessionData.expireAt).getTime() < Date.now()
+        )
+          return console.log(formatted.value[2], userData.session);
         switch (formatted.value[0]) {
           case "hunt":
             if (formatted.custom_id === "movement_bar") {
@@ -163,6 +164,11 @@ app.post(
             throw new Error("Unknown custom id " + formatted.value[0]);
         }
       } else if (data.component_type === MessageComponentTypes.BUTTON) {
+        if (
+          formatted[2] != userData.session ||
+          new Date(sessionData.expireAt).getTime() < Date.now()
+        )
+          return console.log(formatted[2], userData.session);
         switch (formatted[0]) {
           case "hunt":
             if (formatted[1] === "start") {

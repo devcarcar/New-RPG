@@ -8,11 +8,11 @@ import { locations } from "../schemas/location.js";
 export async function explore(req, user, sessionId, options) {
   const { userData, sessionData, locationData } = options;
 
-  const cases = sort(currentLocation.data.explore, 1);
+  const cases = sort(locationData.data.explore, 1);
 
   await sessions.findOneAndUpdate(
     {
-      sessionId: session.sessionId,
+      sessionId: sessionData.sessionId,
     },
     {
       $set: {
@@ -39,7 +39,7 @@ export async function explore(req, user, sessionId, options) {
             components: [
               {
                 type: MessageComponentTypes.BUTTON,
-                custom_id: `explore_start_${options.sessionId}`,
+                custom_id: `explore_start_${sessionId}`,
                 label: "Start",
                 style: ButtonStyleTypes.SECONDARY,
               },
