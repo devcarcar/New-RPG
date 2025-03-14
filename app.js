@@ -55,7 +55,6 @@ app.post(
           rewards: [],
         },
       });
-
       const { sessionId } = created;
 
       await users.findOneAndUpdate(
@@ -221,11 +220,22 @@ mongoose
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
 });
-
 /*
 await locations.create({
   locationId: "village",
   data: {
+    hunt: [
+      {
+        id: "goblin",
+        name: "Goblin",
+        description: "That's a lot of green",
+        data: {
+          health: 10,
+          attack: 5,
+          defense: 1,
+        },
+      },
+    ],
     explore: [
       {
         type: CaseType.OPTION,

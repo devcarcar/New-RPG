@@ -7,7 +7,6 @@ import { locations } from "../schemas/location.js";
 
 export async function explore(req, user, sessionId, options) {
   const { userData, sessionData, locationData } = options;
-
   const cases = sort(locationData.data.explore, 1);
 
   await sessions.findOneAndUpdate(
@@ -23,7 +22,7 @@ export async function explore(req, user, sessionId, options) {
     }
   );
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
       method: "PATCH",
       body: {
