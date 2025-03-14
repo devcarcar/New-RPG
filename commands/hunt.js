@@ -7,7 +7,7 @@ import { sessions } from "../schemas/session.js";
 export async function hunt(req, user, sessionId, options) {
   const { userData, sessionData, locationData } = options;
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
       method: "PATCH",
       body: {
