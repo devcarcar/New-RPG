@@ -17,7 +17,7 @@ export async function gather(req, user, sessionId, options) {
     });
   });
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

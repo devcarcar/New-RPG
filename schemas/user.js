@@ -9,6 +9,7 @@ const user = new Schema({
   commandsUsed: { type: Number, default: 0, required: true },
   //
   gold: { type: Number, required: true, default: 500 },
+  equipments: { type: Array, required: true, default: [] },
   location: { type: String, default: "village", required: true },
   inventory: { type: Map, default: {}, required: true },
   session: { type: String, default: "", required: true },

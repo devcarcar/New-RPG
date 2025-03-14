@@ -6,7 +6,7 @@ import { users } from "../schemas/user.js";
 export async function guild(req, user, sessionId, options) {
   const { userData, sessionData, locationData } = options;
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

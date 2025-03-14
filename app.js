@@ -33,7 +33,7 @@ app.post(
 
     if (!userData) return console.log("Account information!");
 
-    const sessionData = await sessions.findOne({ sessionId: userData.session });
+    let sessionData = await sessions.findOne({ sessionId: userData.session });
 
     const locationData = await locations.findOne({
       locationId: userData.location,
@@ -44,6 +44,7 @@ app.post(
         type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
       });
 
+      sessionData = await sessions.findOne({ sessionId: userData.session });
       const created = await sessions.create({
         command: data.name,
         token: req.body.token,

@@ -8,19 +8,19 @@ import { locations } from "../schemas/location.js";
 export async function explore(req, user, sessionId, options) {
   const { userData, sessionData, locationData } = options;
   const cases = sort(locationData.data.explore, 1);
-
+  sessionData.data.cases = cases;
   await sessions.findOneAndUpdate(
     {
       sessionId: sessionData.sessionId,
     },
     {
       $set: {
-        data: {
-          cases: cases,
-        },
+        data: sessionData.data,
       },
     }
   );
+  const newest = await sessions.findOne({ sessionId: sessionData.sessionId });
+  console.log(newest.data.cases);
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
