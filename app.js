@@ -31,9 +31,7 @@ app.post(
     const user = context === 0 ? req.body.member.user : req.body.user;
     const userData = await users.findOne({ userId: user.id });
 
-    if (!userData) return console.log("Account information!");
-
-    let sessionData = await sessions.findOne({ sessionId: userData.session });
+    const sessionData = await sessions.findOne({ sessionId: userData.session });
 
     const locationData = await locations.findOne({
       locationId: userData.location,
@@ -43,8 +41,6 @@ app.post(
       res.send({
         type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
       });
-
-      sessionData = await sessions.findOne({ sessionId: userData.session });
       const created = await sessions.create({
         command: data.name,
         token: req.body.token,
@@ -85,7 +81,7 @@ app.post(
         case "explore":
           await COMMANDS.explore(req, user, sessionId, {
             userData,
-            sessionData,
+            created,
             locationData,
           });
           break;

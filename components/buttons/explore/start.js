@@ -7,7 +7,6 @@ import { DiscordRequest } from "../../../utils.js";
 export async function start(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
   let { data } = sessionData;
-  console.log(sessionData);
   data.case = 0;
   data.rewards = [];
   await sessions.findOneAndUpdate(

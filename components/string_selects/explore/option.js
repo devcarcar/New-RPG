@@ -11,8 +11,8 @@ import { locations } from "../../../schemas/location.js";
 
 export async function option(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const data = session.data;
-  const explore = currentLocation.data.explore;
+  const data = sessionData.data;
+  const explore = locationData.data.explore;
   let found;
   for (let i = 0; i < explore.length; i++) {
     for (let j = 0; j < explore[i].options.length; j++) {
@@ -35,7 +35,7 @@ export async function option(req, user, formatted, options) {
   }
   await sessions.findOneAndUpdate(
     {
-      sessionId: session.sessionId,
+      sessionId: sessionData.sessionId,
     },
     {
       $set: {

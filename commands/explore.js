@@ -6,7 +6,8 @@ import { users } from "../schemas/user.js";
 import { locations } from "../schemas/location.js";
 
 export async function explore(req, user, sessionId, options) {
-  const { userData, sessionData, locationData } = options;
+  const { userData, created, locationData } = options;
+  const sessionData = created;
   const cases = sort(locationData.data.explore, 1);
   sessionData.data.cases = cases;
   await sessions.findOneAndUpdate(
@@ -20,7 +21,7 @@ export async function explore(req, user, sessionId, options) {
     }
   );
   const newest = await sessions.findOne({ sessionId: sessionData.sessionId });
-  console.log(newest.data.cases);
+  newest.data.cases;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
