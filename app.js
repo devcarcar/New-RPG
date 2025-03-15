@@ -31,8 +31,6 @@ app.post(
     const user = context === 0 ? req.body.member.user : req.body.user;
     const userData = await users.findOne({ userId: user.id });
 
-    const sessionData = await sessions.findOne({ sessionId: userData.session });
-
     const locationData = await locations.findOne({
       locationId: userData.location,
     });
@@ -67,14 +65,14 @@ app.post(
         case "gather":
           await COMMANDS.gather(req, user, sessionId, {
             userData,
-            sessionData,
+            created,
             locationData,
           });
           break;
         case "hunt":
           await COMMANDS.hunt(req, user, sessionId, {
             userData,
-            sessionData,
+            created,
             locationData,
           });
           break;
@@ -88,14 +86,14 @@ app.post(
         case "guild":
           await COMMANDS.guild(req, user, sessionId, {
             userData,
-            sessionData,
+            created,
             locationData,
           });
           break;
         case "item":
           await COMMANDS.item(req, user, sessionId, {
             userData,
-            sessionData,
+            created,
             locationData,
           });
           break;
@@ -107,6 +105,10 @@ app.post(
     if (type === InteractionType.MESSAGE_COMPONENT) {
       res.send({
         type: InteractionResponseType.DEFERRED_UPDATE_MESSAGE,
+      });
+
+      const sessionData = await sessions.findOne({
+        sessionId: userData.session,
       });
 
       const { data } = req.body;

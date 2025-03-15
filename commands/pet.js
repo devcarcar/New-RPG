@@ -4,7 +4,7 @@ import { MessageComponentTypes } from "discord-interactions";
 import { users } from "../schemas/user.js";
 
 export async function pet(req, user, sessionId, options) {
-  const { userData, sessionData, locationData } = options;
+  const { userData, created, locationData } = options;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {

@@ -8,21 +8,21 @@ import { locations } from "../../../schemas/location.js";
 export async function movement(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
   const movement = parseInt(formatted.value[1]);
-  const last = session.data.log[session.data.log.length - 1];
+  const last = sessionData.data.log[sessionData.data.log.length - 1];
   last.user1.movement = movement;
-  const log = session.data.log;
-  log[session.data.length - 1] = last;
-  const data = session.data;
+  const log = sessionData.data.log;
+  log[sessionData.data.length - 1] = last;
+  const data = sessionData.data;
   data.log = log;
   await sessions.findOneAndUpdate(
-    { sessionId: session.sessionId },
+    { sessionId: sessionData.sessionId },
     {
       $set: {
         data: data,
       },
     }
   );
-  const news = await sessions.findOne({ sessionId: session.sessionId });
+  const news = await sessions.findOne({ sessionId: sessionData.sessionId });
   const shortcut = news.data.log[news.data.log.length - 1].user1;
   const action =
     shortcut.action != null
@@ -32,7 +32,7 @@ export async function movement(req, user, formatted, options) {
     shortcut.movement != null && shortcut.action != null ? false : true;
 
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
       method: "PATCH",
       body: {

@@ -7,20 +7,19 @@ import { locations } from "../schemas/location.js";
 
 export async function explore(req, user, sessionId, options) {
   const { userData, created, locationData } = options;
-  const sessionData = created;
   const cases = sort(locationData.data.explore, 1);
-  sessionData.data.cases = cases;
+  created.data.cases = cases;
   await sessions.findOneAndUpdate(
     {
-      sessionId: sessionData.sessionId,
+      sessionId: created.sessionId,
     },
     {
       $set: {
-        data: sessionData.data,
+        data: created.data,
       },
     }
   );
-  const newest = await sessions.findOne({ sessionId: sessionData.sessionId });
+  const newest = await sessions.findOne({ sessionId: created.sessionId });
   newest.data.cases;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,

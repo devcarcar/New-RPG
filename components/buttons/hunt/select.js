@@ -6,7 +6,7 @@ import { sessions } from "../../../schemas/session.js";
 
 export async function select(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const last = session.data.log[session.data.log.length - 1].user1;
+  const last = sessionData.data.log[sessionData.data.log.length - 1].user1;
   const action =
     last.action != null
       ? "Your action is " + last.action
@@ -16,8 +16,8 @@ export async function select(req, user, formatted, options) {
       ? "Your movement is " + last.movement
       : "You haven't selected your movement yet";
   let opt = [];
-  let x = session.data.user1.x;
-  let y = session.data.user1.y;
+  let x = sessionData.data.user1.x;
+  let y = sessionData.data.user1.y;
   if (x > 1)
     opt.push({
       label: "Left",

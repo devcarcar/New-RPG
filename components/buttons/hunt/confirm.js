@@ -50,15 +50,15 @@ export async function confirm(req, user, formatted, options) {
     { sessionId: userData.session },
     {
       $set: {
-        data: session.data,
+        data: sessionData.data,
       },
     }
   );
-  const updated = await sessions.findOne({ sessionId: userData.sessionData });
+  const updated = await sessions.findOne({ sessionId: userData.session });
   const data = updated.data;
 
   await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
       method: "DELETE",
     }
