@@ -110,7 +110,6 @@ app.post(
       const sessionData = await sessions.findOne({
         sessionId: userData.session,
       });
-
       const { data } = req.body;
       const formatted =
         data.component_type === MessageComponentTypes.BUTTON
@@ -183,6 +182,12 @@ app.post(
               });
             } else if (formatted[1] === "confirm") {
               await COMPONENTS.HUNT.confirm(req, user, formatted, {
+                userData,
+                sessionData,
+                locationData,
+              });
+            } else if (formatted[1] === "next") {
+              await COMPONENTS.HUNT.next(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,

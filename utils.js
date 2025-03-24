@@ -24,7 +24,8 @@ export function questComplete() {
   if (constant) return true;
   else return false;
 }
-export const Direction = {
+export const Movement = {
+  NO_MOVEMENT: 0,
   LEFT: 1,
   DOWN: 2,
   RIGHT: 3,
@@ -39,80 +40,69 @@ export function move(x1, y1, x2, y2) {
   let newY = y2;
   if (Math.abs(distanceX) >= Math.abs(distanceY)) {
     if (distanceX > 0) {
-      return Direction.LEFT;
+      return Movement.LEFT;
     } else if (distanceX < 0) {
-      return Direction.RIGHT;
+      return Movement.RIGHT;
     }
   } else {
     if (distanceY > 0) {
-      return Direction.DOWN;
+      return Movement.DOWN;
     } else if (distanceY < 0) {
-      return Direction.UP;
+      return Movement.UP;
     }
   }
 }
 
-export function movementHandler(movement1, movement2, user1, user2) {
+export function movementHandler(movement1, user1, user2) {
   switch (movement1) {
-    case Direction.UP:
-      if (user1.y + 1 != user2.y || user1.x != user2.x) user1.y++;
+    case Movement.DOWN:
+      if (user1.y - 1 !== user2.y || user1.x !== user2.x) user1.y--;
       break;
-    case Direction.DOWN:
-      if (user1.y - 1 != user2.y || user1.x != user2.x) user1.y--;
+    case Movement.LEFT:
+      if (user1.x - 1 !== user2.x || user1.y !== user2.y) user1.x--;
       break;
-    case Direction.LEFT:
-      if (user1.x - 1 != user2.x || user1.y != user2.y) user1.x--;
+    case Movement.UP:
+      if (user1.y + 1 !== user2.y || user1.x !== user2.x) user1.y++;
       break;
-    case Direction.RIGHT:
-      if (user1.x + 1 != user2.x || user1.y != user2.y) user1.x++;
-      break;
-    default:
-      break;
-  }
-  switch (movement2) {
-    case Direction.UP:
-      if (user1.y != user2.y + 1 || user1.x != user2.x) user2.y++;
-      break;
-    case Direction.DOWN:
-      if (user1.y != user2.y - 1 || user1.x != user2.x) user2.y--;
-      break;
-    case Direction.LEFT:
-      if (user1.x != user2.x - 1 || user1.y != user2.y) user2.x--;
-      break;
-    case Direction.RIGHT:
-      if (user1.x != user2.x + 1 || user1.y != user2.y) user2.x++;
+    case Movement.RIGHT:
+      if (user1.x + 1 !== user2.x || user1.y !== user2.y) user1.x++;
       break;
     default:
       break;
   }
-  return {
-    user1,
-    user2,
-  };
+  return user1;
 }
-export function actionHandler(action1, action2, user1, user2) {
+export function actionHandler(action1, user1, user2) {
+  let text;
   switch (action1) {
     case "attack":
-      user2.health -= user1.attack;
+      if (Math.abs(user1.x - user2.x) + Math.abs(user1.y - user2.y) <= 1) {
+        text = `${user1.name} dealt ${user1.attack} damage to ${user2.name}!\n`;
+        user2.health -= user1.attack;
+      } else {
+        text = `${user1.name} didn't do any damage due to out of reach\n`;
+      }
       break;
   }
 
   return {
     user1,
-    user2,
+    text,
   };
 }
 
 export function parseMovement(movement) {
   switch (movement) {
-    case Direction.DOWN:
+    case Movement.DOWN:
       return "down";
-    case Direction.UP:
+    case Movement.UP:
       return "up";
-    case Direction.LEFT:
+    case Movement.LEFT:
       return "left";
-    case Direction.RIGHT:
+    case Movement.RIGHT:
       return "right";
+    case Movement.NO_MOVEMENT:
+      return "no movement";
   }
 }
 

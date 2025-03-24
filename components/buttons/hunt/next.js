@@ -12,29 +12,30 @@ import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 import { locations } from "../../../schemas/location.js";
 
-export async function confirm(req, user, formatted, options) {
+export async function next(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
   const last = sessionData.data.log[sessionData.data.log.length - 1];
   const turn = sessionData.data.log.length;
-  let { user2 } = sessionData.data;
-  let user1 = movementHandler(
+  let { user1 } = sessionData.data;
+  let user2 = movementHandler(
     last.data.movement,
-    sessionData.data.user1,
-    sessionData.data.user2
+    sessionData.data.user2,
+    sessionData.data.user1
   );
+
   let action = actionHandler(
     last.data.action,
-    sessionData.data.user1,
-    sessionData.data.user2
+    sessionData.data.user2,
+    sessionData.data.user1
   );
-  user1 = action.user1;
+  user2 = action.user1;
 
   sessionData.data.log.push({
     turn: turn + 1,
-    user: 2,
+    user: 1,
     data: {
-      movement: move(user1.x, user1.y, user2.x, user2.y),
-      action: "attack",
+      movement: undefined,
+      action: undefined,
     },
   });
   sessionData.data.user1 = user1;
@@ -48,14 +49,7 @@ export async function confirm(req, user, formatted, options) {
     }
   );
   const updated = await sessions.findOne({ sessionId: userData.session });
-  const data = updated.data;
-  await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
-    {
-      method: "DELETE",
-    }
-  );
-  if (updated.data.user2.health <= 0)
+  if (updated.data.user1.health <= 0)
     return DiscordRequest(
       `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
       {
@@ -63,14 +57,15 @@ export async function confirm(req, user, formatted, options) {
         body: {
           embeds: [
             {
-              title: "Victory!",
-              description: "You are rewarded with:",
+              title: "Defeat!",
+              description: "You get nothing",
             },
           ],
           components: [],
         },
       }
     );
+  const data = updated.data;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
@@ -80,7 +75,7 @@ export async function confirm(req, user, formatted, options) {
           {
             title: "You are in a battle!",
             description:
-              `You moved\n${action.text}` +
+              `The enemy moved\n${action.text}\n` +
               getGrid(data.user1.x, data.user1.y, data.user2.x, data.user2.y),
             fields: [
               {
@@ -102,8 +97,8 @@ export async function confirm(req, user, formatted, options) {
             components: [
               {
                 type: MessageComponentTypes.BUTTON,
-                custom_id: `hunt_next_${formatted[2]}`,
-                label: "Next",
+                custom_id: `hunt_select_${formatted[2]}`,
+                label: "Select",
                 style: ButtonStyleTypes.SECONDARY,
               },
             ],

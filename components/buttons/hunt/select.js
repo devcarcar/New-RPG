@@ -1,12 +1,12 @@
 import "dotenv/config";
-import { DiscordRequest, Direction } from "../../../utils.js";
+import { DiscordRequest, Movement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
 
 export async function select(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const last = sessionData.data.log[sessionData.data.log.length - 1].user1;
+  const last = sessionData.data.log[sessionData.data.log.length - 1].data;
   const action =
     last.action != null
       ? "Your action is " + last.action
@@ -15,33 +15,40 @@ export async function select(req, user, formatted, options) {
     last.movement != null
       ? "Your movement is " + last.movement
       : "You haven't selected your movement yet";
-  let opt = [];
+  let opt = [
+    {
+      label: "No movement",
+      value: `hunt_${Movement.NO_MOVEMENT}_${formatted[2]}`,
+      description: "No movement",
+    },
+  ];
   let x = sessionData.data.user1.x;
   let y = sessionData.data.user1.y;
   if (x > 1)
     opt.push({
       label: "Left",
-      value: `hunt_${Direction.LEFT}_${formatted[2]}`,
+      value: `hunt_${Movement.LEFT}_${formatted[2]}`,
       description: "Move left",
     });
   if (x < 5)
     opt.push({
       label: "Right",
-      value: `hunt_${Direction.RIGHT}_${formatted[2]}`,
+      value: `hunt_${Movement.RIGHT}_${formatted[2]}`,
       description: "Move right",
     });
   if (y > 1)
     opt.push({
       label: "Down",
-      value: `hunt_${Direction.DOWN}_${formatted[2]}`,
+      value: `hunt_${Movement.DOWN}_${formatted[2]}`,
       description: "Move down",
     });
   if (y < 5)
     opt.push({
       label: "Up",
-      value: `hunt_${Direction.UP}_${formatted[2]}`,
+      value: `hunt_${Movement.UP}_${formatted[2]}`,
       description: "Move up",
     });
+
   await DiscordRequest(`/webhooks/${process.env.APP_ID}/${sessionData.token}`, {
     method: "POST",
     body: {
@@ -83,6 +90,11 @@ export async function select(req, user, formatted, options) {
                   label: "Attack",
                   value: `hunt_attack_${formatted[2]}`,
                   description: "Attack!",
+                },
+                {
+                  label: "No Action",
+                  value: `hunt_no_${formatted[2]}`,
+                  description: "No Action",
                 },
               ],
             },

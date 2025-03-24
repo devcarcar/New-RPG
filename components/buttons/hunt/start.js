@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest, getGrid } from "../../../utils.js";
+import { Movement, DiscordRequest, getGrid } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -7,50 +7,9 @@ import { move } from "../../../utils.js";
 
 export async function start(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: formatted[2],
-    },
-    {
-      $set: {
-        data: {
-          log: [
-            {
-              turn: 1,
-              user1: {
-                movement: null,
-                action: null,
-              },
-              user2: {
-                movement: move(1, 1, 5, 5),
-                action: "attack",
-              },
-            },
-          ],
-          user1: {
-            type: "player",
-            id: user.id,
-            x: 1,
-            y: 1,
-            health: 25,
-            attack: 10,
-            defense: 5,
-          },
-          user2: {
-            type: "mob",
-            id: formatted[1],
-            x: 5,
-            y: 5,
-            health: 25,
-            attack: 10,
-            defense: 5,
-          },
-        },
-      },
-    }
-  );
   const updated = await sessions.findOne({ sessionId: formatted[2] });
   const data = updated.data;
+  const { user1, user2 } = data;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
@@ -65,6 +24,18 @@ export async function start(req, user, formatted, options) {
               data.user2.x,
               data.user2.y
             ),
+            fields: [
+              {
+                name: user1.name,
+                value: `Health: ${user1.health}\nAttack: ${user1.attack}\nDefense: ${user1.defense}`,
+                inline: true,
+              },
+              {
+                name: user2.name,
+                value: `Health: ${user2.health}\nAttack: ${user2.attack}\nDefense: ${user2.defense}`,
+                inline: true,
+              },
+            ],
           },
         ],
         components: [

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Direction, DiscordRequest, parseMovement } from "../../../utils.js";
+import { Movement, DiscordRequest, parseMovement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest, Direction, parseMovement } from "../../../utils.js";
+import { DiscordRequest, Movement, parseMovement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -9,7 +9,7 @@ export async function movement(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
   const movement = parseInt(formatted.value[1]);
   const last = sessionData.data.log[sessionData.data.log.length - 1];
-  last.user1.movement = movement;
+  last.data.movement = movement;
   const log = sessionData.data.log;
   log[sessionData.data.length - 1] = last;
   const data = sessionData.data;
@@ -22,8 +22,41 @@ export async function movement(req, user, formatted, options) {
       },
     }
   );
+  let opt = [
+    {
+      label: "No movement",
+      value: `hunt_${Movement.NO_MOVEMENT}_${formatted[2]}`,
+      description: "No movement",
+    },
+  ];
+  let x = sessionData.data.user1.x;
+  let y = sessionData.data.user1.y;
+  if (x > 1)
+    opt.push({
+      label: "Left",
+      value: `hunt_${Movement.LEFT}_${formatted[2]}`,
+      description: "Move left",
+    });
+  if (x < 5)
+    opt.push({
+      label: "Right",
+      value: `hunt_${Movement.RIGHT}_${formatted[2]}`,
+      description: "Move right",
+    });
+  if (y > 1)
+    opt.push({
+      label: "Down",
+      value: `hunt_${Movement.DOWN}_${formatted[2]}`,
+      description: "Move down",
+    });
+  if (y < 5)
+    opt.push({
+      label: "Up",
+      value: `hunt_${Movement.UP}_${formatted[2]}`,
+      description: "Move up",
+    });
   const news = await sessions.findOne({ sessionId: sessionData.sessionId });
-  const shortcut = news.data.log[news.data.log.length - 1].user1;
+  const shortcut = news.data.log[news.data.log.length - 1].data;
   const action =
     shortcut.action != null
       ? "Your action is " + shortcut.action
@@ -54,28 +87,7 @@ export async function movement(req, user, formatted, options) {
                 placeholder: "Select a movement",
                 min_value: 1,
                 max_value: 1,
-                options: [
-                  {
-                    label: "Up",
-                    value: `hunt_${Direction.UP}_${formatted.value[2]}`,
-                    description: "Move up",
-                  },
-                  {
-                    label: "Down",
-                    value: `hunt_${Direction.DOWN}_${formatted.value[2]}`,
-                    description: "Move down",
-                  },
-                  {
-                    label: "Left",
-                    value: `hunt_${Direction.LEFT}_${formatted.value[2]}`,
-                    description: "Move left",
-                  },
-                  {
-                    label: "Right",
-                    value: `hunt_${Direction.RIGHT}_${formatted.value[2]}`,
-                    description: "Move right",
-                  },
-                ],
+                options: opt,
               },
             ],
           },
