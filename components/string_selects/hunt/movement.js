@@ -30,7 +30,7 @@ export async function movement(req, user, formatted, options) {
   let opt = [
     {
       label: "No movement",
-      value: `hunt_${Movement.NO_MOVEMENT}_${formatted[2]}`,
+      value: `hunt_${Movement.NO_MOVEMENT}_${formatted.value[2]}`,
       description: "No movement",
     },
   ];
@@ -39,25 +39,25 @@ export async function movement(req, user, formatted, options) {
   if (x > 1)
     opt.push({
       label: "Left",
-      value: `hunt_${Movement.LEFT}_${formatted[2]}`,
+      value: `hunt_${Movement.LEFT}_${formatted.value[2]}`,
       description: "Move left",
     });
   if (x < 5)
     opt.push({
       label: "Right",
-      value: `hunt_${Movement.RIGHT}_${formatted[2]}`,
+      value: `hunt_${Movement.RIGHT}_${formatted.value[2]}`,
       description: "Move right",
     });
   if (y > 1)
     opt.push({
       label: "Down",
-      value: `hunt_${Movement.DOWN}_${formatted[2]}`,
+      value: `hunt_${Movement.DOWN}_${formatted.value[2]}`,
       description: "Move down",
     });
   if (y < 5)
     opt.push({
       label: "Up",
-      value: `hunt_${Movement.UP}_${formatted[2]}`,
+      value: `hunt_${Movement.UP}_${formatted.value[2]}`,
       description: "Move up",
     });
   const news = await sessions.findOne({ sessionId: sessionData.sessionId });

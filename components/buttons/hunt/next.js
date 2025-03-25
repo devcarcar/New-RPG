@@ -79,7 +79,7 @@ export async function next(req, user, formatted, options) {
                 inline: true,
               },
               {
-                name: user2.name,
+                name: sessionData.data.user2.name,
                 value: `Health: ${sessionData.data.user2.health}\nAttack: ${sessionData.data.user2.attack}\nDefense: ${sessionData.data.user2.defense}`,
                 inline: true,
               },

@@ -120,7 +120,7 @@ app.post(
           formatted.value[2] != userData.session ||
           new Date(sessionData.expireAt).getTime() < Date.now()
         )
-          return console.log(formatted.value[2], userData.session);
+          return console.log(formatted, userData.session);
         switch (formatted.value[0]) {
           case "hunt":
             if (formatted.custom_id === "movement_bar") {
@@ -165,7 +165,7 @@ app.post(
           formatted[2] != userData.session ||
           new Date(sessionData.expireAt).getTime() < Date.now()
         )
-          return console.log(formatted[2], userData.session);
+          return console.log(formatted, userData.session);
         switch (formatted[0]) {
           case "hunt":
             if (formatted[1] === "start") {
