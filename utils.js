@@ -31,6 +31,10 @@ export const Movement = {
   RIGHT: 3,
   UP: 4,
 };
+export const Action = {
+  NO_ACTION: 0,
+  ATTACK: 1,
+};
 export function move(x1, y1, x2, y2) {
   const manhattanDistance = Math.abs(x2 - x1) + Math.abs(y2 - y1);
   if (manhattanDistance === 1) return 0;
@@ -53,42 +57,47 @@ export function move(x1, y1, x2, y2) {
   }
 }
 
-export function movementHandler(movement1, user1, user2) {
-  switch (movement1) {
+export function movementHandler(movement, user, text) {
+  text += "You moved ";
+  switch (movement) {
     case Movement.DOWN:
-      if (user1.y - 1 !== user2.y || user1.x !== user2.x) user1.y--;
+      user.y--;
+      text += "down";
       break;
     case Movement.LEFT:
-      if (user1.x - 1 !== user2.x || user1.y !== user2.y) user1.x--;
+      user.x--;
+      text += "left";
       break;
     case Movement.UP:
-      if (user1.y + 1 !== user2.y || user1.x !== user2.x) user1.y++;
+      user.y++;
+      text += "up";
       break;
     case Movement.RIGHT:
-      if (user1.x + 1 !== user2.x || user1.y !== user2.y) user1.x++;
+      user.x++;
+      text += "right";
       break;
-    default:
+    case Movement.NO_MOVEMENT:
+      text = "You chose to not move";
       break;
   }
-  return user1;
+  text += "\n";
 }
-export function actionHandler(action1, user1, user2) {
-  let text;
-  switch (action1) {
-    case "attack":
+export function actionHandler(action, user1, user2, text) {
+  switch (parseInt(action)) {
+    case Action.NO_ACTION:
+      text += `${user1.name} selected to not do anything`;
+      break;
+    case Action.ATTACK:
       if (Math.abs(user1.x - user2.x) + Math.abs(user1.y - user2.y) <= 1) {
-        text = `${user1.name} dealt ${user1.attack} damage to ${user2.name}!\n`;
+        text += `${user1.name} dealt ${user1.attack} damage to ${user2.name}!`;
         user2.health -= user1.attack;
       } else {
-        text = `${user1.name} didn't do any damage due to out of reach\n`;
+        text += `${user1.name} didn't do any damage due to out of reach`;
       }
       break;
   }
 
-  return {
-    user1,
-    text,
-  };
+  text += "\n";
 }
 
 export function parseMovement(movement) {

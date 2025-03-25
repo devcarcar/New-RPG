@@ -17,27 +17,29 @@ export async function confirm(req, user, formatted, options) {
   const last = sessionData.data.log[sessionData.data.log.length - 1];
   const turn = sessionData.data.log.length;
   let { user2 } = sessionData.data;
-  let user1 = movementHandler(
-    last.data.movement,
-    sessionData.data.user1,
-    sessionData.data.user2
-  );
-  let action = actionHandler(
+  let text = "";
+  movementHandler(last.data.movement, sessionData.data.user1, text);
+  actionHandler(
     last.data.action,
     sessionData.data.user1,
-    sessionData.data.user2
+    sessionData.data.user2,
+    text
   );
-  user1 = action.user1;
 
   sessionData.data.log.push({
     turn: turn + 1,
     user: 2,
     data: {
-      movement: move(user1.x, user1.y, user2.x, user2.y),
+      movement: move(
+        sessionData.data.user1.x,
+        sessionData.data.user1.y,
+        user2.x,
+        user2.y
+      ),
       action: "attack",
     },
   });
-  sessionData.data.user1 = user1;
+
   sessionData.data.user2 = user2;
   await sessions.findOneAndUpdate(
     { sessionId: userData.session },
@@ -48,7 +50,7 @@ export async function confirm(req, user, formatted, options) {
     }
   );
   const updated = await sessions.findOne({ sessionId: userData.session });
-  const data = updated.data;
+  const { data } = updated;
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
     {
@@ -80,12 +82,12 @@ export async function confirm(req, user, formatted, options) {
           {
             title: "You are in a battle!",
             description:
-              `You moved\n${action.text}` +
+              text +
               getGrid(data.user1.x, data.user1.y, data.user2.x, data.user2.y),
             fields: [
               {
-                name: user1.name,
-                value: `Health: ${user1.health}\nAttack: ${user1.attack}\nDefense: ${user1.defense}`,
+                name: data.user1.name,
+                value: `Health: ${data.user1.health}\nAttack: ${data.user1.attack}\nDefense: ${data.user1.defense}`,
                 inline: true,
               },
               {

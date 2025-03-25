@@ -17,18 +17,14 @@ export async function next(req, user, formatted, options) {
   const last = sessionData.data.log[sessionData.data.log.length - 1];
   const turn = sessionData.data.log.length;
   let { user1 } = sessionData.data;
-  let user2 = movementHandler(
-    last.data.movement,
-    sessionData.data.user2,
-    sessionData.data.user1
-  );
-
-  let action = actionHandler(
+  let text = "";
+  movementHandler(last.data.movement, sessionData.data.user2, text);
+  actionHandler(
     last.data.action,
     sessionData.data.user2,
-    sessionData.data.user1
+    sessionData.data.user1,
+    text
   );
-  user2 = action.user1;
 
   sessionData.data.log.push({
     turn: turn + 1,
@@ -38,8 +34,7 @@ export async function next(req, user, formatted, options) {
       action: undefined,
     },
   });
-  sessionData.data.user1 = user1;
-  sessionData.data.user2 = user2;
+
   await sessions.findOneAndUpdate(
     { sessionId: userData.session },
     {
@@ -75,7 +70,7 @@ export async function next(req, user, formatted, options) {
           {
             title: "You are in a battle!",
             description:
-              `The enemy moved\n${action.text}\n` +
+              text +
               getGrid(data.user1.x, data.user1.y, data.user2.x, data.user2.y),
             fields: [
               {
@@ -85,7 +80,7 @@ export async function next(req, user, formatted, options) {
               },
               {
                 name: user2.name,
-                value: `Health: ${user2.health}\nAttack: ${user2.attack}\nDefense: ${user2.defense}`,
+                value: `Health: ${sessionData.data.user2.health}\nAttack: ${sessionData.data.user2.attack}\nDefense: ${sessionData.data.user2.defense}`,
                 inline: true,
               },
             ],

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { DiscordRequest, Movement } from "../../../utils.js";
+import { Action, DiscordRequest, Movement } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -87,14 +87,14 @@ export async function select(req, user, formatted, options) {
               max_value: 1,
               options: [
                 {
-                  label: "Attack",
-                  value: `hunt_attack_${formatted[2]}`,
-                  description: "Attack!",
+                  label: "No Action",
+                  value: `hunt_${Action.NO_ACTION}_${formatted[2]}`,
+                  description: "No Action",
                 },
                 {
-                  label: "No Action",
-                  value: `hunt_no_${formatted[2]}`,
-                  description: "No Action",
+                  label: "Attack",
+                  value: `hunt_${Action.ATTACK}_${formatted[2]}`,
+                  description: "Attack!",
                 },
               ],
             },

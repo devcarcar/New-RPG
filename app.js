@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import { users } from "./schemas/user.js";
 import { sessions } from "./schemas/session.js";
 import { locations } from "./schemas/location.js";
-import { CaseType, ExploreOutcomeType } from "./utils.js";
+import { Action, CaseType, ExploreOutcomeType, Movement } from "./utils.js";
 import { MessageComponentTypes } from "discord-interactions";
 import { COMMANDS } from "./command.js";
 import { COMPONENTS } from "./components.js";
@@ -224,6 +224,7 @@ mongoose
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
 });
+
 /*
 await locations.create({
   locationId: "village",

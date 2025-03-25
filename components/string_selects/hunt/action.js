@@ -1,5 +1,10 @@
 import "dotenv/config";
-import { Movement, DiscordRequest, parseMovement } from "../../../utils.js";
+import {
+  Movement,
+  DiscordRequest,
+  parseMovement,
+  Action,
+} from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
 import { sessions } from "../../../schemas/session.js";
@@ -100,8 +105,13 @@ export async function action(req, user, formatted, options) {
                 max_value: 1,
                 options: [
                   {
+                    label: "No Action",
+                    value: `hunt_${Action.NO_ACTION}_${formatted.value[2]}`,
+                    description: "No action",
+                  },
+                  {
                     label: "Attack",
-                    value: `hunt_attack_${formatted.value[2]}`,
+                    value: `hunt_${Action.ATTACK}_${formatted.value[2]}`,
                     description: "Attack!",
                   },
                 ],
