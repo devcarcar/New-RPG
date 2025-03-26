@@ -2,7 +2,6 @@ import "dotenv/config";
 import { DiscordRequest } from "../../../utils.js";
 import { users } from "../../../schemas/user.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { time } from "discord.js";
 const arr = [
   {
     id: "appletreegrove",
@@ -16,9 +15,10 @@ const arr = [
   },
 ];
 
-export async function start(req, user, formatted, options) {
+export async function choose(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const found = arr.find((i) => i.id === formatted[1]);
+  const found = arr.find((i) => i.id === formatted.value[1]);
+
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
@@ -27,14 +27,22 @@ export async function start(req, user, formatted, options) {
         embeds: [
           {
             title: "Gathering",
-            description: `You started gathering @${found.name} for ${
-              found.drop.name
-            }\nYou will be ready in <t:${
-              Math.floor(Date.now() / 1000) + found.time
-            }:R>`,
+            description: found.description,
           },
         ],
-        components: [],
+        components: [
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
+                type: MessageComponentTypes.BUTTON,
+                custom_id: `gather_${found.id}_${formatted.value[2]}`,
+                label: "Start",
+                style: ButtonStyleTypes.SECONDARY,
+              },
+            ],
+          },
+        ],
       },
     }
   );

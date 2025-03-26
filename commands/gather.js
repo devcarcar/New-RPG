@@ -2,18 +2,27 @@ import "dotenv/config";
 import { DiscordRequest } from "../utils.js";
 import { MessageComponentTypes } from "discord-interactions";
 import { locations } from "../schemas/location.js";
+const arr = [
+  {
+    id: "appletreegrove",
+    name: "Apple Tree Grove",
+    description: "Drops apple",
+    drop: {
+      id: "apple",
+      name: "Apple",
+    },
+    time: 3 * 60,
+  },
+];
 
 export async function gather(req, user, sessionId, options) {
   const { userData, created, locationData } = options;
   let opt = [];
-  const currentLocation = await locations.findOne({
-    locationId: userData.Location,
-  });
-  currentLocation.data.gather.forEach((i) => {
+  arr.forEach((i) => {
     opt.push({
       label: i.name,
-      value: `gather_${i.name}_${sessionId}`,
-      description: i.drop,
+      value: `gather_${i.id}_${sessionId}`,
+      description: i.description,
     });
   });
   await DiscordRequest(

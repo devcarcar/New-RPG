@@ -115,6 +115,7 @@ app.post(
         data.component_type === MessageComponentTypes.BUTTON
           ? data.custom_id.split("_")
           : { custom_id: data.custom_id, value: data.values[0].split("_") };
+      console.log(formatted);
       if (data.component_type === MessageComponentTypes.STRING_SELECT) {
         if (
           formatted.value[2] != userData.session ||
@@ -122,6 +123,13 @@ app.post(
         )
           return console.log(formatted, userData.session);
         switch (formatted.value[0]) {
+          case "gather":
+            await COMPONENTS.GATHER.choose(req, user, formatted, {
+              userData,
+              sessionData,
+              locationData,
+            });
+            break;
           case "hunt":
             if (formatted.custom_id === "movement_bar") {
               await COMPONENTS.HUNT.movement(req, user, formatted, {
@@ -167,6 +175,13 @@ app.post(
         )
           return console.log(formatted, userData.session);
         switch (formatted[0]) {
+          case "gather":
+            await COMPONENTS.GATHER.start(req, user, formatted, {
+              userData,
+              sessionData,
+              locationData,
+            });
+            break;
           case "hunt":
             if (formatted[1] === "start") {
               await COMPONENTS.HUNT.start(req, user, formatted, {
