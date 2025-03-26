@@ -1,5 +1,6 @@
 import "dotenv/config";
 import {
+  ButtonStyleTypes,
   InteractionResponseType,
   InteractionType,
   verifyKeyMiddleware,
@@ -9,9 +10,20 @@ import mongoose from "mongoose";
 import { users } from "./schemas/user.js";
 import { sessions } from "./schemas/session.js";
 import { locations } from "./schemas/location.js";
-import { Action, CaseType, ExploreOutcomeType, Movement } from "./utils.js";
+
+import {
+  Action,
+  CaseType,
+  DefaultCommandResponse,
+  DefaultEmbed,
+  DefaultStringSelect,
+  EditMessage,
+  ExploreOutcomeType,
+  Movement,
+  sort,
+} from "./utils.js";
+
 import { MessageComponentTypes } from "discord-interactions";
-import { COMMANDS } from "./command.js";
 import { COMPONENTS } from "./components.js";
 
 const app = express();
@@ -64,39 +76,104 @@ app.post(
 
       switch (req.body.data.name) {
         case "gather":
-          await COMMANDS.gather(req, user, sessionId, {
-            userData,
-            created,
-            locationData,
+          let opt = [];
+          locationData.data.gather.forEach((i) => {
+            opt.push({
+              label: i.name,
+              value: `gather_${i.id}_${sessionId}`,
+              description: i.description,
+            });
           });
+          await DefaultCommandResponse(
+            req.body.token,
+            DefaultEmbed("Gathering", "Resource Gathering"),
+            DefaultStringSelect("gather_bar", opt)
+          );
+
           break;
         case "hunt":
-          await COMMANDS.hunt(req, user, sessionId, {
-            userData,
-            created,
-            locationData,
-          });
+          await DefaultCommandResponse(
+            req.body.token,
+            DefaultEmbed("Hunting", "Select a mob to attack"),
+            DefaultStringSelect("choose_mob", [
+              {
+                value: `hunt_goblin_${sessionId}`,
+                label: "Goblin",
+                description: "Goblin",
+              },
+            ])
+          );
           break;
         case "explore":
-          await COMMANDS.explore(req, user, sessionId, {
-            userData,
-            created,
-            locationData,
-          });
+          const cases = sort(locationData.data.explore, 1);
+          created.data.cases = cases;
+          await sessions.findOneAndUpdate(
+            {
+              sessionId: created.sessionId,
+            },
+            {
+              $set: {
+                data: created.data,
+              },
+            }
+          );
+          await DefaultCommandResponse(
+            req.body.token,
+            DefaultEmbed("Exploring", "Start exploring nearby locations"),
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  custom_id: `explore_start_${sessionId}`,
+                  label: "Start",
+                  style: ButtonStyleTypes.SECONDARY,
+                },
+              ],
+            }
+          );
           break;
         case "guild":
-          await COMMANDS.guild(req, user, sessionId, {
-            userData,
-            created,
-            locationData,
-          });
+          await DefaultCommandResponse(
+            req.body.token,
+            DefaultEmbed("Guild", "Guild Guild Guild"),
+            DefaultStringSelect("guild_select", [
+              {
+                label: "Guild Hall",
+                value: `guild_hall_${sessionId}`,
+                description: "View guild info and legacies",
+              },
+              {
+                label: "Members",
+                value: `guild_members_${sessionId}`,
+                description: "Check your guild members",
+              },
+              {
+                label: "Manage Members",
+                value: `guild_manage_${sessionId}`,
+                description:
+                  "Kick, demote, or promote members (Helpers and Leaders only)",
+              },
+              {
+                label: "Guild Raid",
+                value: `guild_raid_${sessionId}`,
+                description: "Check guild raid status and details",
+              },
+            ])
+          );
           break;
         case "item":
-          await COMMANDS.item(req, user, sessionId, {
-            userData,
-            created,
-            locationData,
-          });
+          await DefaultCommandResponse(
+            req.body.token,
+            DefaultEmbed("Item", "Find items"),
+            DefaultStringSelect("item_choose", [
+              {
+                value: `item_fish_${sessionId}`,
+                label: "Fish",
+                description: "Check fishes",
+              },
+            ])
+          );
           break;
         default:
           throw new Error("Unknown command " + req.body.data.name);
@@ -138,34 +215,54 @@ app.post(
             break;
           case "hunt":
             if (formatted.custom_id === "movement_bar") {
-              await COMPONENTS.HUNT.movement(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              await COMPONENTS.STRING_SELECTS.HUNT.movement(
+                req,
+                user,
+                formatted,
+                {
+                  userData,
+                  sessionData,
+                  locationData,
+                }
+              );
             } else if (formatted.custom_id === "action_bar") {
-              await COMPONENTS.HUNT.action(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              await COMPONENTS.STRING_SELECTS.HUNT.action(
+                req,
+                user,
+                formatted,
+                {
+                  userData,
+                  sessionData,
+                  locationData,
+                }
+              );
             } else {
-              await COMPONENTS.HUNT.choose(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              await COMPONENTS.STRING_SELECTS.HUNT.choose(
+                req,
+                user,
+                formatted,
+                {
+                  userData,
+                  sessionData,
+                  locationData,
+                }
+              );
             }
             break;
           case "explore":
-            await COMPONENTS.EXPLORE.option(req, user, formatted, {
-              userData,
-              sessionData,
-              locationData,
-            });
+            await COMPONENTS.STRING_SELECTS.EXPLORE.option(
+              req,
+              user,
+              formatted,
+              {
+                userData,
+                sessionData,
+                locationData,
+              }
+            );
             break;
           case "item":
-            await COMPONENTS.ITEM.choose(req, user, formatted, {
+            await COMPONENTS.STRING_SELECTS.ITEM.choose(req, user, formatted, {
               userData,
               sessionData,
               locationData,
@@ -182,33 +279,45 @@ app.post(
           return console.log(formatted, userData.session);
         switch (formatted[0]) {
           case "gather":
-            await COMPONENTS.GATHER.start(req, user, formatted, {
-              userData,
-              sessionData,
-              locationData,
-            });
+            const found = locationData.data.gather.find(
+              (i) => i.id === formatted[1]
+            );
+            await EditMessage(
+              req.body.token,
+              [
+                {
+                  title: "Gathering",
+                  description: `You started gathering @${found.name} for ${
+                    found.drop.name
+                  }\nYou will be ready in <t:${
+                    Math.floor(Date.now() / 1000) + found.time
+                  }:R>`,
+                },
+              ],
+              []
+            );
             break;
           case "hunt":
             if (formatted[1] === "start") {
-              await COMPONENTS.HUNT.start(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.start(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,
               });
             } else if (formatted[1] === "select") {
-              await COMPONENTS.HUNT.select(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.select(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,
               });
             } else if (formatted[1] === "confirm") {
-              await COMPONENTS.HUNT.confirm(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.confirm(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,
               });
             } else if (formatted[1] === "next") {
-              await COMPONENTS.HUNT.next(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.next(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,
@@ -217,13 +326,13 @@ app.post(
             break;
           case "explore":
             if (formatted[1] === "start") {
-              await COMPONENTS.EXPLORE.start(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.start(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,
               });
             } else {
-              await COMPONENTS.EXPLORE.next(req, user, formatted, {
+              await COMPONENTS.BUTTONS.HUNT.next(req, user, formatted, {
                 userData,
                 sessionData,
                 locationData,

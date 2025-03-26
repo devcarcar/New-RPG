@@ -1,22 +1,25 @@
+import { MessageComponentTypes } from "discord-interactions";
+import { ComponentType } from "discord.js";
 import "dotenv/config";
 export async function DiscordRequest(endpoint, options) {
   const url = "https://discord.com/api/v10/" + endpoint;
   if (options.body) options.body = JSON.stringify(options.body);
-  try {
-    await fetch(url, {
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      ...options,
-    });
-    return res;
-  } catch (error) {
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+      "Content-Type": "application/json; charset=UTF-8",
+      "User-Agent":
+        "DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)",
+    },
+    ...options,
+  });
+  if (!res.ok) {
     const data = await res.json();
+    console.log(res.status);
     throw new Error(JSON.stringify(data));
   }
+  return res;
 }
-
 export function questComplete() {
   let constant;
   if (constant) return true;
@@ -147,23 +150,73 @@ export const CaseType = {
   COMBAT: 1,
 };
 
-export async function DefaultCommandResponse(token, embed, components) {
-  await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+export async function DefaultCommandResponse(token, embeds, components) {
+  const res = await fetch(
+    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
     {
       method: "PATCH",
-      body: {
-        embed,
-        components,
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        "Content-Type": "application/json; charset=UTF-8",
+        "User-Agent":
+          "DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)",
       },
+      body: JSON.stringify({
+        embeds: [embeds],
+        components: [components],
+      }),
     }
   );
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(res.status);
+    throw new Error(JSON.stringify(data));
+  }
+}
+export async function EditMessage(token, embeds, components) {
+  const res = await fetch(
+    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        "Content-Type": "application/json; charset=UTF-8",
+        "User-Agent":
+          "DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)",
+      },
+      body: JSON.stringify({
+        embeds: embeds,
+        components: components,
+      }),
+    }
+  );
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(res.status);
+    throw new Error(JSON.stringify(data));
+  }
 }
 
-export async function DefaultEmbed(title, description) {
+export function DefaultEmbed(title, description) {
   return {
     title: title,
     description: description,
+  };
+}
+
+export function DefaultStringSelect(id, opt) {
+  return {
+    type: MessageComponentTypes.ACTION_ROW,
+    components: [
+      {
+        type: MessageComponentTypes.STRING_SELECT,
+        custom_id: id,
+        min_values: 1,
+        max_values: 1,
+        placeholder: "Select a resource gathering method",
+        options: opt,
+      },
+    ],
   };
 }
 
