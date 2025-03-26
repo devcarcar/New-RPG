@@ -30,10 +30,11 @@ app.post(
     const context = req.body.context;
     const user = context === 0 ? req.body.member.user : req.body.user;
     const userData = await users.findOne({ userId: user.id });
-
+    if (!userData) throw new Error("no user");
     const locationData = await locations.findOne({
       locationId: userData.location,
     });
+    if (!locationData) throw new Error("no location");
 
     if (type === InteractionType.APPLICATION_COMMAND) {
       res.send({
@@ -110,12 +111,12 @@ app.post(
       const sessionData = await sessions.findOne({
         sessionId: userData.session,
       });
+      if (!sessionData) throw new Error("session error");
       const { data } = req.body;
       const formatted =
         data.component_type === MessageComponentTypes.BUTTON
           ? data.custom_id.split("_")
           : { custom_id: data.custom_id, value: data.values[0].split("_") };
-      console.log(formatted);
       if (data.component_type === MessageComponentTypes.STRING_SELECT) {
         if (
           formatted.value[2] != userData.session ||
@@ -244,6 +245,18 @@ app.listen(PORT, () => {
 await locations.create({
   locationId: "village",
   data: {
+    gather: [
+      {
+        id: "appletreegrove",
+        name: "Apple Tree Grove",
+        description: "Drops apple",
+        drop: {
+          id: "apple",
+          name: "Apple",
+        },
+        time: 3 * 60,
+      },
+    ],
     hunt: [
       {
         id: "goblin",

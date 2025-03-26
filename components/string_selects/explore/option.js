@@ -33,16 +33,21 @@ export async function option(req, user, formatted, options) {
     default:
       break;
   }
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: sessionData.sessionId,
-    },
-    {
-      $set: {
-        data: data,
+  try {
+    await sessions.findOneAndUpdate(
+      {
+        sessionId: sessionData.sessionId,
       },
-    }
-  );
+      {
+        $set: {
+          data: data,
+        },
+      }
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
+
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {

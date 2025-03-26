@@ -3,22 +3,10 @@ import { DiscordRequest } from "../../../utils.js";
 import { users } from "../../../schemas/user.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { time } from "discord.js";
-const arr = [
-  {
-    id: "appletreegrove",
-    name: "Apple Tree Grove",
-    description: "Drops apple",
-    drop: {
-      id: "apple",
-      name: "Apple",
-    },
-    time: 3 * 60,
-  },
-];
 
 export async function start(req, user, formatted, options) {
   const { userData, sessionData, locationData } = options;
-  const found = arr.find((i) => i.id === formatted[1]);
+  const found = locationData.data.gather.find((i) => i.id === formatted[1]);
   await DiscordRequest(
     `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
     {
