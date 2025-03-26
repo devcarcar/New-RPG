@@ -125,11 +125,16 @@ app.post(
           return console.log(formatted, userData.session);
         switch (formatted.value[0]) {
           case "gather":
-            await COMPONENTS.GATHER.choose(req, user, formatted, {
-              userData,
-              sessionData,
-              locationData,
-            });
+            await COMPONENTS.STRING_SELECTS.GATHER.choose(
+              req,
+              user,
+              formatted,
+              {
+                userData,
+                sessionData,
+                locationData,
+              }
+            );
             break;
           case "hunt":
             if (formatted.custom_id === "movement_bar") {

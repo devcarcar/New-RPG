@@ -6,28 +6,19 @@ import { GATHER_STRING_SELECTS } from "./components/string_selects/gather.js";
 import { HUNT_STRING_SELECTS } from "./components/string_selects/hunt.js";
 import { ITEM_STRING_SELECTS } from "./components/string_selects/item.js";
 
-const HUNT = {
-  ...HUNT_BUTTONS,
-  ...HUNT_STRING_SELECTS,
+const STRING_SELECTS = {
+  EXPLORE: EXPLORE_STRING_SELECTS,
+  GATHER: GATHER_STRING_SELECTS,
+  HUNT: HUNT_STRING_SELECTS,
+  ITEM: ITEM_STRING_SELECTS,
 };
-
-const EXPLORE = {
-  ...EXPLORE_BUTTONS,
-  ...EXPLORE_STRING_SELECTS,
-};
-
-const ITEM = {
-  ...ITEM_STRING_SELECTS,
-};
-
-const GATHER = {
-  ...GATHER_BUTTONS,
-  ...GATHER_STRING_SELECTS,
+const BUTTONS = {
+  HUNT: HUNT_BUTTONS,
+  GATHER: GATHER_BUTTONS,
+  EXPLORE: EXPLORE_BUTTONS,
 };
 
 export const COMPONENTS = {
-  EXPLORE,
-  HUNT,
-  ITEM,
-  GATHER,
+  STRING_SELECTS,
+  BUTTONS,
 };
