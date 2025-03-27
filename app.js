@@ -20,6 +20,7 @@ import {
   EditMessage,
   ExploreOutcomeType,
   Movement,
+  getGrid,
   sort,
 } from "./utils.js";
 
@@ -299,11 +300,41 @@ app.post(
             break;
           case "hunt":
             if (formatted[1] === "start") {
-              await COMPONENTS.BUTTONS.HUNT.start(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              const { user1, user2 } = sessionData.data;
+              await EditMessage(
+                req.body.token,
+                [
+                  {
+                    title: "You are in a battle",
+                    description: getGrid(user1.x, user1.y, user2.x, user2.y),
+                    fields: [
+                      {
+                        name: user1.name,
+                        value: `Health: ${user1.health}\nAttack: ${user1.attack}\nDefense: ${user1.defense}`,
+                        inline: true,
+                      },
+                      {
+                        name: user2.name,
+                        value: `Health: ${user2.health}\nAttack: ${user2.attack}\nDefense: ${user2.defense}`,
+                        inline: true,
+                      },
+                    ],
+                  },
+                ],
+                [
+                  {
+                    type: MessageComponentTypes.ACTION_ROW,
+                    components: [
+                      {
+                        type: MessageComponentTypes.BUTTON,
+                        custom_id: `hunt_select_${formatted[2]}`,
+                        label: "Select Action",
+                        style: ButtonStyleTypes.SECONDARY,
+                      },
+                    ],
+                  },
+                ]
+              );
             } else if (formatted[1] === "select") {
               await COMPONENTS.BUTTONS.HUNT.select(req, user, formatted, {
                 userData,

@@ -6,6 +6,7 @@ import {
   Movement,
   actionHandler,
   getGrid,
+  EditMessage,
 } from "../../../utils.js";
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { users } from "../../../schemas/user.js";
@@ -51,12 +52,9 @@ export async function confirm(req, user, formatted, options) {
   );
   const updated = await sessions.findOne({ sessionId: userData.session });
   const { data } = updated;
-  await DiscordRequest(
-    `/webhooks/${process.env.APP_ID}/${req.body.token}/messages/@original`,
-    {
-      method: "DELETE",
-    }
-  );
+  await EditMessage(req.body.token, {
+    method: "DELETE",
+  });
   if (updated.data.user2.health <= 0)
     return DiscordRequest(
       `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,

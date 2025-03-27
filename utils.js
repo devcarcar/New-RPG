@@ -197,6 +197,10 @@ export async function EditMessage(token, embeds, components) {
   }
 }
 
+export async function CreateFollowUpMessage() {}
+
+export async function DB() {}
+
 export function DefaultEmbed(title, description) {
   return {
     title: title,
