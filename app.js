@@ -336,42 +336,460 @@ app.post(
                 ]
               );
             } else if (formatted[1] === "select") {
-              await COMPONENTS.BUTTONS.HUNT.select(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              const last =
+                sessionData.data.log[sessionData.data.log.length - 1].data;
+              const action =
+                last.action != null
+                  ? "Your action is " + last.action
+                  : "You haven't selected your action yet";
+              const movement =
+                last.movement != null
+                  ? "Your movement is " + last.movement
+                  : "You haven't selected your movement yet";
+              let opt = [
+                {
+                  label: "No movement",
+                  value: `hunt_${Movement.NO_MOVEMENT}_${formatted[2]}`,
+                  description: "No movement",
+                },
+              ];
+              let x = sessionData.data.user1.x;
+              let y = sessionData.data.user1.y;
+              if (x > 1)
+                opt.push({
+                  label: "Left",
+                  value: `hunt_${Movement.LEFT}_${formatted[2]}`,
+                  description: "Move left",
+                });
+              if (x < 5)
+                opt.push({
+                  label: "Right",
+                  value: `hunt_${Movement.RIGHT}_${formatted[2]}`,
+                  description: "Move right",
+                });
+              if (y > 1)
+                opt.push({
+                  label: "Down",
+                  value: `hunt_${Movement.DOWN}_${formatted[2]}`,
+                  description: "Move down",
+                });
+              if (y < 5)
+                opt.push({
+                  label: "Up",
+                  value: `hunt_${Movement.UP}_${formatted[2]}`,
+                  description: "Move up",
+                });
+
+              await DiscordRequest(
+                `/webhooks/${process.env.APP_ID}/${sessionData.token}`,
+                {
+                  method: "POST",
+                  body: {
+                    flags: 64,
+                    embeds: [
+                      {
+                        title: "Select Action",
+                        description:
+                          last.action == null && last.movement == null
+                            ? "Select an action to perform"
+                            : `${movement}\n${action}`,
+                      },
+                    ],
+                    components: [
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.STRING_SELECT,
+                            custom_id: "movement_bar",
+                            placeholder: "Select a movement",
+                            min_value: 1,
+                            max_value: 1,
+                            options: opt,
+                          },
+                        ],
+                      },
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.STRING_SELECT,
+                            custom_id: "action_bar",
+                            placeholder: "Select an action",
+                            min_value: 1,
+                            max_value: 1,
+                            options: [
+                              {
+                                label: "No Action",
+                                value: `hunt_${Action.NO_ACTION}_${formatted[2]}`,
+                                description: "No Action",
+                              },
+                              {
+                                label: "Attack",
+                                value: `hunt_${Action.ATTACK}_${formatted[2]}`,
+                                description: "Attack!",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.BUTTON,
+                            custom_id: `hunt_confirm_${formatted[2]}`,
+                            label: "Confirm",
+                            style: ButtonStyleTypes.SECONDARY,
+                            disabled:
+                              last.action == null || last.movement == null
+                                ? true
+                                : false,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              );
             } else if (formatted[1] === "confirm") {
-              await COMPONENTS.BUTTONS.HUNT.confirm(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
+              const { userData, sessionData, locationData } = options;
+              const last =
+                sessionData.data.log[sessionData.data.log.length - 1];
+              const turn = sessionData.data.log.length;
+              let { user2 } = sessionData.data;
+              let text = "";
+              movementHandler(last.data.movement, sessionData.data.user1, text);
+              actionHandler(
+                last.data.action,
+                sessionData.data.user1,
+                sessionData.data.user2,
+                text
+              );
+
+              sessionData.data.log.push({
+                turn: turn + 1,
+                user: 2,
+                data: {
+                  movement: move(
+                    sessionData.data.user1.x,
+                    sessionData.data.user1.y,
+                    user2.x,
+                    user2.y
+                  ),
+                  action: "attack",
+                },
               });
+
+              sessionData.data.user2 = user2;
+              await sessions.findOneAndUpdate(
+                { sessionId: userData.session },
+                {
+                  $set: {
+                    data: sessionData.data,
+                  },
+                }
+              );
+              const updated = await sessions.findOne({
+                sessionId: userData.session,
+              });
+              const { data } = updated;
+              await EditMessage(req.body.token, {
+                method: "DELETE",
+              });
+              if (updated.data.user2.health <= 0)
+                return DiscordRequest(
+                  `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                  {
+                    method: "PATCH",
+                    body: {
+                      embeds: [
+                        {
+                          title: "Victory!",
+                          description: "You are rewarded with:",
+                        },
+                      ],
+                      components: [],
+                    },
+                  }
+                );
+              await DiscordRequest(
+                `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                {
+                  method: "PATCH",
+                  body: {
+                    embeds: [
+                      {
+                        title: "You are in a battle!",
+                        description:
+                          text +
+                          getGrid(
+                            data.user1.x,
+                            data.user1.y,
+                            data.user2.x,
+                            data.user2.y
+                          ),
+                        fields: [
+                          {
+                            name: data.user1.name,
+                            value: `Health: ${data.user1.health}\nAttack: ${data.user1.attack}\nDefense: ${data.user1.defense}`,
+                            inline: true,
+                          },
+                          {
+                            name: user2.name,
+                            value: `Health: ${user2.health}\nAttack: ${user2.attack}\nDefense: ${user2.defense}`,
+                            inline: true,
+                          },
+                        ],
+                      },
+                    ],
+                    components: [
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.BUTTON,
+                            custom_id: `hunt_next_${formatted[2]}`,
+                            label: "Next",
+                            style: ButtonStyleTypes.SECONDARY,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              );
             } else if (formatted[1] === "next") {
-              await COMPONENTS.BUTTONS.HUNT.next(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
+              const last =
+                sessionData.data.log[sessionData.data.log.length - 1];
+              const turn = sessionData.data.log.length;
+              let { user1 } = sessionData.data;
+              let text = "";
+              movementHandler(last.data.movement, sessionData.data.user2, text);
+              actionHandler(
+                last.data.action,
+                sessionData.data.user2,
+                sessionData.data.user1,
+                text
+              );
+
+              sessionData.data.log.push({
+                turn: turn + 1,
+                user: 1,
+                data: {
+                  movement: undefined,
+                  action: undefined,
+                },
               });
+
+              await sessions.findOneAndUpdate(
+                { sessionId: userData.session },
+                {
+                  $set: {
+                    data: sessionData.data,
+                  },
+                }
+              );
+              const updated = await sessions.findOne({
+                sessionId: userData.session,
+              });
+              if (updated.data.user1.health <= 0)
+                return DiscordRequest(
+                  `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                  {
+                    method: "PATCH",
+                    body: {
+                      embeds: [
+                        {
+                          title: "Defeat!",
+                          description: "You get nothing",
+                        },
+                      ],
+                      components: [],
+                    },
+                  }
+                );
+              const data = updated.data;
+              await DiscordRequest(
+                `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                {
+                  method: "PATCH",
+                  body: {
+                    embeds: [
+                      {
+                        title: "You are in a battle!",
+                        description:
+                          text +
+                          getGrid(
+                            data.user1.x,
+                            data.user1.y,
+                            data.user2.x,
+                            data.user2.y
+                          ),
+                        fields: [
+                          {
+                            name: user1.name,
+                            value: `Health: ${user1.health}\nAttack: ${user1.attack}\nDefense: ${user1.defense}`,
+                            inline: true,
+                          },
+                          {
+                            name: sessionData.data.user2.name,
+                            value: `Health: ${sessionData.data.user2.health}\nAttack: ${sessionData.data.user2.attack}\nDefense: ${sessionData.data.user2.defense}`,
+                            inline: true,
+                          },
+                        ],
+                      },
+                    ],
+                    components: [
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.BUTTON,
+                            custom_id: `hunt_select_${formatted[2]}`,
+                            label: "Select",
+                            style: ButtonStyleTypes.SECONDARY,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              );
             }
             break;
           case "explore":
             if (formatted[1] === "start") {
-              await COMPONENTS.BUTTONS.HUNT.start(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
+              let { data } = sessionData;
+              data.case = 0;
+              data.rewards = [];
+              await sessions.findOneAndUpdate(
+                {
+                  sessionId: userData.session,
+                },
+                {
+                  $set: {
+                    data: data,
+                  },
+                }
+              );
+              let arr = [];
+              const currentCase = sessionData.data.cases[0];
+              currentCase.options.forEach((option) => {
+                arr.push({
+                  label: option.name,
+                  value: `explore_${option.id}_${formatted[2]}`,
+                  description: option.description,
+                });
               });
-            } else {
-              await COMPONENTS.BUTTONS.HUNT.next(req, user, formatted, {
-                userData,
-                sessionData,
-                locationData,
-              });
+              await DiscordRequest(
+                `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                {
+                  method: "PATCH",
+                  body: {
+                    embeds: [
+                      {
+                        title: currentCase.name,
+                        description: currentCase.description,
+                        footer: {
+                          text: "Step: 1/3",
+                        },
+                      },
+                    ],
+                    components: [
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.STRING_SELECT,
+                            custom_id: "option_pick",
+                            placeholder: "Select an option",
+                            min_value: 1,
+                            max_value: 1,
+                            options: arr,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              );
+            } else if (formatted[1] == "next") {
+              let data = sessionData.data;
+              data.case += 1;
+              await sessions.findOneAndUpdate(
+                {
+                  sessionId: userData.session,
+                },
+                {
+                  $set: {
+                    data: data,
+                  },
+                }
+              );
+              let arr = [];
+              let aaa = "";
+              data.rewards.forEach((r) => (aaa += `${r}\n`));
+              const currentCase = sessionData.data.cases[data.case];
+              if (!currentCase)
+                return await DiscordRequest(
+                  `webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                  {
+                    method: "PATCH",
+                    body: {
+                      embeds: [
+                        {
+                          title: "You have finished the exploration!",
+                          description: `Rewards: ${aaa}`,
+                        },
+                      ],
+                      components: [],
+                    },
+                  }
+                );
+              currentCase.options.forEach((option) =>
+                arr.push({
+                  label: option.name,
+                  value: `explore_${option.id}_${formatted[2]}`,
+                  description: option.description,
+                })
+              );
+              await DiscordRequest(
+                `/webhooks/${process.env.APP_ID}/${sessionData.token}/messages/@original`,
+                {
+                  method: "PATCH",
+                  body: {
+                    embeds: [
+                      {
+                        title: currentCase.name,
+                        description: currentCase.description,
+                        footer: {
+                          text: `Step: ${data.case + 1}/3`,
+                        },
+                      },
+                    ],
+                    components: [
+                      {
+                        type: MessageComponentTypes.ACTION_ROW,
+                        components: [
+                          {
+                            type: MessageComponentTypes.STRING_SELECT,
+                            custom_id: "option_pick",
+                            placeholder: "Select an option",
+                            min_value: 1,
+                            max_value: 1,
+                            options: arr,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              );
             }
             break;
           default:
-            throw new Error("Unknown custom id " + formatted[0]);
+            throw new Error("Unknown custom id " + formatted);
         }
       }
     }
