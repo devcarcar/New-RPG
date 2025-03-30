@@ -1,6 +1,7 @@
 import { MessageComponentTypes } from "discord-interactions";
 import { ComponentType } from "discord.js";
 import "dotenv/config";
+import { sessions } from "./schemas/session.js";
 export async function DiscordRequest(endpoint, options) {
   const url = "https://discord.com/api/v10/" + endpoint;
   if (options.body) options.body = JSON.stringify(options.body);
@@ -208,6 +209,12 @@ export function DefaultEmbed(title, description) {
   };
 }
 
+export function DefaultButton(button) {
+  return {
+    type: MessageComponentTypes.ACTION_ROW,
+    components: [button],
+  };
+}
 export function DefaultStringSelect(id, opt) {
   return {
     type: MessageComponentTypes.ACTION_ROW,
@@ -227,3 +234,30 @@ export function DefaultStringSelect(id, opt) {
 export const ExploreOutcomeType = {
   REWARD: 0,
 };
+
+export function MovementBar(x, y, id, opt) {
+  if (x > 1)
+    opt.push({
+      label: "Left",
+      value: `hunt_${Movement.LEFT}_${id}`,
+      description: "Move left",
+    });
+  if (x < 5)
+    opt.push({
+      label: "Right",
+      value: `hunt_${Movement.RIGHT}_${id}`,
+      description: "Move right",
+    });
+  if (y > 1)
+    opt.push({
+      label: "Down",
+      value: `hunt_${Movement.DOWN}_${id}`,
+      description: "Move down",
+    });
+  if (y < 5)
+    opt.push({
+      label: "Up",
+      value: `hunt_${Movement.UP}_${id}`,
+      description: "Move up",
+    });
+}
