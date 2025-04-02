@@ -3,33 +3,47 @@ using namespace std;
 #define int long long
  
 void solve() {
-  int n,m,k;
-  cin >> n >> m >> k;
-  int arr[k+1]
-  arr[0] = 0;
-  for (int i = 0; i < n; i++) {
-int num;
-cin >> num;
-if (arr[num] == 1 || arr[num] == 2) arr[num] = 3;
-else arr[num] = 1;
+  int n;
+  cin >> n;
+  string a, b;
+  cin >> a >> b;
+  int arra[n+2], arrb[n+2];
+  for (int i = 1; i <= n; i++) {
+    arra[i] = a[i-1] - '0';
+   arrb[i] = b[i-1] - '0';
   }
-  for (int i = 0; i < m; i++) {
-int num;
-cin >> num;
-if (arr[num] == 1 || arr[num] == 2) arr[num] = 3;
-else arr[num] = 2;
-  }
+ arra[0] = 1, arra[n+1] = 1, arrb[0] = 1, arrb[n+1] = 1;
+ // for (int i = 0; i < n; i++) cout << a[i] << endl;
+// for (int i = 0; i <= n+1; i++) cout << arra[i] << " " << i << endl;
+  for (int i = 1; i <= n; i++) {
+     if (arra[i] == 1) {
+      if (arrb[i-1] == 0 && arrb[i+1] == 0) {
+       arra[i] = 0;
+       arrb[i-1] = 1;
+       if (arrb[i+3] == 1) {
+         arrb[i+3] = 0;
+         arrb[i+1] = 1;
+       }
 
-  int a=0,b=0,c=0;
-  for (int i = 1; i <= k; i++) {
-if (arr[i] == 1) a++;
-if (arr[i] == 2) b++;
-else c++;
+      } else if (arrb[i-1] == 0) {
+        arra[i] = 0;
+        arrb[i-1] = 1;
+      } else if (arrb[i+1] == 0) {
+        arra[i] = 0;
+        arrb[i+1] = 1;
+      } else {
+        /*
+        for (int i = 0; i <= n+1; i++) cout << arra[i] << " ";
+        cout << endl;
+        for (int i = 0; i <= n+1; i++) cout << arrb[i] << " ";
+        cout << endl;
+        */
+        cout << "NO" << endl;
+        return;
+      }
+    }
   }
-
-if (a+b+c < k) cout << "NO" << endl;
-else if (a <= k/2 && b <= k/2) cout << "YES" << endl;
-else cout << "NO" << endl;
+  cout << "YES" << endl;
   }
  
 signed main() {
