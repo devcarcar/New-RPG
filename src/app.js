@@ -105,11 +105,6 @@ app.listen(PORT, () => {
 
 class ComponentHandler {
   static async execute(interaction, data) {
-    console.log(
-      interaction.feature,
-      interaction.sub_feature,
-      data.sessionData.state
-    );
     let file;
     if (!interaction.sub_feature) {
       file = await import(`../components/${interaction.feature}.js`);

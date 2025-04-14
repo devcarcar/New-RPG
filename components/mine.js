@@ -7,7 +7,7 @@ export async function execute(interaction, data) {
     [
       {
         title: "Mining",
-        description: "Select a ing option",
+        description: "Select a mining option",
       },
     ],
     [
