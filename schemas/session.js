@@ -8,11 +8,10 @@ const session = new Schema({
     unique: true,
     default: () => uuidv4(),
   },
-  token: { type: String, required: true },
-  command: { type: String, required: true },
-  createdAt: { type: Date, required: true },
-  expireAt: { type: Date, required: true },
-  data: { type: Object, required: true },
+  state: {
+    type: String,
+    default: "",
+  },
 });
 
 export const sessions = model("session", session);
