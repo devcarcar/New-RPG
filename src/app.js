@@ -54,6 +54,16 @@ app.post(
                     label: "Fish",
                     description: "Fishing",
                   },
+                  {
+                    value: "mine",
+                    label: "Mine",
+                    description: "Mining",
+                  },
+                  {
+                    value: "inventory",
+                    label: "Inventory",
+                    description: "Inv",
+                  },
                 ],
               },
             ],

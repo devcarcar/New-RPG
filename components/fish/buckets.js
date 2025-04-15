@@ -3,8 +3,9 @@ import { EditMessage } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 let arr = [
   {
-    name: "A",
-    weight: "4.59 lbs",
+    id: "cod",
+    name: "Cod",
+    weight: 4.59,
   },
 ];
 
@@ -21,7 +22,11 @@ export async function execute(interaction, data) {
   let opt = [];
   arr.forEach((fish) => {
     v1 += `${fish.name} - ${fish.weight}\n`;
-    opt.push({ value: fish.name, label: fish.weight });
+    opt.push({
+      value: fish.id,
+      label: fish.name,
+      description: "Weight: " + fish.weight + " lbs",
+    });
   });
   return await EditMessage(
     interaction.token,
@@ -31,7 +36,7 @@ export async function execute(interaction, data) {
         description: "Your fishing buckets:",
         fields: [
           {
-            name: "",
+            name: "No field name",
             value: v1,
             inline: true,
           },
