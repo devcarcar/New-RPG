@@ -1,6 +1,6 @@
 import { MessageComponentTypes } from "discord-interactions";
 import { EditMessage } from "../utils.js";
-
+/*
 export async function execute(interaction, data) {
   return await EditMessage(
     interaction.token,
@@ -43,3 +43,4 @@ export async function execute(interaction, data) {
     ]
   );
 }
+*/

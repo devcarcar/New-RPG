@@ -18,7 +18,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "fish_bar",
+            custom_id: "fish_@bar",
             placeholder: "Choose a fishing sub-feature",
             options: [
               {

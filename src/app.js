@@ -78,10 +78,7 @@ app.post(
       });
 
       const user = req.body.member.user;
-      const formatted =
-        req.body.data.component_type === MessageComponentTypes.BUTTON
-          ? req.body.data.custom_id.split("_")
-          : req.body.data.values[0].split("_");
+      const formatted = req.body.data.custom_id.split("_");
       const userData = await users.findOne({
         userId: user.id,
       });
@@ -99,7 +96,9 @@ app.post(
         user: user,
         feature: formatted[0],
         sub_feature: formatted[1],
+        value: req.body.data.values[0],
       };
+
       await ComponentHandler.execute(interaction, data);
     }
   }
@@ -116,18 +115,15 @@ app.listen(PORT, () => {
 class ComponentHandler {
   static async execute(interaction, data) {
     let file;
-    if (!interaction.sub_feature) {
-      file = await import(`../components/${interaction.feature}.js`);
-    } else if (!data.sessionData.state) {
+    if (interaction.sub_feature.startsWith("@")) {
       file = await import(
-        `../components/${interaction.feature}/${interaction.sub_feature}.js`
+        `../components/${interaction.feature}/${sessionData.state}/${interaction.value}`
       );
     } else {
       file = await import(
-        `../components/${interaction.feature}/${data.sessionData.state}/${interaction.sub_feature}.js`
+        `../components/${interaction.feature}/${sessionData.state}/${interaction.sub_feature}`
       );
     }
-
     await file.execute(interaction, data);
   }
 }

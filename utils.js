@@ -261,3 +261,7 @@ export function MovementBar(x, y, id, opt) {
       description: "Move up",
     });
 }
+
+export const ItemTypes = {
+  FRUIT: 0,
+};
