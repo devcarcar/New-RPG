@@ -198,9 +198,29 @@ export async function EditMessage(token, embeds, components) {
   }
 }
 
-export async function CreateFollowUpMessage() {}
-
-export async function DB() {}
+export async function CreateFollowUpMessage(token, embeds, components) {
+  const res = await fetch(
+    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        "Content-Type": "application/json; charset=UTF-8",
+        "User-Agent":
+          "DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)",
+      },
+      body: JSON.stringify({
+        embeds: embeds,
+        components: components,
+      }),
+    }
+  );
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(res.status);
+    throw new Error(JSON.stringify(data));
+  }
+}
 
 export function DefaultEmbed(title, description) {
   return {

@@ -1,11 +1,14 @@
 import { MessageComponentTypes } from "discord-interactions";
 import { EditMessage, ItemTypes } from "../../utils.js";
+import { sessions } from "../../../schemas/session.js";
+import { CreateFollowUpMessage, DefaultEmbed } from "../../../utils.js";
 
 const selected = {
   id: "pineapple",
   name: "Pineapple",
   description: "Pined apple",
   type: ItemTypes.FRUIT,
+  amount: 3,
 };
 
 export async function execute(interaction, data) {
@@ -17,31 +20,13 @@ export async function execute(interaction, data) {
       state: "category/item",
     }
   );
-  let str = "";
-  let opt = [];
-  arr.forEach((item) => {
-    if (item.type === ItemTypes.FRUIT) {
-      str += `${item.name} - ${item.amount}\n`;
-      opt.push({
-        value: item.id,
-        label: item.name,
-        description: `${item.description}`,
-      });
-    }
-  });
-  return await EditMessage(
+  return await CreateFollowUpMessage(
     interaction.token,
     [
-      {
-        title: "Inventory",
-        //       description: "Inventory system",
-        fields: [
-          {
-            name: "\u200b",
-            value: str,
-          },
-        ],
-      },
+      DefaultEmbed(
+        selected.name,
+        selected.description + "\n" + `You have ${selected.amount}`
+      ),
     ],
     [
       {
@@ -51,9 +36,15 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "inventory_bar",
-            placeholder: "Choose a category",
-            options: opt,
+            custom_id: "inventory_@bar",
+            placeholder: "Choose an action",
+            options: [
+              {
+                value: "use",
+                label: "Use",
+                description: "Use item",
+              },
+            ],
           },
         ],
       },
