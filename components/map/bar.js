@@ -20,6 +20,13 @@ const locations = [
     reqLevel: 10,
     here: true,
   },
+  {
+    id: "thirdisland",
+    name: "Third Island",
+    description: "worse than best",
+    reqLevel: 20,
+    here: false,
+  },
 ];
 export async function execute(interaction, data) {
   const found = locations.find((l) => interaction.value === l.id);
