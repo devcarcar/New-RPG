@@ -18,21 +18,21 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "fish_@bar",
+            custom_id: "fish/@",
             placeholder: "Choose a fishing sub-feature",
             options: [
               {
-                value: `fish_buckets`,
+                value: `buckets`,
                 label: "Buckets",
                 description: "aa",
               },
               {
-                value: `fish_toolbox`,
+                value: `toolbox`,
                 label: "Toolbox",
                 description: "aa",
               },
               {
-                value: `fish_start`,
+                value: `start`,
                 label: "Start",
                 description: "aaa",
               },

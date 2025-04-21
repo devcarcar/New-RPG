@@ -20,7 +20,7 @@ export async function execute(interaction, data) {
       sessionId: data.sessionData.sessionId,
     },
     {
-      state: "toolbox",
+      state: "/toolbox",
     }
   );
   let opt = [];
@@ -56,7 +56,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "fish_toolbox",
+            custom_id: "fish/toolbox",
             placeholder: "Choose a tool",
             options: opt,
           },

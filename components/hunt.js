@@ -16,7 +16,7 @@ export async function execute(interaction, data) {
         components: [
           {
             type: MessageComponentTypes.BUTTON,
-            custom_id: "hunt_start",
+            custom_id: "hunt/start",
             label: "Start",
             style: ButtonStyleTypes.SECONDARY,
           },

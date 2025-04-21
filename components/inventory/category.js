@@ -1,5 +1,6 @@
 import { MessageComponentTypes } from "discord-interactions";
 import { EditMessage, ItemTypes } from "../../utils.js";
+import { sessions } from "../../schemas/session.js";
 
 const arr = [
   {
@@ -24,7 +25,7 @@ export async function execute(interaction, data) {
       sessionId: data.sessionData.sessionId,
     },
     {
-      state: "category",
+      state: "/category",
     }
   );
   let str = "";
@@ -61,7 +62,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "inventory_item",
+            custom_id: "inventory/category/item",
             placeholder: "Choose an item",
             options: opt,
           },

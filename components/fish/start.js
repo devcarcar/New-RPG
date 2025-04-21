@@ -8,7 +8,7 @@ export async function execute(interaction, data) {
       sessionId: data.sessionData.sessionId,
     },
     {
-      state: "start",
+      state: "/start",
     }
   );
   return await EditMessage(
@@ -25,7 +25,7 @@ export async function execute(interaction, data) {
         components: [
           {
             type: MessageComponentTypes.BUTTON,
-            custom_id: "fish_next",
+            custom_id: "fish/next",
             label: "Next",
             style: ButtonStyleTypes.SECONDARY,
           },

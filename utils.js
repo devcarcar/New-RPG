@@ -1,4 +1,7 @@
-import { MessageComponentTypes } from "discord-interactions";
+import {
+  InteractionResponseFlags,
+  MessageComponentTypes,
+} from "discord-interactions";
 import { ComponentType } from "discord.js";
 import "dotenv/config";
 import { sessions } from "./schemas/session.js";
@@ -200,7 +203,7 @@ export async function EditMessage(token, embeds, components) {
 
 export async function CreateFollowUpMessage(token, embeds, components) {
   const res = await fetch(
-    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}`,
     {
       method: "POST",
       headers: {
@@ -212,6 +215,7 @@ export async function CreateFollowUpMessage(token, embeds, components) {
       body: JSON.stringify({
         embeds: embeds,
         components: components,
+        flags: InteractionResponseFlags.EPHEMERAL,
       }),
     }
   );

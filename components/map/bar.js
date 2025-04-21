@@ -34,7 +34,7 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed(found.name, found.description)],
     [
-      DefaultStringSelect("map_@bbar", [
+      DefaultStringSelect("map/@", [
         {
           value: "gt",
           label: "Go there",

@@ -1,7 +1,10 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage, ItemTypes } from "../../utils.js";
-import { sessions } from "../../../schemas/session.js";
-import { CreateFollowUpMessage, DefaultEmbed } from "../../../utils.js";
+import {
+  CreateFollowUpMessage,
+  DefaultEmbed,
+  ItemTypes,
+} from "../../../../utils.js";
+import { sessions } from "../../../../schemas/session.js";
 
 const selected = {
   id: "pineapple",
@@ -17,7 +20,7 @@ export async function execute(interaction, data) {
       sessionId: data.sessionData.sessionId,
     },
     {
-      state: "category/item/use",
+      state: "/category/item/use",
     }
   );
   // use logic

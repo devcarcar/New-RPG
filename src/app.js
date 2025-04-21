@@ -78,11 +78,10 @@ app.post(
       });
 
       const user = req.body.member.user;
-      const formatted = req.body.data.custom_id.split("_");
       const userData = await users.findOne({
         userId: user.id,
       });
-      //   if (formatted[2] != userData.session) return;
+
       const sessionData = await sessions.findOne({
         sessionId: userData.session,
       });
@@ -94,8 +93,7 @@ app.post(
       const interaction = {
         token: req.body.token,
         user: user,
-        feature: formatted[0],
-        sub_feature: formatted[1],
+        custom_id: req.body.data.custom_id,
         value: req.body.data.values[0],
       };
 
@@ -115,14 +113,18 @@ app.listen(PORT, () => {
 class ComponentHandler {
   static async execute(interaction, data) {
     let file;
-    if (interaction.sub_feature.startsWith("@")) {
+    const formatted = interaction.custom_id.split("/");
+    if (formatted[0] === "game_bar") {
+      file = await import(`../components/${interaction.value}.js`);
+    } else if (interaction.custom_id.includes("@")) {
       file = await import(
-        `../components/${interaction.feature}/${sessionData.state}/${interaction.value}`
+        `../components/${interaction.custom_id.replace(
+          "@",
+          interaction.value
+        )}.js`
       );
     } else {
-      file = await import(
-        `../components/${interaction.feature}/${sessionData.state}/${interaction.sub_feature}`
-      );
+      file = await import(`../components/${interaction.custom_id}.js`);
     }
     await file.execute(interaction, data);
   }

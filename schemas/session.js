@@ -12,6 +12,11 @@ const session = new Schema({
     type: String,
     default: "",
   },
+  interactions: {
+    type: Array,
+    default: [],
+    required: true,
+  },
 });
 
 export const sessions = model("session", session);

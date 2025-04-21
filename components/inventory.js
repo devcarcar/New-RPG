@@ -1,5 +1,5 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage, ItemTypes } from "../utils";
+import { EditMessage, ItemTypes } from "../utils.js";
 
 export async function execute(interaction, data) {
   return await EditMessage(
@@ -18,7 +18,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "inventory_category",
+            custom_id: "inventory/category",
             placeholder: "Choose a category",
             options: [
               {

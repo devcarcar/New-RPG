@@ -45,7 +45,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "map_bar",
+            custom_id: "map/bar",
             placeholder: "Select a location",
             options: opt,
           },
