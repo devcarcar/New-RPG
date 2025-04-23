@@ -289,3 +289,47 @@ export function MovementBar(x, y, id, opt) {
 export const ItemTypes = {
   FRUIT: 0,
 };
+export const seafoodData = [
+  {
+    id: "tuna",
+    name: "Tuna",
+    weight: 15.0,
+    unit: "kg",
+  },
+  {
+    id: "lobster",
+    name: "Lobster",
+    weight: 0.85,
+    unit: "kg",
+  },
+  {
+    id: "crab",
+    name: "Crab",
+    weight: 1.2,
+    unit: "kg",
+  },
+  {
+    id: "scallop",
+    name: "Scallop",
+    weight: 0.1,
+    unit: "each",
+  },
+  {
+    id: "clam",
+    name: "Clam",
+    weight: 0.3,
+    unit: "each",
+  },
+  {
+    id: "oyster",
+    name: "Oyster",
+    weight: 0.5,
+    unit: "each",
+  },
+  {
+    id: "shrimp",
+    name: "Shrimp",
+    weight: 0.05,
+    unit: "each",
+  },
+];

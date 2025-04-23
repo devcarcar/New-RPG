@@ -1,28 +1,6 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { EditMessage } from "../../utils.js";
+import { EditMessage, seafoodData } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
-const arr = [
-  {
-    id: "cod",
-    name: "Cod",
-    weight: 4.59,
-    unit: "kg", // Fish typically sold by weight
-  },
-
-  {
-    id: "lobster",
-    name: "Lobster",
-    weight: 0.85, // Average weight
-    unit: "kg", // Sold by weight
-  },
-
-  {
-    id: "crab",
-    name: "Crab",
-    weight: 1.2, // Average weight
-    unit: "kg", // Sold by weight
-  },
-];
 
 export async function execute(interaction, data) {
   await sessions.findOneAndUpdate(
@@ -35,12 +13,12 @@ export async function execute(interaction, data) {
   );
   let v1 = "";
   let opt = [];
-  arr.forEach((fish) => {
-    v1 += `${fish.name} - ${fish.weight} ${fish.unit}\n`;
+  seafoodData.forEach((seafood) => {
+    v1 += `${seafood.name} - ${seafood.weight} ${seafood.unit}\n`;
     opt.push({
-      value: fish.id,
-      label: fish.name,
-      description: `Weight: ${fish.weight} ${fish.unit}`,
+      value: seafood.id,
+      label: seafood.name,
+      description: `Weight: ${seafood.weight} ${seafood.unit}`,
     });
   });
   return await EditMessage(
@@ -66,9 +44,25 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "fish/buckets/item",
-            placeholder: "Choose a bucket item",
-            options: opt,
+            custom_id: "fish/buckets/@",
+            placeholder: "Choose a bucket sub-feature",
+            options: [
+              {
+                label: "Cook",
+                value: "cook",
+                description: "Cooking",
+              },
+              {
+                label: "Sell",
+                value: "sell",
+                description: "Selling",
+              },
+              {
+                label: "Info",
+                value: "info",
+                description: "Info",
+              },
+            ],
           },
         ],
       },
