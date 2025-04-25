@@ -3,14 +3,6 @@ import { EditMessage, seafoodData } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 
 export async function execute(interaction, data) {
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: data.sessionData.sessionId,
-    },
-    {
-      state: "/buckets",
-    }
-  );
   let v1 = "";
   let opt = [];
   seafoodData.forEach((seafood) => {

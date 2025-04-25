@@ -8,13 +8,10 @@ const session = new Schema({
     unique: true,
     default: () => uuidv4(),
   },
-  state: {
-    type: String,
-    default: "",
-  },
-  interactions: {
-    type: Array,
-    default: [],
+
+  data: {
+    type: Object,
+    default: {},
     required: true,
   },
 });

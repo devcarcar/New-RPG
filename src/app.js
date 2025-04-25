@@ -94,7 +94,7 @@ app.post(
         token: req.body.token,
         user: user,
         custom_id: req.body.data.custom_id,
-        value: req.body.data?.values[0] ?? undefined,
+        value: req.body.data.values?.[0],
       };
 
       await ComponentHandler.execute(interaction, data);

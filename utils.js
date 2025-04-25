@@ -333,3 +333,24 @@ export const seafoodData = [
     unit: "each",
   },
 ];
+
+export const baits = [
+  {
+    id: "common_bait",
+    name: "Common Bait",
+    description: "aa",
+  },
+];
+
+export const tools = [
+  {
+    id: "fishing_rod",
+    name: "Fishing Rod",
+    description: "Fishing rod",
+  },
+  {
+    id: "lobster_trap",
+    name: "Lobster Trap",
+    description: "..",
+  },
+];
