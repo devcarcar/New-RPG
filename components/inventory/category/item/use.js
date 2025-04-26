@@ -2,6 +2,7 @@ import { MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
   DefaultEmbed,
+  DefaultStringSelect,
   ItemTypes,
 } from "../../../../utils.js";
 import { sessions } from "../../../../schemas/session.js";
@@ -15,23 +16,22 @@ const selected = {
 };
 
 export async function execute(interaction, data) {
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: data.sessionData.sessionId,
-    },
-    {
-      state: "/category/item/use",
-    }
-  );
-  // use logic
   return await CreateFollowUpMessage(
     interaction.token,
     [
       DefaultEmbed(
-        `You used ${selected.name}`,
-        `You have ${selected.amount--} left.`
+        "Use Item",
+        `Are you sure you want to use ${selected.name}?`
       ),
     ],
-    []
+    [
+      DefaultStringSelect("inventory/category/item/use/@", [
+        {
+          value: "confirm",
+          label: "Confirm",
+          description: "Confirm Use",
+        },
+      ]),
+    ]
   );
 }

@@ -1,5 +1,5 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { EditMessage, seafoodData } from "../../utils.js";
+import { DefaultStringSelect, EditMessage, seafoodData } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 
 export async function execute(interaction, data) {
@@ -29,35 +29,28 @@ export async function execute(interaction, data) {
       },
     ],
     [
-      {
-        type: MessageComponentTypes.ACTION_ROW,
-        components: [
-          {
-            type: MessageComponentTypes.STRING_SELECT,
-            min_value: 1,
-            max_value: 1,
-            custom_id: "fish/buckets/@",
-            placeholder: "Choose a bucket sub-feature",
-            options: [
-              {
-                label: "Cook",
-                value: "cook",
-                description: "Cooking",
-              },
-              {
-                label: "Sell",
-                value: "sell",
-                description: "Selling",
-              },
-              {
-                label: "Info",
-                value: "info",
-                description: "Info",
-              },
-            ],
-          },
-        ],
-      },
+      DefaultStringSelect("@", [
+        {
+          label: "Cook",
+          value: "fish/buckets/cook",
+          description: "Cooking",
+        },
+        {
+          label: "Sell",
+          value: "fish/buckets/sell",
+          description: "Selling",
+        },
+        {
+          label: "Info",
+          value: "fish/buckets/info",
+          description: "Info",
+        },
+        {
+          label: "Back",
+          value: "fish",
+          description: "Info",
+        },
+      ]),
     ]
   );
 }

@@ -1,28 +1,38 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { EditMessage } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
+let ToolBoxType = {
+  BAIT: 0,
+  TOOL: 1,
+};
 let arr = [
   {
-    id: "bait",
-    name: "Bait",
+    id: "lucky_bait",
+    name: "Lucky Bait",
     amount: 2,
+    type: ToolBoxType.BAIT,
   },
   {
-    id: "frod",
+    id: "fishing_rod",
     name: "Fishing Rod",
     amount: 3,
+    type: ToolBoxType.TOOL,
+  },
+  {
+    id: "lobster_trap",
+    name: "Lobster Trap",
+    amount: 1,
+    type: ToolBoxType.TOOL,
+  },
+  {
+    id: "fishing_net",
+    name: "Fishing Net",
+    amount: 1,
+    type: ToolBoxType.TOOL,
   },
 ];
 
 export async function execute(interaction, data) {
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: data.sessionData.sessionId,
-    },
-    {
-      state: "/toolbox",
-    }
-  );
   let opt = [];
   let v1 = "";
   arr.forEach((tool) => {

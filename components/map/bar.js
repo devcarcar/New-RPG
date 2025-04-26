@@ -7,25 +7,18 @@ import {
 } from "../../utils.js";
 const locations = [
   {
-    id: "starterisland",
+    id: "starter_island",
     name: "Starter Island",
-    description: "Island",
+    description: "The island where everything started",
     reqLevel: 0,
     here: false,
   },
   {
-    id: "secondisland",
-    name: "Second Island",
+    id: "sunset_sands",
+    name: "Sunset Sands",
     description: "better ig",
     reqLevel: 10,
     here: true,
-  },
-  {
-    id: "thirdisland",
-    name: "Third Island",
-    description: "worse than best",
-    reqLevel: 20,
-    here: false,
   },
 ];
 export async function execute(interaction, data) {

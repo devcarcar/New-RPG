@@ -26,12 +26,7 @@ export async function execute(interaction, data) {
   );
   return await CreateFollowUpMessage(
     interaction.token,
-    [
-      DefaultEmbed(
-        selected.name,
-        selected.description + "\n" + `You have ${selected.amount}`
-      ),
-    ],
+    [DefaultEmbed("Item", selected.description)],
     [
       {
         type: MessageComponentTypes.ACTION_ROW,
@@ -47,6 +42,11 @@ export async function execute(interaction, data) {
                 value: "use",
                 label: "Use",
                 description: "Use item",
+              },
+              {
+                value: "sell",
+                label: "Sell",
+                description: "Sell item",
               },
             ],
           },
