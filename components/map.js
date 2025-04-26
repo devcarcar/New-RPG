@@ -1,27 +1,26 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage, ItemTypes } from "../utils";
+import { EditMessage, ItemTypes } from "../utils.js";
 const locations = [
   {
-    id: "starterisland",
+    id: "starter_island",
     name: "Starter Island",
-    description: "Island",
+    description: "The island where everything started",
     reqLevel: 0,
-    here: false,
   },
   {
-    id: "secondisland",
-    name: "Second Island",
+    id: "sunset_sands",
+    name: "Sunset Sands",
     description: "better ig",
     reqLevel: 10,
-    here: true,
   },
 ];
 
 export async function execute(interaction, data) {
   let str = "";
   let opt = [];
+  const cL = "starter_island";
   locations.forEach((l) => {
-    if (l.here) str += `${l.name} - You are here!\n`;
+    if (l.id === cL) str += `${l.name} - You are here!\n`;
     else str += `${l.name} - Unlocked at Level ${l.reqLevel}\n`;
     opt.push({
       label: l.name,
@@ -45,7 +44,7 @@ export async function execute(interaction, data) {
             type: MessageComponentTypes.STRING_SELECT,
             min_value: 1,
             max_value: 1,
-            custom_id: "map/bar",
+            custom_id: "map/location",
             placeholder: "Select a location",
             options: opt,
           },

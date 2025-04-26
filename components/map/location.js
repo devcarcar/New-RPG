@@ -1,5 +1,5 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage } from "../utils.js";
+import { EditMessage } from "../../utils.js";
 import {
   CreateFollowUpMessage,
   DefaultEmbed,
@@ -11,14 +11,12 @@ const locations = [
     name: "Starter Island",
     description: "The island where everything started",
     reqLevel: 0,
-    here: false,
   },
   {
     id: "sunset_sands",
     name: "Sunset Sands",
     description: "better ig",
     reqLevel: 10,
-    here: true,
   },
 ];
 export async function execute(interaction, data) {
@@ -27,9 +25,9 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed(found.name, found.description)],
     [
-      DefaultStringSelect("map/@", [
+      DefaultStringSelect("map/location/@", [
         {
-          value: "gt",
+          value: "go",
           label: "Go there",
           description: "Go over there",
         },

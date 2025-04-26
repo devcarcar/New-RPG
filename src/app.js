@@ -64,6 +64,11 @@ app.post(
                     label: "Inventory",
                     description: "Inv",
                   },
+                  {
+                    value: "map",
+                    label: "Map",
+                    description: "Maping",
+                  },
                 ],
               },
             ],
