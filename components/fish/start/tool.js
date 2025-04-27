@@ -10,15 +10,7 @@ import {
 import { sessions } from "../../../schemas/session.js";
 
 export async function execute(interaction, data) {
-  let opt1 = [];
   let opt2 = [];
-  baits.forEach((bait) =>
-    opt1.push({
-      label: bait.name,
-      value: bait.id,
-      description: bait.description,
-    })
-  );
   tools.forEach((tool) =>
     opt2.push({
       label: tool.name,
@@ -40,17 +32,16 @@ export async function execute(interaction, data) {
       new: true,
     }
   );
-  const { tool, bait } = updated.data;
+  const { tool } = updated.data;
   return await EditMessage(
     interaction.token,
     [
       {
         title: "Fishing",
-        description: `Tool: ${tool.name}\nBait: ${bait?.name ?? "No Bait"}`,
+        description: `Tool: ${tool.name}`,
       },
     ],
     [
-      DefaultStringSelect("fish/start/bait", opt1),
       DefaultStringSelect("fish/start/tool", opt2),
       DefaultStringSelect("@", [
         {

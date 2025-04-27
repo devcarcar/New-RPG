@@ -1,18 +1,20 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
+  FishingToolTypes,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 import { users } from "../../../schemas/user.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { tool, bait } = sessionData.data;
+  const { tool } = sessionData.data;
   const { cooldowns } = userData;
 
-  if (!tool || !bait) {
+  if (!tool) {
     return await CreateFollowUpMessage(
       interaction.token,
       [
@@ -24,15 +26,34 @@ export async function execute(interaction, data) {
       []
     );
   }
-  const time = Date.now() + Math.floor(Math.random() * 10 * 60 * 1000);
-  cooldowns.set("fish", {
-    ongoing: true,
-    time: time,
-    data: {
-      bait: bait,
+
+  if (tool.type === FishingToolTypes.TRAP) {
+    const time = Date.now() + Math.floor(Math.random() * 6 * 60 * 60 * 1000);
+    cooldowns.set("fish", {
+      ongoing: true,
+      time: time,
       tool: tool,
-    },
-  });
+    });
+    await EditMessage(
+      interaction.token,
+      [
+        DefaultEmbed(
+          "Fishing",
+          `You cast a ${tool.name}. Ready in <t:${Math.floor(time / 1000)}:R>`
+        ),
+      ],
+      [
+        DefaultStringSelect("@", [
+          {
+            value: "fish",
+            label: "Back",
+            description: "Go back",
+          },
+        ]),
+      ]
+    );
+  }
+
   await users.findOneAndUpdate(
     { userId: interaction.user.id },
     {
@@ -40,25 +61,5 @@ export async function execute(interaction, data) {
         cooldowns: cooldowns,
       },
     }
-  );
-  return await EditMessage(
-    interaction.token,
-    [
-      {
-        title: "Fishing",
-        description: `You are fishing with ${tool.name} and ${
-          bait.name
-        }. Ready in <t:${Math.floor(time / 1000)}:R>`,
-      },
-    ],
-    [
-      DefaultStringSelect("@", [
-        {
-          value: "fish",
-          label: "Back",
-          description: "Go back",
-        },
-      ]),
-    ]
   );
 }

@@ -12,7 +12,7 @@ import { users } from "../../schemas/user.js";
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
   const { tool, bait } = sessionData.data;
-  const { cooldowns } = userData;
+  const { cooldowns, inventory } = userData;
   const found = cooldowns.get("fish") ?? { ongoing: false };
   if (!found) {
     cooldowns.set("fish", { ongoing: false });
@@ -26,11 +26,14 @@ export async function execute(interaction, data) {
       cooldowns.set("fish", {
         ongoing: false,
       });
+      const itemAmt = inventory.get("lobster") ?? 0;
+      inventory.set("lobster", itemAmt + 1);
       await users.findOneAndUpdate(
         { userId: userData.userId },
         {
           $set: {
             cooldowns: cooldowns,
+            inventory: inventory,
           },
         }
       );
@@ -99,7 +102,6 @@ export async function execute(interaction, data) {
       },
     ],
     [
-      DefaultStringSelect("fish/start/bait", opt1),
       DefaultStringSelect("fish/start/tool", opt2),
       DefaultStringSelect("@", [
         {

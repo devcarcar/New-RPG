@@ -5,37 +5,13 @@ let ToolBoxType = {
   BAIT: 0,
   TOOL: 1,
 };
-let arr = [
-  {
-    id: "lucky_bait",
-    name: "Lucky Bait",
-    amount: 2,
-    type: ToolBoxType.BAIT,
-  },
-  {
-    id: "fishing_rod",
-    name: "Fishing Rod",
-    amount: 3,
-    type: ToolBoxType.TOOL,
-  },
-  {
-    id: "lobster_trap",
-    name: "Lobster Trap",
-    amount: 1,
-    type: ToolBoxType.TOOL,
-  },
-  {
-    id: "fishing_net",
-    name: "Fishing Net",
-    amount: 1,
-    type: ToolBoxType.TOOL,
-  },
-];
 
 export async function execute(interaction, data) {
+  const { userData } = data;
+  const { toolbox } = userData.gathering.fish;
   let opt = [];
   let v1 = "";
-  arr.forEach((tool) => {
+  toolbox.forEach((tool) => {
     v1 += `${tool.name} - ${tool.amount}\n`;
     opt.push({
       value: tool.id,

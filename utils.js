@@ -342,16 +342,24 @@ export const baits = [
   },
 ];
 
+export const FishingToolTypes = {
+  TRAP: 1,
+  ROD: 2,
+  NET: 3,
+  SPEAR: 4,
+};
 export const tools = [
   {
     id: "fishing_rod",
     name: "Fishing Rod",
     description: "Fishing rod",
+    type: FishingToolTypes.ROD,
   },
   {
     id: "lobster_trap",
     name: "Lobster Trap",
     description: "..",
+    type: FishingToolTypes.TRAP,
   },
 ];
 

@@ -8,6 +8,8 @@ const user = new Schema({
   createdAt: { type: Date, default: () => Date.now(), required: true },
   commandsUsed: { type: Number, default: 0, required: true },
   //
+  gathering: { type: Map, default: {}, required: true },
+  //
   gold: { type: Number, required: true, default: 500 },
   cooldowns: { type: Map, required: true, default: [] },
   equipments: { type: Array, required: true, default: [] },
@@ -16,6 +18,7 @@ const user = new Schema({
   session: { type: String, default: "", required: true },
   xp: { type: Number, default: 0, required: true },
   level: { type: Number, default: 1, required: true },
+  tribe: { type: String, default: "No tribe", required: true },
 });
 
 export const users = model("user", user);

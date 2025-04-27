@@ -69,6 +69,11 @@ app.post(
                     label: "Map",
                     description: "Maping",
                   },
+                  {
+                    value: "tribe",
+                    label: "Tribe",
+                    description: "Tribing",
+                  },
                 ],
               },
             ],
