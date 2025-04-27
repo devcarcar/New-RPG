@@ -1,26 +1,21 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage, ItemTypes } from "../utils.js";
-const locations = [
-  {
-    id: "starter_island",
-    name: "Starter Island",
-    description: "The island where everything started",
-    reqLevel: 0,
-  },
-  {
-    id: "sunset_sands",
-    name: "Sunset Sands",
-    description: "better ig",
-    reqLevel: 10,
-  },
-];
+import { EditMessage, ItemTypes, islands } from "../utils.js";
+import { sessions } from "../schemas/session.js";
 
 export async function execute(interaction, data) {
+  const { userData, sessionData } = data;
+  await sessions.findOneAndUpdate(
+    { sessionId: sessionData.sessionId },
+    {
+      $set: {
+        token: interaction.token,
+      },
+    }
+  );
   let str = "";
   let opt = [];
-  const cL = "starter_island";
-  locations.forEach((l) => {
-    if (l.id === cL) str += `${l.name} - You are here!\n`;
+  islands.forEach((l) => {
+    if (l.id === userData.location) str += `${l.name} - You are here!\n`;
     else str += `${l.name} - Unlocked at Level ${l.reqLevel}\n`;
     opt.push({
       label: l.name,

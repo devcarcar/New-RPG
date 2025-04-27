@@ -1,37 +1,40 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage } from "../../utils.js";
+import { EditMessage, islands } from "../../utils.js";
 import {
   CreateFollowUpMessage,
   DefaultEmbed,
   DefaultStringSelect,
 } from "../../utils.js";
-const locations = [
-  {
-    id: "starter_island",
-    name: "Starter Island",
-    description: "The island where everything started",
-    reqLevel: 0,
-  },
-  {
-    id: "sunset_sands",
-    name: "Sunset Sands",
-    description: "better ig",
-    reqLevel: 10,
-  },
-];
+import { sessions } from "../../schemas/session.js";
+
 export async function execute(interaction, data) {
-  const found = locations.find((l) => interaction.value === l.id);
+  const { userData, sessionData } = data;
+  const found = islands.find((l) => interaction.value === l.id);
+  await sessions.findOneAndUpdate(
+    { sessionId: sessionData.sessionId },
+    {
+      $set: {
+        data: {
+          destination: found,
+        },
+      },
+    }
+  );
+  let opt =
+    userData.location === found.id
+      ? []
+      : [
+          DefaultStringSelect("map/location/@", [
+            {
+              value: "go",
+              label: "Go there",
+              description: "Go Go Go",
+            },
+          ]),
+        ];
   return await CreateFollowUpMessage(
     interaction.token,
     [DefaultEmbed(found.name, found.description)],
-    [
-      DefaultStringSelect("map/location/@", [
-        {
-          value: "go",
-          label: "Go there",
-          description: "Go over there",
-        },
-      ]),
-    ]
+    opt
   );
 }

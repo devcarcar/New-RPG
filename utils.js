@@ -354,3 +354,18 @@ export const tools = [
     description: "..",
   },
 ];
+
+export const islands = [
+  {
+    id: "starter_island",
+    name: "Starter Island",
+    description: "The island where everything started",
+    reqLevel: 0,
+  },
+  {
+    id: "sunset_sands",
+    name: "Sunset Sands",
+    description: "better ig",
+    reqLevel: 10,
+  },
+];

@@ -11,7 +11,7 @@ const user = new Schema({
   gold: { type: Number, required: true, default: 500 },
   cooldowns: { type: Map, required: true, default: [] },
   equipments: { type: Array, required: true, default: [] },
-  location: { type: String, default: "village", required: true },
+  location: { type: String, default: "starter_island", required: true },
   inventory: { type: Map, default: {}, required: true },
   session: { type: String, default: "", required: true },
   xp: { type: Number, default: 0, required: true },

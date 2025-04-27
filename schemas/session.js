@@ -14,6 +14,7 @@ const session = new Schema({
     default: {},
     required: true,
   },
+  token: { type: String },
 });
 
 export const sessions = model("session", session);
