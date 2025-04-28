@@ -10,9 +10,9 @@ import {
 import { sessions } from "../../../schemas/session.js";
 
 export async function execute(interaction, data) {
-  let opt2 = [];
+  let opt = [];
   tools.forEach((tool) =>
-    opt2.push({
+    opt.push({
       label: tool.name,
       value: tool.id,
       description: tool.description,
@@ -42,7 +42,7 @@ export async function execute(interaction, data) {
       },
     ],
     [
-      DefaultStringSelect("fish/start/tool", opt2),
+      DefaultStringSelect("fish/start/tool", opt),
       DefaultStringSelect("@", [
         {
           label: "Catch",

@@ -289,6 +289,12 @@ export function MovementBar(x, y, id, opt) {
 export const ItemTypes = {
   FRUIT: 0,
 };
+export const FishingToolTypes = {
+  TRAP: 1,
+  ROD: 2,
+  NET: 3,
+  SPEAR: 4,
+};
 export const seafoodData = [
   {
     id: "tuna",
@@ -301,12 +307,14 @@ export const seafoodData = [
     name: "Lobster",
     weight: 0.85,
     unit: "kg",
+    type: FishingToolTypes.TRAP,
   },
   {
     id: "crab",
     name: "Crab",
     weight: 1.2,
     unit: "kg",
+    type: FishingToolTypes.TRAP,
   },
   {
     id: "scallop",
@@ -342,12 +350,6 @@ export const baits = [
   },
 ];
 
-export const FishingToolTypes = {
-  TRAP: 1,
-  ROD: 2,
-  NET: 3,
-  SPEAR: 4,
-};
 export const tools = [
   {
     id: "fishing_rod",
@@ -360,6 +362,16 @@ export const tools = [
     name: "Lobster Trap",
     description: "..",
     type: FishingToolTypes.TRAP,
+    catches: [
+      {
+        id: "lobster",
+        name: "Lobster",
+        weight: 0.85,
+        unit: "kg",
+        type: FishingToolTypes.TRAP,
+        chance: 1,
+      },
+    ],
   },
 ];
 
@@ -377,3 +389,12 @@ export const islands = [
     reqLevel: 10,
   },
 ];
+
+export function randomElement(arr) {
+  let random = Math.random();
+  let multiplier = 0;
+  for (let i = 0; i < arr.length; i++) {
+    multiplier += arr[i].chance;
+    if (multiplier > random) return arr[i];
+  }
+}

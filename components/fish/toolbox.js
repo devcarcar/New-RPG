@@ -1,10 +1,6 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import { EditMessage } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
-let ToolBoxType = {
-  BAIT: 0,
-  TOOL: 1,
-};
 
 export async function execute(interaction, data) {
   const { userData } = data;
