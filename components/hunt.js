@@ -7,7 +7,7 @@ export async function execute(interaction, data) {
     [
       {
         title: "Hunting",
-        description: "Select a fishing option",
+        description: "Select a hunting option",
       },
     ],
     [

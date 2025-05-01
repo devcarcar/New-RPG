@@ -358,6 +358,12 @@ export const tools = [
     type: FishingToolTypes.ROD,
   },
   {
+    id: "harpoon",
+    name: "Harpoon",
+    description: "A harpoon",
+    type: FishingToolTypes.SPEAR,
+  },
+  {
     id: "lobster_trap",
     name: "Lobster Trap",
     description: "..",

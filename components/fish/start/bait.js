@@ -11,7 +11,6 @@ import { sessions } from "../../../schemas/session.js";
 
 export async function execute(interaction, data) {
   let opt1 = [];
-  let opt2 = [];
   tools.forEach((tool) =>
     opt1.push({
       label: tool.name,
@@ -19,6 +18,7 @@ export async function execute(interaction, data) {
       description: tool.description,
     })
   );
+  let opt2 = [];
   baits.forEach((tool) =>
     opt2.push({
       label: tool.name,
@@ -27,8 +27,8 @@ export async function execute(interaction, data) {
     })
   );
   const { sessionData } = data;
-  const found = tools.find((tool) => tool.id === interaction.value);
-  sessionData.data.tool = found;
+  const found = baits.find((tool) => tool.id === interaction.value);
+  sessionData.data.bait = found;
   const updated = await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },
     {
@@ -46,8 +46,8 @@ export async function execute(interaction, data) {
     [
       {
         title: "Fishing",
-        description: `Tool: ${tool.name}\nBait: ${
-          bait?.name ?? "No bait selected"
+        description: `Tool: ${tool?.name ?? "No tool selected"}\nBait: ${
+          bait.name
         }`,
       },
     ],

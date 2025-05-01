@@ -5,16 +5,22 @@ import {
   DefaultStringSelect,
   EditMessage,
   FishingToolTypes,
+  baits,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 import { users } from "../../../schemas/user.js";
+import {
+  CreateGrid,
+  CreateGridButtons,
+  CreateGridData,
+} from "../../../test.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { tool } = sessionData.data;
+  const { tool, bait } = sessionData.data;
   const { cooldowns } = userData;
 
-  if (!tool) {
+  if (!tool || !bait) {
     return await CreateFollowUpMessage(
       interaction.token,
       [
@@ -27,32 +33,28 @@ export async function execute(interaction, data) {
     );
   }
 
-  if (tool.type === FishingToolTypes.TRAP) {
-    const time = Date.now() + Math.floor(Math.random() * 6 * 60 * 60 * 1000);
-    cooldowns.set("fish", {
-      ongoing: true,
-      time: time,
+  const time = Date.now() + Math.floor(Math.random() * 10 * 60 * 1000);
+  cooldowns.set("fish", {
+    ongoing: true,
+    time: time,
+    data: {
       tool: tool,
-    });
-    await EditMessage(
-      interaction.token,
-      [
-        DefaultEmbed(
-          "Fishing",
-          `You cast a ${tool.name}. Ready in <t:${Math.floor(time / 1000)}:R>`
-        ),
-      ],
-      [
-        DefaultStringSelect("@", [
-          {
-            value: "fish",
-            label: "Back",
-            description: "Go back",
-          },
-        ]),
-      ]
-    );
-  }
+      bait: bait,
+    },
+  });
+  await EditMessage(
+    interaction.token,
+    [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(time / 1000)}:R>`)],
+    [
+      DefaultStringSelect("@", [
+        {
+          value: "fish",
+          label: "Back",
+          description: "Go back",
+        },
+      ]),
+    ]
+  );
 
   await users.findOneAndUpdate(
     { userId: interaction.user.id },

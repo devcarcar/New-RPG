@@ -25,62 +25,87 @@ export async function execute(interaction, data) {
     );
   }
   if (found.ongoing) {
-    switch (found.tool.type) {
-      case FishingToolTypes.TRAP:
-        if (found.time > Date.now()) {
-          //not expired
-        } else {
-          //expired
-
-          const caught = randomElement(found.tool.catches);
-          return await EditMessage(
-            interaction.token,
-            [DefaultEmbed(`You caught a ${caught.name}`, "F")],
-            [
-              DefaultStringSelect("@", [
-                {
-                  label: "Back",
-                  value: "fish",
-                  description: "Go back",
-                },
-              ]),
-            ]
-          );
+    if (found.time > Date.now()) {
+      return await EditMessage(
+        interaction.token,
+        [
+          DefaultEmbed(
+            "Fishing",
+            `Ready in <t:${Math.floor(found.time / 1000)}:R>`
+          ),
+        ],
+        [
+          DefaultStringSelect("@", [
+            { label: "Back", value: "fish", description: "Go back" },
+          ]),
+        ]
+      );
+    } else {
+      const caught = randomElement(found.data.tool.catches);
+      cooldowns.set("fish", { ongoing: false });
+      await users.findOneAndUpdate(
+        { userId: userData.userId },
+        {
+          $set: {
+            cooldowns: cooldowns,
+          },
         }
-        break;
+      );
+      return await EditMessage(
+        interaction.token,
+        [DefaultEmbed(`You caught a ${caught.name}`, "F")],
+        [
+          DefaultStringSelect("@", [
+            {
+              label: "Back",
+              value: "fish",
+              description: "Go back",
+            },
+          ]),
+        ]
+      );
     }
+  } else {
+    let opt1 = [];
+    tools.forEach((tool) =>
+      opt1.push({
+        label: tool.name,
+        value: tool.id,
+        description: tool.description,
+      })
+    );
+    let opt2 = [];
+    baits.forEach((bait) =>
+      opt2.push({
+        label: bait.name,
+        value: bait.id,
+        description: bait.description,
+      })
+    );
+    return await EditMessage(
+      interaction.token,
+      [
+        {
+          title: "Fishing",
+          description: "Tool: No tool selected\nBait: No bait selected",
+        },
+      ],
+      [
+        DefaultStringSelect("fish/start/tool", opt1),
+        DefaultStringSelect("fish/start/bait", opt2),
+        DefaultStringSelect("@", [
+          {
+            label: "Catch",
+            value: "fish/start/catch",
+            description: "Catch",
+          },
+          {
+            label: "Back",
+            value: "fish",
+            description: "Go back",
+          },
+        ]),
+      ]
+    );
   }
-  let opt = [];
-  tools.forEach((tool) =>
-    opt.push({
-      label: tool.name,
-      value: tool.id,
-      description: tool.description,
-    })
-  );
-
-  return await EditMessage(
-    interaction.token,
-    [
-      {
-        title: "Fishing",
-        description: "Choose your tools?",
-      },
-    ],
-    [
-      DefaultStringSelect("fish/start/tool", opt),
-      DefaultStringSelect("@", [
-        {
-          label: "Catch",
-          value: "fish/start/catch",
-          description: "Catch",
-        },
-        {
-          label: "Back",
-          value: "fish",
-          description: "Go back",
-        },
-      ]),
-    ]
-  );
 }
