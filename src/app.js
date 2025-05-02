@@ -50,14 +50,9 @@ app.post(
                 placeholder: "Choose a feature",
                 options: [
                   {
-                    value: "fish",
-                    label: "Fish",
-                    description: "Fishing",
-                  },
-                  {
-                    value: "mine",
-                    label: "Mine",
-                    description: "Mining",
+                    value: "hunt",
+                    label: "Hunt",
+                    description: "Hunting",
                   },
                   {
                     value: "inventory",
@@ -73,11 +68,6 @@ app.post(
                     value: "tribe",
                     label: "Tribe",
                     description: "Tribing",
-                  },
-                  {
-                    value: "hunt",
-                    label: "Hunt",
-                    description: "Hunting",
                   },
                 ],
               },

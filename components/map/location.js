@@ -24,7 +24,7 @@ export async function execute(interaction, data) {
     userData.location === found.id
       ? []
       : [
-          DefaultStringSelect("map/location/@", [
+          DefaultStringSelect("map/location/@", "Select an action", [
             {
               value: "go",
               label: "Go there",

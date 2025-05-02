@@ -239,7 +239,7 @@ export function DefaultButton(button) {
     components: [button],
   };
 }
-export function DefaultStringSelect(id, opt) {
+export function DefaultStringSelect(id, placeholder, opt) {
   return {
     type: MessageComponentTypes.ACTION_ROW,
     components: [
@@ -248,7 +248,7 @@ export function DefaultStringSelect(id, opt) {
         custom_id: id,
         min_values: 1,
         max_values: 1,
-        placeholder: "Select a resource gathering method",
+        placeholder: placeholder,
         options: opt,
       },
     ],

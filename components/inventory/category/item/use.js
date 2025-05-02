@@ -25,7 +25,7 @@ export async function execute(interaction, data) {
       ),
     ],
     [
-      DefaultStringSelect("inventory/category/item/use/@", [
+      DefaultStringSelect("inventory/category/item/use/@", "Confirm", [
         {
           value: "confirm",
           label: "Confirm",

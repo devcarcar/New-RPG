@@ -5,9 +5,12 @@ import {
   DefaultStringSelect,
   EditMessage,
   MovementType,
+  createBattleField,
 } from "../../../../utils.js";
 
 export async function execute(interaction, data) {
+  const { sessionData } = data;
+  const { data: newData } = sessionData;
   let opt1 = [
     {
       label: "No movement",
@@ -50,9 +53,9 @@ export async function execute(interaction, data) {
 
   await EditMessage(
     interaction.token,
-    [DefaultEmbed("Hunting", desc)],
+    [DefaultEmbed("Hunting", createBattleField(newData))],
     [
-      DefaultStringSelect("hunt/mob/start/select", [
+      DefaultStringSelect("hunt/mob/start/select", "Select an action", [
         {
           value: "useless",
           label: "Select Action",
@@ -65,9 +68,17 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed("Hunting", "Select an action below")],
     [
-      DefaultStringSelect("hunt/mob/start/select/movement", opt1),
-      DefaultStringSelect("hunt/mob/start/select/action", opt2),
-      DefaultStringSelect("hunt/mob/start/select/@", [
+      DefaultStringSelect(
+        "hunt/mob/start/select/movement",
+        "Select a movement",
+        opt1
+      ),
+      DefaultStringSelect(
+        "hunt/mob/start/select/action",
+        "Select an action",
+        opt2
+      ),
+      DefaultStringSelect("hunt/mob/start/select/@", "Confirm", [
         {
           value: "confirm",
           label: "Confirm",

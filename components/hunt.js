@@ -14,6 +14,6 @@ export async function execute(interaction, data) {
         description: "Select a hunting mob",
       },
     ],
-    [DefaultStringSelect("hunt/mob", opt)]
+    [DefaultStringSelect("hunt/mob", "Select a monster to go against", opt)]
   );
 }

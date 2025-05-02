@@ -15,8 +15,8 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed("Hunting", found.description)],
     [
-      DefaultStringSelect("hunt/mob", opt),
-      DefaultStringSelect("hunt/mob/start", [
+      DefaultStringSelect("hunt/mob", "Select a monster to go against", opt),
+      DefaultStringSelect("hunt/mob/start", "Select an option", [
         {
           label: "Start",
           value: found.id,

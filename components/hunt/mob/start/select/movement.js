@@ -51,8 +51,16 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed("Hunting", "Select an action below")],
     [
-      DefaultStringSelect("hunt/mob/start/select/movement", opt1),
-      DefaultStringSelect("hunt/mob/start/select/action", opt2),
+      DefaultStringSelect(
+        "hunt/mob/start/select/movement",
+        "Select a movement",
+        opt1
+      ),
+      DefaultStringSelect(
+        "hunt/mob/start/select/action",
+        "Sselect an action",
+        opt2
+      ),
     ]
   );
 }
