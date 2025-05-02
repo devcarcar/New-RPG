@@ -3,9 +3,8 @@ import {
   CreateFollowUpMessage,
   DefaultEmbed,
   DefaultStringSelect,
-  EditMessage,
   MovementType,
-} from "../../../../utils.js";
+} from "../../../../../utils.js";
 
 export async function execute(interaction, data) {
   let opt1 = [
@@ -48,32 +47,12 @@ export async function execute(interaction, data) {
     },
   ];
 
-  await EditMessage(
-    interaction.token,
-    [DefaultEmbed("Hunting", desc)],
-    [
-      DefaultStringSelect("hunt/mob/start/select", [
-        {
-          value: "useless",
-          label: "Select Action",
-          description: "Select your movement and action",
-        },
-      ]),
-    ]
-  );
   return await CreateFollowUpMessage(
     interaction.token,
     [DefaultEmbed("Hunting", "Select an action below")],
     [
       DefaultStringSelect("hunt/mob/start/select/movement", opt1),
       DefaultStringSelect("hunt/mob/start/select/action", opt2),
-      DefaultStringSelect("hunt/mob/start/select/@", [
-        {
-          value: "confirm",
-          label: "Confirm",
-          description: "Confirm your moves",
-        },
-      ]),
     ]
   );
 }
