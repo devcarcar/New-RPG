@@ -8,7 +8,7 @@ const user = new Schema({
   createdAt: { type: Date, default: () => Date.now(), required: true },
   commandsUsed: { type: Number, default: 0, required: true },
   //
-  gathering: { type: Map, default: {}, required: true },
+  buckets: { type: Array, default: [], required: true },
   //
   gold: { type: Number, required: true, default: 500 },
   cooldowns: { type: Map, required: true, default: [] },

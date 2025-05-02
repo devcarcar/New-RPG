@@ -1,27 +1,19 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { EditMessage } from "../utils.js";
+import { DefaultStringSelect, EditMessage, mobList } from "../utils.js";
 
 export async function execute(interaction, data) {
+  let opt = [];
+  mobList.forEach((mob) =>
+    opt.push({ label: mob.name, value: mob.id, description: mob.description })
+  );
   return await EditMessage(
     interaction.token,
     [
       {
         title: "Hunting",
-        description: "Select a hunting option",
+        description: "Select a hunting mob",
       },
     ],
-    [
-      {
-        type: MessageComponentTypes.ACTION_ROW,
-        components: [
-          {
-            type: MessageComponentTypes.BUTTON,
-            custom_id: "hunt/start",
-            label: "Start",
-            style: ButtonStyleTypes.SECONDARY,
-          },
-        ],
-      },
-    ]
+    [DefaultStringSelect("hunt/mob", opt)]
   );
 }

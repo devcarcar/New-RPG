@@ -51,9 +51,25 @@ export async function execute(interaction, data) {
           },
         }
       );
+      const lbs =
+        Math.random() * caught.lowest + (caught.highest - caught.lowest);
+      await users.findOneAndUpdate(
+        {
+          userId: userData.userId,
+        },
+        {
+          $push: {
+            buckets: {
+              id: caught.id,
+              name: caught.name,
+              weight: lbs,
+            },
+          },
+        }
+      );
       return await EditMessage(
         interaction.token,
-        [DefaultEmbed(`You caught a ${caught.name}`, "F")],
+        [DefaultEmbed("Fishing", `You caught a ${lbs} lbs ${caught.name}! `)],
         [
           DefaultStringSelect("@", [
             {

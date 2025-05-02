@@ -352,18 +352,6 @@ export const baits = [
 
 export const tools = [
   {
-    id: "fishing_rod",
-    name: "Fishing Rod",
-    description: "Fishing rod",
-    type: FishingToolTypes.ROD,
-  },
-  {
-    id: "harpoon",
-    name: "Harpoon",
-    description: "A harpoon",
-    type: FishingToolTypes.SPEAR,
-  },
-  {
     id: "lobster_trap",
     name: "Lobster Trap",
     description: "..",
@@ -372,9 +360,8 @@ export const tools = [
       {
         id: "lobster",
         name: "Lobster",
-        weight: 0.85,
-        unit: "kg",
-        type: FishingToolTypes.TRAP,
+        lowest: 15,
+        highest: 21,
         chance: 1,
       },
     ],
@@ -404,3 +391,82 @@ export function randomElement(arr) {
     if (multiplier > random) return arr[i];
   }
 }
+
+export const mobList = [
+  {
+    id: "sand_golem",
+    name: "Sand Golem",
+    description: "aaa",
+  },
+  {
+    id: "slime",
+    name: "Slime",
+    description: "a slime",
+  },
+];
+let GridType = {
+  NOTHING: 0,
+  PLAYER1: 1,
+  ENEMY: 2,
+  SPAWNABLE: 3,
+};
+export function createBattleFieldData() {
+  let grid = [];
+  for (let i = 0; i < 5; i++) {
+    grid.push([]);
+    for (let j = 0; j < 5; j++) {
+      grid[i].push({ type: GridType.NOTHING });
+    }
+  }
+  grid[0][0] = {
+    type: GridType.PLAYER1,
+    data: {
+      health: 25,
+      attack: 10,
+      defense: 5,
+    },
+  };
+  grid[4][4] = {
+    type: GridType.ENEMY,
+    data: {
+      health: 25,
+      attack: 10,
+      defense: 5,
+    },
+  };
+  return grid;
+}
+
+export function createBattleField(data) {
+  let str = "";
+  for (let i = 4; i >= 0; i--) {
+    for (let j = 0; j < 5; j++) {
+      switch (data[i][j].type) {
+        case GridType.ENEMY:
+          str += ":skull:";
+          break;
+        case GridType.PLAYER1:
+          str += ":man:";
+          break;
+        default:
+          str += ":large_black_square:";
+          break;
+      }
+    }
+    str += "\n";
+  }
+  return str;
+}
+
+export const MovementType = {
+  NO_MOVEMENT: 0,
+  LEFT: 1,
+  RIGHT: 2,
+  UP: 3,
+  DOWN: 4,
+};
+
+export const ActionType = {
+  NO_ACTION: 0,
+  ATTACK: 1,
+};
