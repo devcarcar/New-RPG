@@ -449,7 +449,7 @@ export function createBattleField(data) {
           str += ":man:";
           break;
         default:
-          str += ":large_black_square:";
+          str += ":black_large_square:";
           break;
       }
     }

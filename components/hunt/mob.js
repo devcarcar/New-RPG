@@ -3,7 +3,7 @@ import {
   DefaultStringSelect,
   EditMessage,
   mobList,
-} from "../../utils";
+} from "../../utils.js";
 
 export async function execute(interaction, data) {
   const found = mobList.find((mob) => mob.id === interaction.value);
