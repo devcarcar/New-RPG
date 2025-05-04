@@ -2,6 +2,7 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
   DefaultButton,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
   baits,
@@ -46,12 +47,10 @@ export async function execute(interaction, data) {
   return await EditMessage(
     interaction.token,
     [
-      {
-        title: "Fishing",
-        description: `Tool: ${tool.name}\nBait: ${
-          bait?.name ?? "No bait selected"
-        }`,
-      },
+      DefaultEmbed(
+        "Fishing",
+        `Tool: ${tool.name}\nBait: ${bait?.name ?? "No bait selected"}`
+      ),
     ],
     COMPONENTS.TOOL_AND_BAIT(opt1, opt2)
   );

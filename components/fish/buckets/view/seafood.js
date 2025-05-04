@@ -1,6 +1,7 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
   seafoodData,
@@ -15,12 +16,7 @@ export async function execute(interaction, data) {
   );
   return await CreateFollowUpMessage(
     interaction.token,
-    [
-      {
-        title: found.name,
-        description: `Weight: ${found.weight} lbs`,
-      },
-    ],
+    [DefaultEmbed(found.name, `Weight: ${found.weight} lbs`)],
     []
   );
 }

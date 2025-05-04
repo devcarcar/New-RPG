@@ -2,6 +2,7 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
   DefaultButton,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
   seafoodData,
@@ -31,12 +32,7 @@ const recipes = [
 export async function execute(interaction, data) {
   return await CreateFollowUpMessage(
     interaction.token,
-    [
-      {
-        title: "Confirmation",
-        description: `Are you sure you want to cook`,
-      },
-    ],
+    [DefaultEmbed("Confirmation", "Are you sure you want to cook?")],
     [
       {
         type: MessageComponentTypes.ACTION_ROW,

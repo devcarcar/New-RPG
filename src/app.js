@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 import { ComponentType } from "discord.js";
-import { EditMessage } from "../utils.js";
+import { DefaultEmbed, EditMessage } from "../utils.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -32,12 +32,7 @@ app.post(
       );
       await EditMessage(
         req.body.token,
-        [
-          {
-            title: "Game Page",
-            description: "Select a FEATURE below",
-          },
-        ],
+        [DefaultEmbed("Game Page", "Select a feature below")],
         [
           {
             type: MessageComponentTypes.ACTION_ROW,

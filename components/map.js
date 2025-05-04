@@ -1,5 +1,10 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { EditMessage, ItemTypes, islands } from "../utils.js";
+import {
+  DefaultStringSelect,
+  EditMessage,
+  ItemTypes,
+  islands,
+} from "../utils.js";
 import { sessions } from "../schemas/session.js";
 
 export async function execute(interaction, data) {
@@ -25,26 +30,7 @@ export async function execute(interaction, data) {
   });
   return await EditMessage(
     interaction.token,
-    [
-      {
-        title: "Map",
-        description: str,
-      },
-    ],
-    [
-      {
-        type: MessageComponentTypes.ACTION_ROW,
-        components: [
-          {
-            type: MessageComponentTypes.STRING_SELECT,
-            min_value: 1,
-            max_value: 1,
-            custom_id: "map/location",
-            placeholder: "Select a location",
-            options: opt,
-          },
-        ],
-      },
-    ]
+    [DefaultStringSelect("Map", str)],
+    [DefaultStringSelect("map/location", "Select a location", opt)]
   );
 }

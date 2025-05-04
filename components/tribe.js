@@ -9,12 +9,7 @@ export async function execute(interaction, data) {
   if (tribe === "No tribe") {
     return await EditMessage(
       interaction.token,
-      [
-        {
-          title: "Tribe",
-          description: "You are not in a tribe!",
-        },
-      ],
+      [DefaultEmbed("Tribe", "You are not in a tribe!")],
       []
     );
   } else {

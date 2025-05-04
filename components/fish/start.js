@@ -96,12 +96,7 @@ export async function execute(interaction, data) {
     );
     return await EditMessage(
       interaction.token,
-      [
-        {
-          title: "Fishing",
-          description: "Tool: No tool selected\nBait: No bait selected",
-        },
-      ],
+      [DefaultEmbed("Fishing", "Select your tool and bait")],
       COMPONENTS.TOOL_AND_BAIT(opt1, opt2)
     );
   }

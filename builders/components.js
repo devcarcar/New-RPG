@@ -19,4 +19,30 @@ export const COMPONENTS = {
       ]),
     ];
   },
+  BUCKETS_STRING_SELECT: () => {
+    return [
+      DefaultStringSelect("fish/buckets/@", "Select a buckets option", [
+        {
+          value: "cook",
+          label: "Cook",
+          description: "Cooking",
+        },
+        {
+          value: "sell",
+          label: "Sell",
+          description: "Selling",
+        },
+        {
+          value: "view",
+          label: "View",
+          description: "View your buckets",
+        },
+        {
+          value: "@fish",
+          label: "Back",
+          description: "Go back",
+        },
+      ]),
+    ];
+  },
 };

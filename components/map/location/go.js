@@ -29,12 +29,7 @@ export async function execute(interaction, data) {
   );
   EditMessage(
     sessionData.token,
-    [
-      {
-        title: "Map",
-        description: str,
-      },
-    ],
+    [DefaultEmbed("Map", str)],
     [
       {
         type: MessageComponentTypes.ACTION_ROW,

@@ -2,6 +2,7 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
   DefaultButton,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
   seafoodData,
@@ -40,12 +41,7 @@ export async function execute(interaction, data) {
   });
   return await CreateFollowUpMessage(
     interaction.token,
-    [
-      {
-        title: found.name,
-        description: `Ingredients:\n${ilist}`,
-      },
-    ],
+    [DefaultEmbed(found.name, `Ingredients:\n${ilist}`)],
     [
       {
         type: MessageComponentTypes.ACTION_ROW,

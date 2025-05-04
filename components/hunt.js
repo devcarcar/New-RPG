@@ -1,5 +1,10 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { DefaultStringSelect, EditMessage, mobList } from "../utils.js";
+import {
+  DefaultEmbed,
+  DefaultStringSelect,
+  EditMessage,
+  mobList,
+} from "../utils.js";
 
 export async function execute(interaction, data) {
   let opt = [];
@@ -8,12 +13,7 @@ export async function execute(interaction, data) {
   );
   return await EditMessage(
     interaction.token,
-    [
-      {
-        title: "Hunting",
-        description: "Select a hunting mob",
-      },
-    ],
+    [DefaultEmbed("Hunting", "Select a hunting mob")],
     [DefaultStringSelect("hunt/mob", "Select a monster to go against", opt)]
   );
 }

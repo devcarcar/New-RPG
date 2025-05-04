@@ -1,6 +1,7 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
+  DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
   seafoodData,
@@ -20,12 +21,7 @@ export async function execute(interaction, data) {
   });
   return await EditMessage(
     interaction.token,
-    [
-      {
-        title: "Selling",
-        description: msg,
-      },
-    ],
+    [DefaultEmbed("Selling", msg)],
     [DefaultStringSelect("fish/buckets/sell/?", "sell", opt)]
   );
 }

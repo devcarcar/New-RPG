@@ -1,15 +1,10 @@
 import { MessageComponentTypes } from "discord-interactions";
-import { DefaultStringSelect, EditMessage } from "../utils.js";
+import { DefaultEmbed, DefaultStringSelect, EditMessage } from "../utils.js";
 
 export async function execute(interaction, data) {
   return await EditMessage(
     interaction.token,
-    [
-      {
-        title: "Fishing",
-        description: "Select a fishing option",
-      },
-    ],
+    [DefaultEmbed("Fishing", "Select a fishing option")],
     [
       DefaultStringSelect("fish/@", "Select a fishing option", [
         {

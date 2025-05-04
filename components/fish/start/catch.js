@@ -24,10 +24,10 @@ export async function execute(interaction, data) {
     return await CreateFollowUpMessage(
       interaction.token,
       [
-        {
-          title: "Error!",
-          description: "You haven't selected your tool or/and your bait yet!",
-        },
+        DefaultEmbed(
+          "Error!",
+          "You haven't selected your tool or/and your bait yet!"
+        ),
       ],
       []
     );
