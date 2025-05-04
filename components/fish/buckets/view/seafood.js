@@ -4,7 +4,6 @@ import {
   DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
-  seafoodData,
 } from "../../../../utils.js";
 import { sessions } from "../../../../schemas/session.js";
 

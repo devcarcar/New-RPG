@@ -1,10 +1,9 @@
+import "dotenv/config";
 import {
   InteractionResponseFlags,
   MessageComponentTypes,
 } from "discord-interactions";
-import { ComponentType } from "discord.js";
-import "dotenv/config";
-import { sessions } from "./schemas/session.js";
+
 export async function DiscordRequest(endpoint, options) {
   const url = "https://discord.com/api/v10/" + endpoint;
   if (options.body) options.body = JSON.stringify(options.body);
@@ -24,11 +23,7 @@ export async function DiscordRequest(endpoint, options) {
   }
   return res;
 }
-export function questComplete() {
-  let constant;
-  if (constant) return true;
-  else return false;
-}
+
 export const Movement = {
   NO_MOVEMENT: 0,
   LEFT: 1,
@@ -154,29 +149,6 @@ export const CaseType = {
   COMBAT: 1,
 };
 
-export async function DefaultCommandResponse(token, embeds, components) {
-  const res = await fetch(
-    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        "Content-Type": "application/json; charset=UTF-8",
-        "User-Agent":
-          "DiscordBot (https://github.com/discord/discord-example-app, 1.0.0)",
-      },
-      body: JSON.stringify({
-        embeds: [embeds],
-        components: [components],
-      }),
-    }
-  );
-  if (!res.ok) {
-    const data = await res.json();
-    console.log(res.status);
-    throw new Error(JSON.stringify(data));
-  }
-}
 export async function EditMessage(token, embeds, components) {
   const res = await fetch(
     `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
@@ -317,52 +289,6 @@ export const FishingToolTypes = {
   NET: 3,
   SPEAR: 4,
 };
-export const seafoodData = [
-  {
-    id: "tuna",
-    name: "Tuna",
-    weight: 15.0,
-    unit: "kg",
-  },
-  {
-    id: "lobster",
-    name: "Lobster",
-    weight: 0.85,
-    unit: "kg",
-    type: FishingToolTypes.TRAP,
-  },
-  {
-    id: "crab",
-    name: "Crab",
-    weight: 1.2,
-    unit: "kg",
-    type: FishingToolTypes.TRAP,
-  },
-  {
-    id: "scallop",
-    name: "Scallop",
-    weight: 0.1,
-    unit: "each",
-  },
-  {
-    id: "clam",
-    name: "Clam",
-    weight: 0.3,
-    unit: "each",
-  },
-  {
-    id: "oyster",
-    name: "Oyster",
-    weight: 0.5,
-    unit: "each",
-  },
-  {
-    id: "shrimp",
-    name: "Shrimp",
-    weight: 0.05,
-    unit: "each",
-  },
-];
 
 export const baits = [
   {

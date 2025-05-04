@@ -4,14 +4,15 @@ import {
   DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
-  seafoodData,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 
 export async function execute(interaction, data) {
+  const { userData } = data;
+  const { buckets } = userData.fish;
   let opt = [];
   let msg = "";
-  seafoodData.forEach((recipe) => {
+  buckets.forEach((recipe) => {
     msg += `${recipe.name} - ${recipe.weight} ${recipe.unit}\n`;
     opt.push({
       label: recipe.name,

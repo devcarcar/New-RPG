@@ -8,7 +8,6 @@ import {
   FishingToolTypes,
   baits,
   randomElement,
-  seafoodData,
   tools,
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";

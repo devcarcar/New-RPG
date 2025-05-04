@@ -4,7 +4,6 @@ import {
   DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
-  seafoodData,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 
@@ -30,14 +29,6 @@ const recipes = [
   },
 ];
 export async function execute(interaction, data) {
-  await sessions.findOneAndUpdate(
-    {
-      sessionId: data.sessionData.sessionId,
-    },
-    {
-      state: "/buckets/item",
-    }
-  );
   let opt = [];
   recipes.forEach((recipe) =>
     opt.push({

@@ -1,10 +1,5 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import {
-  DefaultEmbed,
-  DefaultStringSelect,
-  EditMessage,
-  seafoodData,
-} from "../../utils.js";
+import { DefaultEmbed, DefaultStringSelect, EditMessage } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { COMPONENTS } from "../../builders/components.js";
 
