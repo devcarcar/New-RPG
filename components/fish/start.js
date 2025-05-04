@@ -13,6 +13,7 @@ import {
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
 import { EMBEDS } from "../../embeds/embed.js";
+import { COMPONENTS } from "../../builders/components.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
@@ -66,7 +67,7 @@ export async function execute(interaction, data) {
         interaction.token,
         [DefaultEmbed("Fishing", `You caught a ${lbs} lbs ${caught.name}! `)],
         [
-          DefaultStringSelect("@", "Back bar", [
+          DefaultStringSelect("@", "Select an option", [
             {
               label: "Back",
               value: "fish",
@@ -101,7 +102,7 @@ export async function execute(interaction, data) {
           description: "Tool: No tool selected\nBait: No bait selected",
         },
       ],
-      EMBEDS.TOOL_AND_BAIT(opt1, opt2)
+      COMPONENTS.TOOL_AND_BAIT(opt1, opt2)
     );
   }
 }

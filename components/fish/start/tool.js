@@ -9,6 +9,7 @@ import {
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 import { EMBEDS } from "../../../embeds/embed.js";
+import { COMPONENTS } from "../../../builders/components.js";
 
 export async function execute(interaction, data) {
   let opt1 = [];
@@ -52,6 +53,6 @@ export async function execute(interaction, data) {
         }`,
       },
     ],
-    EMBEDS.TOOL_AND_BAIT(opt1, opt2)
+    COMPONENTS.TOOL_AND_BAIT(opt1, opt2)
   );
 }
