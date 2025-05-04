@@ -9,7 +9,7 @@ import {
   tools,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
-import { EMBEDS } from "../../../embeds/embed.js";
+
 import { COMPONENTS } from "../../../builders/components.js";
 
 export async function execute(interaction, data) {

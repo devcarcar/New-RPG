@@ -12,7 +12,6 @@ import {
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
-import { EMBEDS } from "../../embeds/embed.js";
 import { COMPONENTS } from "../../builders/components.js";
 
 export async function execute(interaction, data) {

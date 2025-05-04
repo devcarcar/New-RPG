@@ -1,4 +1,3 @@
-import { EMBEDS } from "../../../../../embeds/embed.js";
 import {
   ActionType,
   CreateFollowUpMessage,

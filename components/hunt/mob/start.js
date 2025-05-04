@@ -1,4 +1,3 @@
-import { EMBEDS } from "../../../embeds/embed.js";
 import { sessions } from "../../../schemas/session.js";
 import {
   ActionType,

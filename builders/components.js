@@ -1,4 +1,4 @@
-import { DefaultStringSelect } from "../utils";
+import { DefaultStringSelect } from "../utils.js";
 
 export const COMPONENTS = {
   TOOL_AND_BAIT: (opt1, opt2) => {
