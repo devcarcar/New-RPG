@@ -12,10 +12,11 @@ import {
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
+import { EMBEDS } from "../../embeds/embed.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { cooldowns, inventory } = userData;
+  const { cooldowns, inventory, fish } = userData;
   const found = cooldowns.get("fish") ?? { ongoing: false };
   if (!found) {
     cooldowns.set("fish", { ongoing: false });
@@ -43,27 +44,21 @@ export async function execute(interaction, data) {
     } else {
       const caught = randomElement(found.data.tool.catches);
       cooldowns.set("fish", { ongoing: false });
-      await users.findOneAndUpdate(
-        { userId: userData.userId },
-        {
-          $set: {
-            cooldowns: cooldowns,
-          },
-        }
-      );
       const lbs =
-        Math.random() * caught.lowest + (caught.highest - caught.lowest);
+        caught.lowest + Math.random() * (caught.highest - caught.lowest);
+      fish.buckets.push({
+        id: caught.id,
+        name: caught.name,
+        weight: lbs,
+      });
       await users.findOneAndUpdate(
         {
           userId: userData.userId,
         },
         {
-          $push: {
-            buckets: {
-              id: caught.id,
-              name: caught.name,
-              weight: lbs,
-            },
+          $set: {
+            cooldowns: cooldowns,
+            fish: fish,
           },
         }
       );
@@ -106,22 +101,7 @@ export async function execute(interaction, data) {
           description: "Tool: No tool selected\nBait: No bait selected",
         },
       ],
-      [
-        DefaultStringSelect("fish/start/tool", "Select a tool", opt1),
-        DefaultStringSelect("fish/start/bait", "Select a bait", opt2),
-        DefaultStringSelect("@", "Confirmation", [
-          {
-            label: "Catch",
-            value: "fish/start/catch",
-            description: "Catch",
-          },
-          {
-            label: "Back",
-            value: "fish",
-            description: "Go back",
-          },
-        ]),
-      ]
+      EMBEDS.TOOL_AND_BAIT(opt1, opt2)
     );
   }
 }

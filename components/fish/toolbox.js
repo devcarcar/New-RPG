@@ -1,10 +1,10 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { EditMessage } from "../../utils.js";
+import { DefaultStringSelect, EditMessage } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 
 export async function execute(interaction, data) {
   const { userData } = data;
-  const { toolbox } = userData.gathering.fish;
+  const { toolbox } = userData.fish;
   let opt = [];
   let v1 = "";
   toolbox.forEach((tool) => {
@@ -30,20 +30,6 @@ export async function execute(interaction, data) {
         ],
       },
     ],
-    [
-      {
-        type: MessageComponentTypes.ACTION_ROW,
-        components: [
-          {
-            type: MessageComponentTypes.STRING_SELECT,
-            min_value: 1,
-            max_value: 1,
-            custom_id: "fish/toolbox",
-            placeholder: "Choose a tool",
-            options: opt,
-          },
-        ],
-      },
-    ]
+    [DefaultStringSelect("fish/toolbox", "Select a tool", opt)]
   );
 }

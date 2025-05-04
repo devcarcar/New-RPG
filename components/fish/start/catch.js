@@ -46,7 +46,7 @@ export async function execute(interaction, data) {
     interaction.token,
     [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(time / 1000)}:R>`)],
     [
-      DefaultStringSelect("@", [
+      DefaultStringSelect("@", "Select an option", [
         {
           value: "fish",
           label: "Back",
@@ -55,7 +55,14 @@ export async function execute(interaction, data) {
       ]),
     ]
   );
-
+  await sessions.findOneAndUpdate(
+    { sessionId: sessionData.sessionId },
+    {
+      $set: {
+        data: {},
+      },
+    }
+  );
   await users.findOneAndUpdate(
     { userId: interaction.user.id },
     {

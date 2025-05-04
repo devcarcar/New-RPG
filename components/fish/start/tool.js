@@ -8,6 +8,7 @@ import {
   tools,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
+import { EMBEDS } from "../../../embeds/embed.js";
 
 export async function execute(interaction, data) {
   let opt1 = [];
@@ -51,21 +52,6 @@ export async function execute(interaction, data) {
         }`,
       },
     ],
-    [
-      DefaultStringSelect("fish/start/tool", opt1),
-      DefaultStringSelect("fish/start/bait", opt2),
-      DefaultStringSelect("@", [
-        {
-          label: "Catch",
-          value: "fish/start/catch",
-          description: "Catch",
-        },
-        {
-          label: "Back",
-          value: "fish",
-          description: "Go back",
-        },
-      ]),
-    ]
+    EMBEDS.TOOL_AND_BAIT(opt1, opt2)
   );
 }

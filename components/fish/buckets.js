@@ -12,26 +12,26 @@ export async function execute(interaction, data) {
       },
     ],
     [
-      DefaultStringSelect("@", "Select a buckets option", [
+      DefaultStringSelect("fish/buckets/@", "Select a buckets option", [
         {
+          value: "cook",
           label: "Cook",
-          value: "fish/buckets/cook",
           description: "Cooking",
         },
         {
+          value: "sell",
           label: "Sell",
-          value: "fish/buckets/sell",
           description: "Selling",
         },
         {
+          value: "view",
           label: "View",
-          value: "fish/buckets/view",
           description: "View your buckets",
         },
         {
+          value: "@fish",
           label: "Back",
-          value: "fish",
-          description: "bak",
+          description: "Go back",
         },
       ]),
     ]

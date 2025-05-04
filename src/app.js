@@ -127,12 +127,18 @@ class ComponentHandler {
     if (formatted[0] === "game_bar") {
       file = await import(`../components/${interaction.value}.js`);
     } else if (interaction.custom_id.includes("@")) {
-      file = await import(
-        `../components/${interaction.custom_id.replace(
-          "@",
-          interaction.value
-        )}.js`
-      );
+      if (interaction.value.startsWith("@")) {
+        file = await import(
+          `../components/${interaction.value.split("@")[1]}.js`
+        );
+      } else {
+        file = await import(
+          `../components/${interaction.custom_id.replace(
+            "@",
+            interaction.value
+          )}.js`
+        );
+      }
     } else {
       file = await import(`../components/${interaction.custom_id}.js`);
     }
