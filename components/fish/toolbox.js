@@ -1,5 +1,10 @@
 import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
-import { DefaultEmbed, DefaultStringSelect, EditMessage } from "../../utils.js";
+import {
+  DefaultEmbed,
+  DefaultNavigationBar,
+  DefaultStringSelect,
+  EditMessage,
+} from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 
 export async function execute(interaction, data) {
@@ -9,11 +14,7 @@ export async function execute(interaction, data) {
     return EditMessage(
       interaction.token,
       [DefaultEmbed("Fishing Toolbox", "Your toolbox is empty")],
-      [
-        DefaultStringSelect("@", "Select an option", [
-          { value: "fish", label: "Back", description: "Go back" },
-        ]),
-      ]
+      [DefaultNavigationBar("fish")]
     );
   let opt = [];
   let v1 = "";

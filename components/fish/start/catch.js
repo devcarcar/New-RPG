@@ -2,6 +2,7 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   CreateFollowUpMessage,
   DefaultEmbed,
+  DefaultNavigationBar,
   DefaultStringSelect,
   EditMessage,
   FishingToolTypes,
@@ -45,15 +46,7 @@ export async function execute(interaction, data) {
   await EditMessage(
     interaction.token,
     [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(time / 1000)}:R>`)],
-    [
-      DefaultStringSelect("@", "Select an option", [
-        {
-          value: "fish",
-          label: "Back",
-          description: "Go back",
-        },
-      ]),
-    ]
+    [DefaultNavigationBar("fish")]
   );
   await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },

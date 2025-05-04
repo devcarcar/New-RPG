@@ -2,6 +2,7 @@ import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
   DefaultButton,
   DefaultEmbed,
+  DefaultNavigationBar,
   DefaultStringSelect,
   EditMessage,
   FishingToolTypes,
@@ -36,11 +37,7 @@ export async function execute(interaction, data) {
             `Ready in <t:${Math.floor(found.time / 1000)}:R>`
           ),
         ],
-        [
-          DefaultStringSelect("@", "Select an option", [
-            { label: "Back", value: "fish", description: "Go back" },
-          ]),
-        ]
+        [DefaultNavigationBar("fish")]
       );
     } else {
       const caught = randomElement(found.data.tool.catches);
@@ -66,15 +63,7 @@ export async function execute(interaction, data) {
       return await EditMessage(
         interaction.token,
         [DefaultEmbed("Fishing", `You caught a ${lbs} lbs ${caught.name}! `)],
-        [
-          DefaultStringSelect("@", "Select an option", [
-            {
-              label: "Back",
-              value: "fish",
-              description: "Go back",
-            },
-          ]),
-        ]
+        [DefaultNavigationBar("fish")]
       );
     }
   } else {

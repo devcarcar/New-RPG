@@ -252,20 +252,29 @@ export function DefaultButton(button) {
     components: [button],
   };
 }
-export function DefaultStringSelect(id, placeholder, opt) {
+export function DefaultStringSelect(custom_id, placeholder, options) {
   return {
     type: MessageComponentTypes.ACTION_ROW,
     components: [
       {
         type: MessageComponentTypes.STRING_SELECT,
-        custom_id: id,
+        custom_id: custom_id,
         min_values: 1,
         max_values: 1,
         placeholder: placeholder,
-        options: opt,
+        options: options,
       },
     ],
   };
+}
+export function DefaultNavigationBar(destination) {
+  return DefaultStringSelect("@", "Select an option", [
+    {
+      value: destination,
+      label: "Back",
+      description: "Go back",
+    },
+  ]);
 }
 
 export const ExploreOutcomeType = {
