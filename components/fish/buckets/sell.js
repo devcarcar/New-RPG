@@ -26,6 +26,6 @@ export async function execute(interaction, data) {
         description: msg,
       },
     ],
-    [DefaultStringSelect("fish/buckets/sell/?", opt)]
+    [DefaultStringSelect("fish/buckets/sell/?", "sell", opt)]
   );
 }

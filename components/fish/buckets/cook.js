@@ -53,6 +53,6 @@ export async function execute(interaction, data) {
         description: "Check the recipes",
       },
     ],
-    [DefaultStringSelect("fish/buckets/cook/recipe", opt)]
+    [DefaultStringSelect("fish/buckets/cook/recipe", "Select a recipe", opt)]
   );
 }

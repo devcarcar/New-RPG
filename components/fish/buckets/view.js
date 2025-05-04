@@ -34,6 +34,6 @@ export async function execute(interaction, data) {
         ],
       },
     ],
-    [DefaultStringSelect("fish/buckets/view/seafood", opt)]
+    [DefaultStringSelect("fish/buckets/view/seafood", "View a seafoood", opt)]
   );
 }

@@ -200,6 +200,19 @@ export async function EditMessage(token, embeds, components) {
     throw new Error(JSON.stringify(data));
   }
 }
+export async function DeleteMessage(token) {
+  const res = await fetch(
+    `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${token}/messages/@original`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!res.ok) {
+    const data = await res.json();
+    console.log(res.status);
+    throw new Error(JSON.stringify(data));
+  }
+}
 
 export async function CreateFollowUpMessage(token, embeds, components) {
   const res = await fetch(

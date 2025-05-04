@@ -11,7 +11,7 @@ export async function execute(interaction, data) {
       },
     ],
     [
-      DefaultStringSelect("fish/@", [
+      DefaultStringSelect("fish/@", "Select a fishing option", [
         {
           value: `buckets`,
           label: "Buckets",

@@ -1,66 +1,34 @@
+import { EMBEDS } from "../../../../../embeds/embed.js";
+import { sessions } from "../../../../../schemas/session.js";
 import {
   ActionType,
   CreateFollowUpMessage,
   DefaultEmbed,
   DefaultStringSelect,
+  EditMessage,
   MovementType,
 } from "../../../../../utils.js";
 
 export async function execute(interaction, data) {
-  let opt1 = [
+  const { sessionData } = data;
+  sessionData.data.turns[sessionData.data.turns.length - 1].movement =
+    interaction.value;
+  const updated = await sessions.findOneAndUpdate(
+    { sessionId: sessionData.sessionId },
     {
-      label: "No movement",
-      description: "No movement at all",
-      value: MovementType.NO_MOVEMENT,
+      $set: {
+        data: sessionData.data,
+      },
     },
     {
-      label: "Right",
-      description: "Right.",
-      value: MovementType.RIGHT,
-    },
-    {
-      label: "Left",
-      description: "No one moves left.",
-      value: MovementType.LEFT,
-    },
-    {
-      label: "Up",
-      description: "Go up",
-      value: MovementType.UP,
-    },
-    {
-      label: "Down",
-      description: "Go down",
-      value: MovementType.DOWN,
-    },
-  ];
-  let opt2 = [
-    {
-      value: ActionType.NO_ACTION,
-      label: "No action",
-      description: "No action at all",
-    },
-    {
-      value: ActionType.ATTACK,
-      label: "Attack",
-      description: "Attack the enemy",
-    },
-  ];
-
-  return await CreateFollowUpMessage(
-    interaction.token,
-    [DefaultEmbed("Hunting", "Select an action below")],
-    [
-      DefaultStringSelect(
-        "hunt/mob/start/select/movement",
-        "Select a movement",
-        opt1
-      ),
-      DefaultStringSelect(
-        "hunt/mob/start/select/action",
-        "Sselect an action",
-        opt2
-      ),
-    ]
+      new: true,
+    }
   );
+  const { opt1, opt2 } = await EMBEDS.MOVEMENT_AND_ACTION();
+  const { embeds, components } = await EMBEDS.HUNT_SELECT(
+    opt1,
+    opt2,
+    updated.data.turns[updated.data.turns.length - 1]
+  );
+  await EditMessage(interaction.token, embeds, components);
 }

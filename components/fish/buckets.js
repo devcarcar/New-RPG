@@ -8,11 +8,11 @@ export async function execute(interaction, data) {
     [
       {
         title: "Fishing Buckets",
-        description: "Select an action below",
+        description: "Select a buckets option",
       },
     ],
     [
-      DefaultStringSelect("@", [
+      DefaultStringSelect("@", "Select a buckets option", [
         {
           label: "Cook",
           value: "fish/buckets/cook",

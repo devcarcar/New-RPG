@@ -35,7 +35,7 @@ export async function execute(interaction, data) {
           ),
         ],
         [
-          DefaultStringSelect("@", [
+          DefaultStringSelect("@", "Select an option", [
             { label: "Back", value: "fish", description: "Go back" },
           ]),
         ]
@@ -71,7 +71,7 @@ export async function execute(interaction, data) {
         interaction.token,
         [DefaultEmbed("Fishing", `You caught a ${lbs} lbs ${caught.name}! `)],
         [
-          DefaultStringSelect("@", [
+          DefaultStringSelect("@", "Back bar", [
             {
               label: "Back",
               value: "fish",
@@ -107,9 +107,9 @@ export async function execute(interaction, data) {
         },
       ],
       [
-        DefaultStringSelect("fish/start/tool", opt1),
-        DefaultStringSelect("fish/start/bait", opt2),
-        DefaultStringSelect("@", [
+        DefaultStringSelect("fish/start/tool", "Select a tool", opt1),
+        DefaultStringSelect("fish/start/bait", "Select a bait", opt2),
+        DefaultStringSelect("@", "Confirmation", [
           {
             label: "Catch",
             value: "fish/start/catch",
