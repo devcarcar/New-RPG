@@ -5,42 +5,39 @@ import {
   DefaultStringSelect,
   EditMessage,
 } from "../../utils.js";
-import { sessions } from "../../schemas/session.js";
+import { users } from "../../schemas/user.js";
 
 export async function execute(interaction, data) {
   const { userData } = data;
   const { toolbox } = userData.fish;
-  if (toolbox.length === 0)
+  if (toolbox.length === 0) {
     return EditMessage(
       interaction.token,
       [DefaultEmbed("Fishing Toolbox", "Your toolbox is empty")],
       [DefaultNavigationBar("fish")]
     );
-  let opt = [];
-  let v1 = "";
-  toolbox.forEach((tool) => {
-    v1 += `${tool.name} - ${tool.amount}\n`;
-    opt.push({
-      value: tool.id,
-      label: tool.name,
-      description: "You have: " + tool.amount,
-    });
-  });
+  }
   return await EditMessage(
     interaction.token,
+    [DefaultEmbed("Fishing Toolbox", "Select a toolbox option")],
     [
-      {
-        title: "Fishing Toolbox",
-        description: "Check your toolbox",
-        fields: [
-          {
-            name: "No Field Name",
-            value: v1,
-            inline: true,
-          },
-        ],
-      },
-    ],
-    [DefaultStringSelect("fish/toolbox", "Select a tool", opt)]
+      DefaultStringSelect("fish/toolbox/@", "Select a toolbox option", [
+        {
+          value: "view",
+          label: "View",
+          description: "View your tools",
+        },
+        {
+          value: "repair",
+          label: "Repair",
+          description: "Repair your tools",
+        },
+        {
+          value: "manage",
+          label: "Manage",
+          description: "Manage your tools",
+        },
+      ]),
+    ]
   );
 }

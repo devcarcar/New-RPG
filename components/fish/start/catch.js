@@ -18,36 +18,26 @@ import {
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { tool, bait } = sessionData.data;
+  const { tool } = sessionData.data;
   const { cooldowns } = userData;
 
-  if (!tool || !bait) {
+  if (!tool) {
     return await CreateFollowUpMessage(
       interaction.token,
-      [
-        DefaultEmbed(
-          "Error!",
-          "You haven't selected your tool or/and your bait yet!"
-        ),
-      ],
+      [DefaultEmbed("Error!", "You haven't selected your tool yet!")],
       []
     );
   }
 
-  const time = Date.now() + Math.floor(Math.random() * 10 * 60 * 1000);
+  const expireAt = Date.now() + Math.floor(Math.random() * 10 * 60 * 1000);
   cooldowns.set("fish", {
     ongoing: true,
-    time: time,
+    expireAt: Date.now() + 6 * 60 * 60 * 1000,
     data: {
       tool: tool,
       bait: bait,
     },
   });
-  await EditMessage(
-    interaction.token,
-    [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(time / 1000)}:R>`)],
-    [DefaultNavigationBar("fish")]
-  );
   await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },
     {
@@ -63,5 +53,10 @@ export async function execute(interaction, data) {
         cooldowns: cooldowns,
       },
     }
+  );
+  await EditMessage(
+    interaction.token,
+    [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(expireAt / 1000)}:R>`)],
+    [DefaultNavigationBar("fish")]
   );
 }

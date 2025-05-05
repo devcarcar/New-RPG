@@ -418,3 +418,11 @@ export const ActionType = {
   NO_ACTION: 0,
   ATTACK: 1,
 };
+
+export const toolList = [
+  {
+    id: "fishing_rod",
+    name: "Fishing Rod",
+    description: "Normal rod",
+  },
+];

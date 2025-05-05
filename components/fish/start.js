@@ -6,9 +6,7 @@ import {
   DefaultStringSelect,
   EditMessage,
   FishingToolTypes,
-  baits,
   randomElement,
-  tools,
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
@@ -26,13 +24,13 @@ export async function execute(interaction, data) {
     );
   }
   if (found.ongoing) {
-    if (found.time > Date.now()) {
+    if (found.expireAt > Date.now()) {
       return await EditMessage(
         interaction.token,
         [
           DefaultEmbed(
             "Fishing",
-            `Ready in <t:${Math.floor(found.time / 1000)}:R>`
+            `Ready in <t:${Math.floor(found.expireAt / 1000)}:R>`
           ),
         ],
         [DefaultNavigationBar("fish")]
@@ -65,26 +63,20 @@ export async function execute(interaction, data) {
       );
     }
   } else {
-    let opt1 = [];
-    tools.forEach((tool) =>
-      opt1.push({
+    const { toolbox } = userData.fish;
+    let opt = [];
+    toolbox.forEach((tool) =>
+      opt.push({
         label: tool.name,
         value: tool.id,
         description: tool.description,
       })
     );
-    let opt2 = [];
-    baits.forEach((bait) =>
-      opt2.push({
-        label: bait.name,
-        value: bait.id,
-        description: bait.description,
-      })
-    );
+
     return await EditMessage(
       interaction.token,
-      [DefaultEmbed("Fishing", "Select your tool and bait")],
-      COMPONENTS.TOOL_AND_BAIT(opt1, opt2)
+      [DefaultEmbed("Fishing", "Select your tools")],
+      COMPONENTS.TOOL_AND_BAIT(opt)
     );
   }
 }
