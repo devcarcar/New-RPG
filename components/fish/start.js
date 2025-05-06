@@ -72,7 +72,10 @@ export async function execute(interaction, data) {
         description: tool.description,
       })
     );
-
+    await sessions.findOneAndUpdate(
+      { sessionId: sessionData.sessionId },
+      { $set: { data: { tools: [] } } }
+    );
     return await EditMessage(
       interaction.token,
       [DefaultEmbed("Fishing", "Select your tools")],

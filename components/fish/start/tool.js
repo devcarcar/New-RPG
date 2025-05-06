@@ -4,8 +4,10 @@ import { sessions } from "../../../schemas/session.js";
 import { COMPONENTS } from "../../../builders/components.js";
 
 export async function execute(interaction, data) {
-  const { sessionData } = data;
-  const { toolbox } = sessionData.fish;
+  const { userData, sessionData } = data;
+  const { toolbox } = userData.fish;
+  const { tools } = sessionData.data;
+  let str = "";
   let opt = [];
   toolbox.forEach((tool) =>
     opt.push({
@@ -15,18 +17,27 @@ export async function execute(interaction, data) {
     })
   );
   const found = toolbox.find((tool) => tool.id === interaction.value);
-  sessionData.data.tool = found;
-  await sessions.findOneAndUpdate(
+  if (tools.some((tool) => tool.id === found.id))
+    sessionData.data.tools.pop(found);
+  else sessionData.data.tools.push(found);
+  const updated = await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },
     {
       $set: {
         data: sessionData.data,
       },
+    },
+    {
+      new: true,
     }
+  );
+  updated.data.tools.forEach(
+    (tool) =>
+      (str += `${tool.name} - ${tool.durability}/${tool.max_durability} Durability\n`)
   );
   return await EditMessage(
     interaction.token,
-    [DefaultEmbed("Fishing", `Tool: ${found.name}`)],
+    [DefaultEmbed("Fishing", `Tools:\n ${str}`)],
     COMPONENTS.TOOL_AND_BAIT(opt)
   );
 }

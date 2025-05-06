@@ -21,6 +21,7 @@ const user = new Schema({
   },
   //
   gold: { type: Number, required: true, default: 500 },
+  pets: { type: Array, required: true, default: [] },
   cooldowns: { type: Map, required: true, default: [] },
   equipments: { type: Array, required: true, default: [] },
   location: { type: String, default: "starter_island", required: true },

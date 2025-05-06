@@ -1,7 +1,7 @@
 import { DefaultStringSelect } from "../utils.js";
 
 export const COMPONENTS = {
-  TOOL_AND_BAIT: (opt1) => {
+  TOOL_AND_BAIT: (opt) => {
     return [
       DefaultStringSelect("fish/start/tool", "Select a tool", opt),
       DefaultStringSelect("fish/start/@", "Select an option", [

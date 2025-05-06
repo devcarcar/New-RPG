@@ -35,7 +35,6 @@ export async function execute(interaction, data) {
     expireAt: Date.now() + 6 * 60 * 60 * 1000,
     data: {
       tool: tool,
-      bait: bait,
     },
   });
   await sessions.findOneAndUpdate(

@@ -12,6 +12,7 @@ import { users } from "../schemas/user.js";
 import { sessions } from "../schemas/session.js";
 import { ComponentType } from "discord.js";
 import { DefaultEmbed, EditMessage } from "../utils.js";
+import { pets } from "../schemas/pet.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -44,6 +45,11 @@ app.post(
                 custom_id: "game_bar",
                 placeholder: "Choose a feature",
                 options: [
+                  {
+                    value: "pets",
+                    label: "Pets",
+                    description: "Pets",
+                  },
                   {
                     value: "hunt",
                     label: "Hunt",
