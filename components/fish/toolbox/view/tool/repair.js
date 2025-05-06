@@ -1,23 +1,38 @@
+import { sessions } from "../../../../../schemas/session.js";
+import { users } from "../../../../../schemas/user.js";
 import {
   CreateFollowUpMessage,
   DefaultEmbed,
+  DefaultNavigationBar,
   DefaultStringSelect,
+  EditMessage,
 } from "../../../../../utils.js";
+
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { toolbox } = userData.fish;
-  const found = toolbox.find((tool) => tool.id === interaction.value);
-  return await CreateFollowUpMessage(
+  let { toolbox } = userData.fish;
+  const { tool } = sessionData.data;
+  toolbox = toolbox.map((t) => {
+    if (t.id === tool.id) t.durability++;
+    return t;
+  });
+  userData.fish.toolbox = toolbox;
+  await users.findOneAndUpdate(
+    { userId: interaction.user.id },
+    {
+      $set: {
+        fish: userData.fish,
+      },
+    }
+  );
+  return await EditMessage(
     interaction.token,
-    [DefaultEmbed("Fishing Toolbox", "Select a tool option")],
     [
-      DefaultStringSelect("fish/toolbox/view/tool/@", "Select a tool option", [
-        {
-          value: "repair",
-          label: "Repair",
-          description: "Repair your tool",
-        },
-      ]),
-    ]
+      DefaultEmbed(
+        "Repaired!",
+        `You have repaired ${tool.name}!\nNew durability: ${tool.durability}`
+      ),
+    ],
+    []
   );
 }

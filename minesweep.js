@@ -41,14 +41,20 @@ function createGrid() {
   }
   for (let i = 0; i < 35; i++) {
     grid[listOfMines[i]] = { isMine: true, type: "x" };
-    determineSquare(grid, listOfMines[i] - 11);
-    determineSquare(grid, listOfMines[i] - 10);
-    determineSquare(grid, listOfMines[i] - 9);
-    determineSquare(grid, listOfMines[i] - 1);
-    determineSquare(grid, listOfMines[i] + 1);
-    determineSquare(grid, listOfMines[i] + 9);
-    determineSquare(grid, listOfMines[i] + 10);
-    determineSquare(grid, listOfMines[i] + 11);
+    if (grid[listOfMines[i]] > 9) determineSquare(grid, listOfMines[i] - 10);
+    if (grid[listOfMines[i]] < 90) determineSquare(grid, listOfMines[i] + 10);
+    if (grid[listOfMines[i]] % 10 != 0)
+      determineSquare(grid, listOfMines[i] - 1);
+    if (grid[listOfMines[i]] % 10 != 9)
+      determineSquare(grid, listOfMines[i] + 1);
+    if (grid[listOfMines[i]] > 9 && grid[listOfMines[i]] % 10 != 0)
+      determineSquare(grid, listOfMines[i] - 11);
+    if (grid[listOfMines[i]] > 9 && grid[listOfMines[i]] % 10 != 9)
+      determineSquare(grid, listOfMines[i] - 9);
+    if (grid[listOfMines[i]] < 90 && grid[listOfMines[i]] % 10 != 9)
+      determineSquare(grid, listOfMines[i] + 11);
+    if (grid[listOfMines[i]] < 90 && grid[listOfMines[i]] % 10 != 0)
+      determineSquare(grid, listOfMines[i] + 9);
   }
   return grid;
 }
@@ -77,6 +83,8 @@ async function question(data) {
             data = createGrid();
             question(data);
           } else {
+            for (let i = 0; i < 100; i++) data[i].isRevealed = true;
+            console.log(outputGrid(data));
             return rl.close();
           }
         });

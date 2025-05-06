@@ -15,7 +15,7 @@ export async function execute(interaction, data) {
       label: tool.name,
       description: tool.durability + "/" + tool.max_durability,
     });
-    str += `${tool.name} - ${tool.durability}/${tool.max_durability} Durability`;
+    str += `${tool.name} - ${tool.durability}/${tool.max_durability} Durability\n`;
   });
   return await EditMessage(
     interaction.token,
