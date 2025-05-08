@@ -6,8 +6,10 @@ import {
   DefaultEmbed,
   DefaultStringSelect,
   EditMessage,
+  GridType,
   MovementType,
   createBattleField,
+  findGridLocation,
 } from "../../../../utils.js";
 
 export async function execute(interaction, data) {
@@ -26,6 +28,8 @@ export async function execute(interaction, data) {
     ]
   );
   const embeds = EMBEDS.HUNT_SELECT();
-  const components = COMPONENTS.HUNT_SELECT();
+  const components = COMPONENTS.HUNT_SELECT(
+    findGridLocation(sessionData.data.grid, GridType.PLAYER1)
+  );
   await CreateFollowUpMessage(interaction.token, embeds, components);
 }

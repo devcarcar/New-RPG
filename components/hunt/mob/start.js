@@ -46,7 +46,24 @@ export async function execute(interaction, data) {
 
   await EditMessage(
     interaction.token,
-    [DefaultEmbed("Hunting", createBattleField(bfData))],
+    [
+      {
+        title: "Hunting",
+        description: createBattleField(bfData),
+        fields: [
+          {
+            name: "user1",
+            value: `Health: 25\nAttack: 10\nDefense: 5`,
+            inline: true,
+          },
+          {
+            name: "user2",
+            value: `Health: 25\nAttack: 10\nDefense: 5`,
+            inline: true,
+          },
+        ],
+      },
+    ],
     [
       DefaultStringSelect("hunt/mob/start/select", "Select an action", [
         {

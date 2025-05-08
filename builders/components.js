@@ -44,38 +44,44 @@ export const COMPONENTS = {
       ]),
     ];
   },
-  HUNT_SELECT: () => {
+  HUNT_SELECT: (input) => {
+    const { x, y } = input;
+    let opt = [
+      {
+        label: "No movement",
+        description: "No movement at all",
+        value: MovementType.NO_MOVEMENT,
+      },
+    ];
+    if (x > 0)
+      opt.push({
+        label: "Left",
+        description: "No one moves left.",
+        value: MovementType.LEFT,
+      });
+    if (x < 4)
+      opt.push({
+        label: "Right",
+        description: "Right.",
+        value: MovementType.RIGHT,
+      });
+    if (y > 0)
+      opt.push({
+        label: "Up",
+        description: "Go up",
+        value: MovementType.UP,
+      });
+    if (y < 4)
+      opt.push({
+        label: "Down",
+        description: "Go down",
+        value: MovementType.DOWN,
+      });
     return [
       DefaultStringSelect(
         "hunt/mob/start/select/movement",
         "Select a movement",
-        [
-          {
-            label: "No movement",
-            description: "No movement at all",
-            value: MovementType.NO_MOVEMENT,
-          },
-          {
-            label: "Right",
-            description: "Right.",
-            value: MovementType.RIGHT,
-          },
-          {
-            label: "Left",
-            description: "No one moves left.",
-            value: MovementType.LEFT,
-          },
-          {
-            label: "Up",
-            description: "Go up",
-            value: MovementType.UP,
-          },
-          {
-            label: "Down",
-            description: "Go down",
-            value: MovementType.DOWN,
-          },
-        ]
+        opt
       ),
       DefaultStringSelect("hunt/mob/start/select/action", "Select an action", [
         {

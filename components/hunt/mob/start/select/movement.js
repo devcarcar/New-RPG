@@ -2,12 +2,9 @@ import { COMPONENTS } from "../../../../../builders/components.js";
 import { EMBEDS } from "../../../../../builders/embeds.js";
 import { sessions } from "../../../../../schemas/session.js";
 import {
-  ActionType,
-  CreateFollowUpMessage,
-  DefaultEmbed,
-  DefaultStringSelect,
   EditMessage,
-  MovementType,
+  GridType,
+  findGridLocation,
 } from "../../../../../utils.js";
 
 export async function execute(interaction, data) {
@@ -28,6 +25,8 @@ export async function execute(interaction, data) {
   const embeds = EMBEDS.HUNT_SELECT(
     updated.data.turns[updated.data.turns.length - 1].user1
   );
-  const components = COMPONENTS.HUNT_SELECT();
+  const components = COMPONENTS.HUNT_SELECT(
+    findGridLocation(updated.data.grid, GridType.PLAYER1)
+  );
   await EditMessage(interaction.token, embeds, components);
 }

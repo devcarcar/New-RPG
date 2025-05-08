@@ -352,7 +352,7 @@ export const mobList = [
     description: "a slime",
   },
 ];
-let GridType = {
+export const GridType = {
   NOTHING: 0,
   PLAYER1: 1,
   ENEMY: 2,
@@ -436,8 +436,8 @@ export function findGridLocation(data, target) {
     for (let j = 0; j < 5; j++) {
       if (data[i][j].type === target) {
         return {
-          x: i,
-          y: j,
+          x: j,
+          y: i,
         };
       }
     }
@@ -461,8 +461,8 @@ export function HandleMoves(data) {
     GridType.PLAYER1
   );
   const { x: user2x, y: user2y } = findGridLocation(data.grid, GridType.ENEMY);
-  const user1 = data.grid[user1x][user1y].data;
-  const user2 = data.grid[user2x][user2y].data;
+  const user1 = data.grid[user1y][user1x].data;
+  const user2 = data.grid[user2y][user2x].data;
   let verdict = "";
 
   switch (last.user1.action) {
@@ -481,32 +481,32 @@ export function HandleMoves(data) {
   }
   switch (last.user1.movement) {
     case MovementType.UP:
-      data.grid[user1x][user1y] = { type: GridType.NOTHING };
-      data.grid[user1x - 1][user1y] = {
+      data.grid[user1y][user1x] = { type: GridType.NOTHING };
+      data.grid[user1y - 1][user1x] = {
         type: GridType.PLAYER1,
         data: user1,
       };
       verdict += `user1 moved up\n`;
       break;
     case MovementType.DOWN:
-      data.grid[user1x][user1y] = { type: GridType.NOTHING };
-      data.grid[user1x + 1][user1y] = {
+      data.grid[user1y][user1x] = { type: GridType.NOTHING };
+      data.grid[user1y + 1][user1x] = {
         type: GridType.PLAYER1,
         data: user1,
       };
       verdict += `user1 moved down\n`;
       break;
     case MovementType.LEFT:
-      data.grid[user1x][user1y] = { type: GridType.NOTHING };
-      data.grid[user1x][user1y - 1] = {
+      data.grid[user1y][user1x] = { type: GridType.NOTHING };
+      data.grid[user1y][user1x - 1] = {
         type: GridType.PLAYER1,
         data: user1,
       };
       verdict += `user1 moved left\n`;
       break;
     case MovementType.RIGHT:
-      data.grid[user1x][user1y] = { type: GridType.NOTHING };
-      data.grid[user1x][user1y + 1] = {
+      data.grid[user1y][user1x] = { type: GridType.NOTHING };
+      data.grid[user1y][user1x + 1] = {
         type: GridType.PLAYER1,
         data: user1,
       };
@@ -515,32 +515,32 @@ export function HandleMoves(data) {
   }
   switch (last.user2.movement) {
     case MovementType.UP:
-      data.grid[user2x][user2y] = { type: GridType.NOTHING };
-      data.grid[user2x - 1][user2y] = {
+      data.grid[user2y][user2x] = { type: GridType.NOTHING };
+      data.grid[user2y - 1][user2x] = {
         type: GridType.ENEMY,
         data: user2,
       };
       verdict += `user2 moved up\n`;
       break;
     case MovementType.DOWN:
-      data.grid[user2x][user2y] = { type: GridType.NOTHING };
-      data.grid[user2x + 1][user2y] = {
+      data.grid[user2y][user2x] = { type: GridType.NOTHING };
+      data.grid[user2y + 1][user2x] = {
         type: GridType.ENEMY,
         data: user2,
       };
       verdict += `user2 moved down\n`;
       break;
     case MovementType.LEFT:
-      data.grid[user2x][user2y] = { type: GridType.NOTHING };
-      data.grid[user2x][user2y - 1] = {
+      data.grid[user2y][user2x] = { type: GridType.NOTHING };
+      data.grid[user2y][user2x - 1] = {
         type: GridType.ENEMY,
         data: user2,
       };
       verdict += `user2 moved left\n`;
       break;
     case MovementType.RIGHT:
-      data.grid[user2x][user2y] = { type: GridType.NOTHING };
-      data.grid[user2x][user2y + 1] = {
+      data.grid[user2y][user2x] = { type: GridType.NOTHING };
+      data.grid[user2y][user2x + 1] = {
         type: GridType.ENEMY,
         data: user2,
       };
@@ -548,5 +548,8 @@ export function HandleMoves(data) {
       break;
   }
 
-  return data;
+  return {
+    d: data,
+    verdict,
+  };
 }
