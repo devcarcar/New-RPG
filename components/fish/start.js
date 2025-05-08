@@ -1,12 +1,8 @@
-import { ButtonStyleTypes, MessageComponentTypes } from "discord-interactions";
 import {
-  DefaultButton,
   DefaultEmbed,
   DefaultNavigationBar,
-  DefaultStringSelect,
   EditMessage,
-  FishingToolTypes,
-  randomElement,
+  TWENTY_MINUTES,
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
@@ -24,44 +20,35 @@ export async function execute(interaction, data) {
     );
   }
   if (found.ongoing) {
+    const { loot } = found.data;
+    const remaining = found.expireAt - Date.now();
+    const times = Math.max(0, 18 - Math.floor(remaining / TWENTY_MINUTES));
+    const currentBuckets = loot.slice(0, times).join("\n");
     if (found.expireAt > Date.now()) {
-      return await EditMessage(
+      return EditMessage(
         interaction.token,
         [
           DefaultEmbed(
             "Fishing",
-            `Ready in <t:${Math.floor(found.expireAt / 1000)}:R>`
+            `Ready in <t:${Math.floor(
+              found.expireAt / 1000
+            )}:R>\nCurrent Buckets:\n${currentBuckets}`
           ),
         ],
         [DefaultNavigationBar("fish")]
       );
-    } else {
-      const caught = randomElement(found.data.tool.catches);
-      cooldowns.set("fish", { ongoing: false });
-      const lbs =
-        caught.lowest + Math.random() * (caught.highest - caught.lowest);
-      fish.buckets.push({
-        id: caught.id,
-        name: caught.name,
-        weight: lbs,
-      });
-      await users.findOneAndUpdate(
-        {
-          userId: userData.userId,
-        },
-        {
-          $set: {
-            cooldowns: cooldowns,
-            fish: fish,
-          },
-        }
-      );
-      return await EditMessage(
-        interaction.token,
-        [DefaultEmbed("Fishing", `You caught a ${lbs} lbs ${caught.name}! `)],
-        [DefaultNavigationBar("fish")]
-      );
     }
+    cooldowns.set("fish", { ongoing: false });
+    await users.findOneAndUpdate(
+      { userId: userData.userId },
+      { $set: { cooldowns } }
+    );
+
+    return EditMessage(
+      interaction.token,
+      [DefaultEmbed("Fishing", `You caught:\n${currentBuckets}`)],
+      [DefaultNavigationBar("fish")]
+    );
   } else {
     const { toolbox } = userData.fish;
     let opt = [];

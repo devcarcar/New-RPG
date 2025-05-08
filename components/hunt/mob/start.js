@@ -1,3 +1,5 @@
+import { COMPONENTS } from "../../../builders/components.js";
+import { EMBEDS } from "../../../builders/embeds.js";
 import { sessions } from "../../../schemas/session.js";
 import {
   ActionType,
@@ -25,21 +27,36 @@ export async function execute(interaction, data) {
           grid: bfData,
           turns: [
             {
-              type: 1,
               turn: 1,
-              movement: undefined,
-              action: undefined,
+              user1: {
+                movement: undefined,
+                action: undefined,
+              },
+              user2: {
+                movement: MovementType.DOWN,
+                action: ActionType.ATTACK,
+              },
             },
           ],
         },
       },
     }
   );
-  await EMBEDS.REFRESH_BATTLEFIELD_MAIN(
+
+  await EditMessage(
     interaction.token,
-    createBattleField(bfData)
+    [DefaultEmbed("Hunting", createBattleField(bfData))],
+    [
+      DefaultStringSelect("hunt/mob/start/select", "Select an action", [
+        {
+          value: "useless",
+          label: "Select Action",
+          description: "Select your movement and action",
+        },
+      ]),
+    ]
   );
-  const { opt1, opt2 } = await EMBEDS.MOVEMENT_AND_ACTION();
-  const { embeds, components } = await EMBEDS.HUNT_SELECT(opt1, opt2);
+  const embeds = EMBEDS.HUNT_SELECT();
+  const components = COMPONENTS.HUNT_SELECT();
   await EditMessage(interaction.token, embeds, components);
 }

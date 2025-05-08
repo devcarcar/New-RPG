@@ -426,3 +426,68 @@ export const toolList = [
     description: "Normal rod",
   },
 ];
+
+export const SIX_HOURS = 6 * 60 * 60 * 1000;
+
+export const TWENTY_MINUTES = 20 * 60 * 1000;
+
+export function findGridLocation(data, target) {
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 5; j++) {
+      if (data[i][j] === target) {
+        return {
+          x: i,
+          y: j,
+        };
+      }
+    }
+  }
+}
+export function HandleMoves(data) {
+  const last = data.turns[data.turns.length - 1];
+  const { x: user1x, y: user1y } = findGridLocation(
+    data.grid,
+    GridType.PLAYER1
+  );
+  const { x: user2x, y: user2y } = findGridLocation(data.grid, GridType.ENEMY);
+  const user1 = data.grid[user1x][user1y];
+  const user2 = data.grid[user2x][user2y];
+  let verdict = "";
+
+  switch (last.user1.action) {
+    case ActionType.ATTACK:
+      const damage = Math.max(user1.attack - user2.defense, 5);
+      user2.health -= damage;
+      verdict += `user1 dealt ${damage} damage to user2.\n user2 now have ${user2.health} health.\n`;
+      break;
+  }
+  switch (last.user2.action) {
+    case ActionType.ATTACK:
+      const damage = Math.max(user2.attack - user1.defense, 5);
+      user1.health -= damage;
+      verdict += `user2 dealt ${damage} damage to user1.\n user1 now have ${user1.health} health.\n`;
+      break;
+  }
+  switch (last.user1.movement) {
+    case MovementType.UP:
+      data.grid[user1x][user1y] = { type: GridType.NOTHING };
+      data.grid[user1x + 1][user1y] = {
+        type: GridType.PLAYER1,
+        data: user1.data,
+      };
+      verdict += `user1 moved up\n`;
+      break;
+  }
+  switch (last.user2.movement) {
+    case MovementType.UP:
+      data.grid[user2x][user2y] = { type: GridType.NOTHING };
+      data.grid[user2x + 1][user2y] = {
+        type: GridType.ENEMY,
+        data: user2.data,
+      };
+      verdict += `user2 moved up\n`;
+      break;
+  }
+
+  return data;
+}

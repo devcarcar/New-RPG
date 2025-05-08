@@ -17,9 +17,13 @@ export async function execute(interaction, data) {
     })
   );
   const found = toolbox.find((tool) => tool.id === interaction.value);
-  if (tools.some((tool) => tool.id === found.id))
-    sessionData.data.tools.pop(found);
-  else sessionData.data.tools.push(found);
+  if (tools.some((tool) => tool.id === found.id)) {
+    const index = tools.findIndex((t) => t.id === found.id);
+    tools.splice(index, 1);
+  } else {
+    tools.push(found);
+  }
+  sessionData.data.tools = tools;
   const updated = await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },
     {

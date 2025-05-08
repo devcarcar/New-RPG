@@ -1,3 +1,5 @@
+import { COMPONENTS } from "../../../../../builders/components.js";
+import { EMBEDS } from "../../../../../builders/embeds.js";
 import { sessions } from "../../../../../schemas/session.js";
 import {
   ActionType,
@@ -23,11 +25,9 @@ export async function execute(interaction, data) {
       new: true,
     }
   );
-  const { opt1, opt2 } = await EMBEDS.MOVEMENT_AND_ACTION();
-  const { embeds, components } = await EMBEDS.HUNT_SELECT(
-    opt1,
-    opt2,
+  const embeds = EMBEDS.HUNT_SELECT(
     updated.data.turns[updated.data.turns.length - 1]
   );
+  const components = COMPONENTS.HUNT_SELECT();
   await EditMessage(interaction.token, embeds, components);
 }

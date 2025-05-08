@@ -6,35 +6,36 @@ import {
   DefaultStringSelect,
   EditMessage,
   FishingToolTypes,
+  SIX_HOURS,
   baits,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
 import { users } from "../../../schemas/user.js";
-import {
-  CreateGrid,
-  CreateGridButtons,
-  CreateGridData,
-} from "../../../test.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { tool } = sessionData.data;
+  const { tools } = sessionData.data;
   const { cooldowns } = userData;
 
-  if (!tool) {
+  if (tools.length < 1) {
     return await CreateFollowUpMessage(
       interaction.token,
       [DefaultEmbed("Error!", "You haven't selected your tool yet!")],
       []
     );
   }
-
-  const expireAt = Date.now() + Math.floor(Math.random() * 10 * 60 * 1000);
+  let loot = [];
+  for (let i = 0; i < 18; i++) {
+    let random = Math.random();
+    if (random > 0.5) loot.push("lobster");
+    else loot.push("fish");
+  }
   cooldowns.set("fish", {
     ongoing: true,
-    expireAt: Date.now() + 6 * 60 * 60 * 1000,
+    expireAt: Date.now() + SIX_HOURS,
     data: {
-      tool: tool,
+      tools: tools,
+      loot: loot,
     },
   });
   await sessions.findOneAndUpdate(
@@ -55,7 +56,12 @@ export async function execute(interaction, data) {
   );
   await EditMessage(
     interaction.token,
-    [DefaultEmbed("Fishing", `Ready in <t:${Math.floor(expireAt / 1000)}:R>`)],
+    [
+      DefaultEmbed(
+        "Fishing",
+        `Ready in <t:${Math.floor((Date.now() + SIX_HOURS) / 1000)}:R>`
+      ),
+    ],
     [DefaultNavigationBar("fish")]
   );
 }
