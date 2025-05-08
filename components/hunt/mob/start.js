@@ -9,6 +9,7 @@ import {
   MovementType,
   createBattleField,
   createBattleFieldData,
+  determineMovement,
   mobList,
 } from "../../../utils.js";
 
@@ -29,7 +30,7 @@ export async function execute(interaction, data) {
             {
               turn: 1,
               user1: {
-                movement: undefined,
+                movement: determineMovement(bfData),
                 action: undefined,
               },
               user2: {
@@ -56,7 +57,4 @@ export async function execute(interaction, data) {
       ]),
     ]
   );
-  const embeds = EMBEDS.HUNT_SELECT();
-  const components = COMPONENTS.HUNT_SELECT();
-  await EditMessage(interaction.token, embeds, components);
 }

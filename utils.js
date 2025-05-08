@@ -366,7 +366,7 @@ export function createBattleFieldData() {
       grid[i].push({ type: GridType.NOTHING });
     }
   }
-  grid[0][0] = {
+  grid[4][0] = {
     type: GridType.PLAYER1,
     data: {
       health: 25,
@@ -374,7 +374,7 @@ export function createBattleFieldData() {
       defense: 5,
     },
   };
-  grid[4][4] = {
+  grid[0][4] = {
     type: GridType.ENEMY,
     data: {
       health: 25,
@@ -387,7 +387,7 @@ export function createBattleFieldData() {
 
 export function createBattleField(data) {
   let str = "";
-  for (let i = 4; i >= 0; i--) {
+  for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 5; j++) {
       switch (data[i][j].type) {
         case GridType.ENEMY:
@@ -434,7 +434,7 @@ export const TWENTY_MINUTES = 20 * 60 * 1000;
 export function findGridLocation(data, target) {
   for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 5; j++) {
-      if (data[i][j] === target) {
+      if (data[i][j].type === target) {
         return {
           x: i,
           y: j,
@@ -443,6 +443,17 @@ export function findGridLocation(data, target) {
     }
   }
 }
+
+export function determineMovement(input) {
+  const { x1, y1 } = findGridLocation(input, GridType.PLAYER1);
+  const { x2, y2 } = findGridLocation(input, GridType.ENEMY);
+  const distanceX = Math.abs(x2 - x1);
+  const distanceY = Math.abs(y2 - y1);
+  if (distanceY > distanceX) return MovementType.DOWN;
+  else if (distanceX > distanceY) return MovementType.LEFT;
+  else return Math.random > 0.5 ? MovementType.DOWN : MovementType.LEFT;
+}
+
 export function HandleMoves(data) {
   const last = data.turns[data.turns.length - 1];
   const { x: user1x, y: user1y } = findGridLocation(
@@ -450,8 +461,8 @@ export function HandleMoves(data) {
     GridType.PLAYER1
   );
   const { x: user2x, y: user2y } = findGridLocation(data.grid, GridType.ENEMY);
-  const user1 = data.grid[user1x][user1y];
-  const user2 = data.grid[user2x][user2y];
+  const user1 = data.grid[user1x][user1y].data;
+  const user2 = data.grid[user2x][user2y].data;
   let verdict = "";
 
   switch (last.user1.action) {
@@ -471,21 +482,69 @@ export function HandleMoves(data) {
   switch (last.user1.movement) {
     case MovementType.UP:
       data.grid[user1x][user1y] = { type: GridType.NOTHING };
-      data.grid[user1x + 1][user1y] = {
+      data.grid[user1x - 1][user1y] = {
         type: GridType.PLAYER1,
-        data: user1.data,
+        data: user1,
       };
       verdict += `user1 moved up\n`;
+      break;
+    case MovementType.DOWN:
+      data.grid[user1x][user1y] = { type: GridType.NOTHING };
+      data.grid[user1x + 1][user1y] = {
+        type: GridType.PLAYER1,
+        data: user1,
+      };
+      verdict += `user1 moved down\n`;
+      break;
+    case MovementType.LEFT:
+      data.grid[user1x][user1y] = { type: GridType.NOTHING };
+      data.grid[user1x][user1y - 1] = {
+        type: GridType.PLAYER1,
+        data: user1,
+      };
+      verdict += `user1 moved left\n`;
+      break;
+    case MovementType.RIGHT:
+      data.grid[user1x][user1y] = { type: GridType.NOTHING };
+      data.grid[user1x][user1y + 1] = {
+        type: GridType.PLAYER1,
+        data: user1,
+      };
+      verdict += `user1 moved right\n`;
       break;
   }
   switch (last.user2.movement) {
     case MovementType.UP:
       data.grid[user2x][user2y] = { type: GridType.NOTHING };
-      data.grid[user2x + 1][user2y] = {
+      data.grid[user2x - 1][user2y] = {
         type: GridType.ENEMY,
-        data: user2.data,
+        data: user2,
       };
       verdict += `user2 moved up\n`;
+      break;
+    case MovementType.DOWN:
+      data.grid[user2x][user2y] = { type: GridType.NOTHING };
+      data.grid[user2x + 1][user2y] = {
+        type: GridType.ENEMY,
+        data: user2,
+      };
+      verdict += `user2 moved down\n`;
+      break;
+    case MovementType.LEFT:
+      data.grid[user2x][user2y] = { type: GridType.NOTHING };
+      data.grid[user2x][user2y - 1] = {
+        type: GridType.ENEMY,
+        data: user2,
+      };
+      verdict += `user2 moved left\n`;
+      break;
+    case MovementType.RIGHT:
+      data.grid[user2x][user2y] = { type: GridType.NOTHING };
+      data.grid[user2x][user2y + 1] = {
+        type: GridType.ENEMY,
+        data: user2,
+      };
+      verdict += `user2 moved right\n`;
       break;
   }
 

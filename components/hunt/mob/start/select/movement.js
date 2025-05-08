@@ -12,8 +12,8 @@ import {
 
 export async function execute(interaction, data) {
   const { sessionData } = data;
-  sessionData.data.turns[sessionData.data.turns.length - 1].movement =
-    interaction.value;
+  sessionData.data.turns[sessionData.data.turns.length - 1].user1.movement =
+    parseInt(interaction.value);
   const updated = await sessions.findOneAndUpdate(
     { sessionId: sessionData.sessionId },
     {
@@ -26,7 +26,7 @@ export async function execute(interaction, data) {
     }
   );
   const embeds = EMBEDS.HUNT_SELECT(
-    updated.data.turns[updated.data.turns.length - 1]
+    updated.data.turns[updated.data.turns.length - 1].user1
   );
   const components = COMPONENTS.HUNT_SELECT();
   await EditMessage(interaction.token, embeds, components);
