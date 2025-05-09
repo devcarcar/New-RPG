@@ -2,7 +2,6 @@ import {
   DefaultEmbed,
   DefaultNavigationBar,
   EditMessage,
-  TWENTY_MINUTES,
 } from "../../utils.js";
 import { sessions } from "../../schemas/session.js";
 import { users } from "../../schemas/user.js";
@@ -20,19 +19,13 @@ export async function execute(interaction, data) {
     );
   }
   if (found.ongoing) {
-    const { loot } = found.data;
-    const remaining = found.expireAt - Date.now();
-    const times = Math.max(0, 18 - Math.floor(remaining / TWENTY_MINUTES));
-    const currentBuckets = loot.slice(0, times).join("\n");
     if (found.expireAt > Date.now()) {
       return EditMessage(
         interaction.token,
         [
           DefaultEmbed(
             "Fishing",
-            `Ready in <t:${Math.floor(
-              found.expireAt / 1000
-            )}:R>\nCurrent Buckets:\n${currentBuckets}`
+            `Ready in <t:${Math.floor(found.expireAt / 1000)}:R>`
           ),
         ],
         [DefaultNavigationBar("fish")]

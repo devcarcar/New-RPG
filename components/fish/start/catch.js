@@ -7,6 +7,7 @@ import {
   EditMessage,
   FishingToolTypes,
   SIX_HOURS,
+  TEN_MINUTES,
   baits,
 } from "../../../utils.js";
 import { sessions } from "../../../schemas/session.js";
@@ -14,28 +15,21 @@ import { users } from "../../../schemas/user.js";
 
 export async function execute(interaction, data) {
   const { userData, sessionData } = data;
-  const { tools } = sessionData.data;
+  const { tool } = sessionData.data;
   const { cooldowns } = userData;
 
-  if (tools.length < 1) {
+  if (!tool) {
     return await CreateFollowUpMessage(
       interaction.token,
       [DefaultEmbed("Error!", "You haven't selected your tool yet!")],
       []
     );
   }
-  let loot = [];
-  for (let i = 0; i < 18; i++) {
-    let random = Math.random();
-    if (random > 0.5) loot.push("lobster");
-    else loot.push("fish");
-  }
   cooldowns.set("fish", {
     ongoing: true,
-    expireAt: Date.now() + SIX_HOURS,
+    expireAt: Date.now() + TEN_MINUTES,
     data: {
-      tools: tools,
-      loot: loot,
+      tools: tool,
     },
   });
   await sessions.findOneAndUpdate(
@@ -59,7 +53,7 @@ export async function execute(interaction, data) {
     [
       DefaultEmbed(
         "Fishing",
-        `Ready in <t:${Math.floor((Date.now() + SIX_HOURS) / 1000)}:R>`
+        `Ready in <t:${Math.floor(Date.now() + TEN_MINUTES / 1000)}:R>`
       ),
     ],
     [DefaultNavigationBar("fish")]

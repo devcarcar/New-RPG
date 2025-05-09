@@ -345,11 +345,17 @@ export const mobList = [
     id: "sand_golem",
     name: "Sand Golem",
     description: "aaa",
+    health: 25,
+    attack: 15,
+    defense: 8,
   },
   {
     id: "slime",
     name: "Slime",
     description: "a slime",
+    health: 15,
+    attack: 3,
+    defense: 1,
   },
 ];
 export const GridType = {
@@ -465,19 +471,12 @@ export function HandleMoves(data) {
   const user2 = data.grid[user2y][user2x].data;
   let verdict = "";
 
-  switch (last.user1.action) {
-    case ActionType.ATTACK:
-      const damage = Math.max(user1.attack - user2.defense, 5);
-      user2.health -= damage;
-      verdict += `user1 dealt ${damage} damage to user2.\n user2 now have ${user2.health} health.\n`;
-      break;
-  }
-  switch (last.user2.action) {
-    case ActionType.ATTACK:
-      const damage = Math.max(user2.attack - user1.defense, 5);
-      user1.health -= damage;
-      verdict += `user2 dealt ${damage} damage to user1.\n user1 now have ${user1.health} health.\n`;
-      break;
+  if (user1.attack_speed > user2.attack_speed) {
+    HandleAction(user1, user2, last.user1.action, verdict);
+    HandleAction(user2, user1, last.user2.action, verdict);
+  } else {
+    HandleAction(user2, user1, last.user2.action, verdict);
+    HandleAction(user1, user2, last.user1.action, verdict);
   }
   switch (last.user1.movement) {
     case MovementType.UP:
@@ -553,3 +552,15 @@ export function HandleMoves(data) {
     verdict,
   };
 }
+
+function HandleAction(user1, user2, action, verdict) {
+  switch (action) {
+    case ActionType.ATTACK:
+      const damage = Math.max(user1.attack - user2.defense, 5);
+      user2.health -= damage;
+      verdict += `user1 dealt ${damage} damage to user2.\n user2 now have ${user2.health} health.\n`;
+      break;
+  }
+}
+
+export const TEN_MINUTES = 10 * 60 * 1000;
